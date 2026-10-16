@@ -38,6 +38,10 @@
     opener = o.von || document.activeElement;
     bild.removeAttribute("srcset");
     bild.removeAttribute("sizes");
+    // Maße vorab: Der dunkle Platz für das Foto steht schon, während es noch lädt
+    if (o.breite && o.hoehe) { bild.setAttribute("width", o.breite); bild.setAttribute("height", o.hoehe); }
+    else { bild.removeAttribute("width"); bild.removeAttribute("height"); }
+    bild.style.width = "";
     if (o.srcset) { bild.setAttribute("sizes", "96vw"); bild.setAttribute("srcset", o.srcset); }
     bild.src = o.src;
     bild.alt = o.alt || "";
@@ -47,8 +51,20 @@
     if (o.quelle) quelle.appendChild(o.quelle.cloneNode(true));   // Quellenangabe, etwa zum Luftbild (mit Links)
     document.documentElement.classList.add("grossansicht-offen");
     dialog.showModal();
+    einpassen();
     zu.focus();
   }
+
+  /* Breite des Fotos aus seinen Maßen: so groß, wie es in das Fenster passt (Rand oben für den ×-Knopf, unten für die
+     Unterschrift), höchstens in Originalgröße. Steht schon, bevor das Foto geladen ist. */
+  function einpassen() {
+    if (!dialog || !dialog.open) return;
+    var bw = Number(bild.getAttribute("width")), bh = Number(bild.getAttribute("height"));
+    if (!bw || !bh) { bild.style.width = ""; return; }
+    var s = Math.min(1, (dialog.clientWidth - 24) / bw, (window.innerHeight - 170) / bh);
+    bild.style.width = Math.max(1, Math.floor(bw * s)) + "px";
+  }
+  window.addEventListener("resize", einpassen);
 
   function schliessen() {
     if (dialog && dialog.open) dialog.close();
@@ -83,6 +99,7 @@
       var figur = a.closest("figure");
       var unterschrift = figur ? figur.querySelector("figcaption") : null;
       oeffnen({ src: a.getAttribute("href"), srcset: img ? img.getAttribute("srcset") : "", alt: img ? img.alt : "",
+        breite: img ? img.getAttribute("width") : null, hoehe: img ? img.getAttribute("height") : null,
         titel: unterschrift ? unterschrift.textContent.trim() : "", von: a });
     });
   });

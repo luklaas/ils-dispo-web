@@ -4,7 +4,7 @@
    abgedunkelt (breit je zwei, sonst je eins), endlos im Kreis.
    Bedienung: mit der Maus ziehen oder mit dem Finger wischen (die Reihe folgt direkt und rastet beim Loslassen ein,
    schnelles Ziehen geht ein Foto weiter), Klick auf ein Seitenfoto holt es nach vorn, Klick auf das vordere öffnet die
-   Großansicht (grossansicht.js). Dazu Pfeile, Punkte, Pfeiltasten und die Sprünge aus „So läuft ein Einsatz“.
+   Großansicht (grossansicht.js). Dazu Pfeile, Punkte und Pfeiltasten; die Vorschaubilder in „So läuft ein Einsatz“ öffnen ihr Foto direkt groß.
    Bewegt wird nur über transform; bei „Bewegung reduzieren“ wird überblendet statt geglitten. */
 (function () {
   "use strict";
@@ -224,12 +224,14 @@
     var i = karten.indexOf(k);
     if (i === aktuell) gross(k); else gehe(i);
   });
-  function gross(k) {
+  function gross(k, von) {
     var G = window.ILSGrossansicht, img = k.querySelector("img");
     if (!G || !img) return;
-    var srcset = img.getAttribute("srcset");
-    G.oeffnen({ src: G.groesste(srcset, img.currentSrc || img.src), srcset: srcset, alt: img.alt,
-      titel: k.getAttribute("data-title"), text: k.getAttribute("data-text"), quelle: quelle(k), von: k });
+    // Auch ein Foto, dessen Quellen noch geparkt sind (noch nicht nachgeladen), lässt sich groß öffnen
+    var srcset = img.getAttribute("srcset") || img.getAttribute("data-srcset");
+    G.oeffnen({ src: G.groesste(srcset, img.currentSrc || img.src || img.getAttribute("data-src")), srcset: srcset, alt: img.alt,
+      titel: k.getAttribute("data-title"), text: k.getAttribute("data-text"), quelle: quelle(k), von: von || k,
+      breite: img.getAttribute("width"), hoehe: img.getAttribute("height") });
   }
   /* Quellenangabe eines Fotos als Knoten (nur beim Luftbild), sonst null */
   function quelle(k) {
@@ -249,11 +251,14 @@
     b.addEventListener("click", function () { gehe(aktuell + Number(b.getAttribute("data-dir"))); });
   });
   dots.forEach(function (d, k) { d.addEventListener("click", function () { gehe(k); }); });
-  document.querySelectorAll("[data-slide]").forEach(function (a) {
+  /* Die Vorschaubilder im Ablauf öffnen ihr Foto direkt in der Großansicht (ohne Skript: die Bilddatei) */
+  document.querySelectorAll("[data-gross]").forEach(function (a) {
     a.addEventListener("click", function (e) {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;   // neuer Tab bleibt möglich
+      var k = karten[Number(a.getAttribute("data-gross"))];
+      if (!k || !window.ILSGrossansicht) return;
       e.preventDefault();
-      gehe(Number(a.getAttribute("data-slide")));
-      root.scrollIntoView({ behavior: ruhig.matches ? "auto" : "smooth", block: "center" });
+      gross(k, a);
     });
   });
 

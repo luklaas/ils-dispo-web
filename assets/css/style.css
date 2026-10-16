@@ -278,7 +278,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 @media (min-width: 640px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1080px) { .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .step { display: grid; gap: 14px; align-content: start; }
-.step .thumb { display: block; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line-strong); background: var(--surface); }
+.step .thumb { display: block; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line-strong); background: var(--surface); cursor: zoom-in; }
 .step .thumb:hover { border-color: var(--blue); }
 .step .thumb img { width: 100%; height: 100%; object-fit: cover; }
 @media (prefers-reduced-motion: no-preference) { .step .thumb img { transition: transform 0.4s ease; } .step .thumb:hover img { transform: scale(1.03); } }
