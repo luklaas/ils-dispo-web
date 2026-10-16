@@ -94,7 +94,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 /* ---------- Aufmacher der Startseite -------------------------------------------------------- */
 .hero { position: relative; overflow: hidden; isolation: isolate; }
 .hero-media { position: absolute; inset: 0; z-index: -2; }
-.hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: 100% 55%; }
+.hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: 100% 66%; }
 /* Breite Bildschirme: Bild endet über dem Karussell und läuft weich aus – so bleibt mehr vom Motiv sichtbar */
 @media (min-width: 761px) {
   .hero-media img { height: calc(100% - clamp(96px, 14vw, 180px)); -webkit-mask-image: linear-gradient(180deg, #000 76%, transparent); mask-image: linear-gradient(180deg, #000 76%, transparent); }
@@ -103,7 +103,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   linear-gradient(90deg, rgba(var(--shade), 0.96) 0, rgba(var(--shade), 0.9) calc(var(--gutter) + 520px), rgba(var(--shade), 0.5) calc(var(--gutter) + 720px), rgba(var(--shade), 0.05) calc(var(--gutter) + 980px)),
   linear-gradient(0deg, var(--bg) 0%, rgba(var(--shade), 0) 34%),
   linear-gradient(180deg, rgba(var(--shade), 0.7) 0%, rgba(var(--shade), 0) 18%); }
-.hero-glow { position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0; background: radial-gradient(34% 40% at 78% 48%, rgba(61, 123, 255, 0.35), transparent 70%); }
+.hero-glow { position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0; background: radial-gradient(30% 34% at 80% 56%, rgba(61, 123, 255, 0.35), transparent 70%); }
 @media (prefers-reduced-motion: no-preference) {
   .hero-glow { animation: glow 2.6s ease-in-out infinite alternate; }
   @keyframes glow { from { opacity: 0; } to { opacity: 1; } }
@@ -130,9 +130,9 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   /* Handy: Kopfzeile über dem Bild statt darauf, Bild läuft unten weich aus, Text beginnt erst darunter */
   .site-head.over { position: relative; background: var(--bg); border-bottom: 1px solid var(--line); }
   .hero-media { bottom: auto; height: min(80vw, 520px); }
-  .hero-media img { object-position: 100% 50%; -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent); mask-image: linear-gradient(180deg, #000 70%, transparent); }
+  .hero-media img { object-position: 97% 50%; -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent); mask-image: linear-gradient(180deg, #000 70%, transparent); }
   .hero-shade { background: none; }
-  .hero-glow { bottom: auto; height: min(80vw, 520px); background: radial-gradient(60% 45% at 72% 62%, rgba(61, 123, 255, 0.35), transparent 70%); }
+  .hero-glow { bottom: auto; height: min(80vw, 520px); background: radial-gradient(55% 40% at 70% 70%, rgba(61, 123, 255, 0.35), transparent 70%); }
   .hero .wrap { padding-block: calc(min(80vw, 520px) + 4px) 40px; }
   .actions .btn { flex: 1 1 auto; }
 }
