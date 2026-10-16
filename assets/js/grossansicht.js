@@ -6,7 +6,7 @@
   "use strict";
   if (typeof HTMLDialogElement !== "function") return;   // sehr alte Browser: Links öffnen weiter die Bilddatei
 
-  var dialog = null, zu, bild, titel, text, opener = null;
+  var dialog = null, zu, bild, titel, text, quelle, opener = null;
 
   function bauen() {
     dialog = document.createElement("dialog");
@@ -16,12 +16,13 @@
       '<button type="button" class="grossansicht-zu" aria-label="Großansicht schließen">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">' +
       '<path d="M6 6l12 12M18 6L6 18"/></svg></button>' +
-      '<figure class="grossansicht-bild"><img alt="" decoding="async"><figcaption><b></b><span></span></figcaption></figure>';
+      '<figure class="grossansicht-bild"><img alt="" decoding="async"><figcaption><b></b><span></span><small></small></figcaption></figure>';
     document.body.appendChild(dialog);
     zu = dialog.querySelector(".grossansicht-zu");
     bild = dialog.querySelector("img");
     titel = dialog.querySelector("figcaption b");
     text = dialog.querySelector("figcaption span");
+    quelle = dialog.querySelector("figcaption small");
     zu.addEventListener("click", schliessen);
     // Der dunkle Bereich gehört zum Dialog selbst bzw. zum Rand um das Foto
     dialog.addEventListener("click", function (e) {
@@ -42,6 +43,8 @@
     bild.alt = o.alt || "";
     titel.textContent = o.titel || "";
     text.textContent = o.text || "";
+    quelle.textContent = "";
+    if (o.quelle) quelle.appendChild(o.quelle.cloneNode(true));   // Quellenangabe, etwa zum Luftbild (mit Links)
     document.documentElement.classList.add("grossansicht-offen");
     dialog.showModal();
     zu.focus();

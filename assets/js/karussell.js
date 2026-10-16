@@ -18,6 +18,8 @@
   var n = slides.length;
   var title = root.querySelector(".car-text b");
   var text = root.querySelector(".car-text span");
+  var quelleZeile = root.querySelector(".car-quelle");
+  var vorlage = document.getElementById("quelle-luftbild");   // Quellenangabe der Luftbilder (mit Links)
   var dots = Array.prototype.slice.call(root.querySelectorAll(".car-dots button"));
   var ruhig = window.matchMedia ? window.matchMedia("(prefers-reduced-motion: reduce)") : { matches: false };
 
@@ -41,6 +43,7 @@
     if (li.id) { k.id = li.id; li.removeAttribute("id"); }
     k.setAttribute("data-title", li.getAttribute("data-title") || "");
     k.setAttribute("data-text", li.getAttribute("data-text") || "");
+    if (li.hasAttribute("data-quelle")) k.setAttribute("data-quelle", li.getAttribute("data-quelle"));
     k.innerHTML = '<span class="sr-only">Bild ' + (i + 1) + " von " + n + ": </span>" +
       '<span class="bezel"><span class="screen"><span class="cf-dim"></span></span></span><span class="sr-only cf-hint"></span>';
     img.draggable = false;
@@ -50,6 +53,30 @@
   });
   stage.appendChild(reihe);
   root.classList.add("cf-an");
+
+  /* Fotos weit hinten in der Reihe erst laden, wenn sie in die Nähe kommen: Ihre Quellen werden bis dahin geparkt.
+     (Alle Monitore liegen übereinander im Bild, „loading=lazy“ allein würde sie alle sofort laden.) */
+  var start0 = Math.max(0, karten.findIndex(function (k) { return location.hash && "#" + k.id === location.hash; }));
+  karten.forEach(function (k, i) {
+    var img = k.querySelector("img"), d = Math.abs(abstand(i, start0));
+    if (d <= 1 || img.complete) return;
+    img.setAttribute("data-srcset", img.getAttribute("srcset") || "");
+    img.setAttribute("data-src", img.getAttribute("src") || "");
+    img.removeAttribute("srcset");
+    img.removeAttribute("src");
+  });
+  /* Das vordere Foto und seine Nachbarn bekommen ihre Quellen zurück; sobald jemand blättert, auch die übernächsten */
+  var bedient = false;
+  function laden(mitte) {
+    karten.forEach(function (k, i) {
+      var img = k.querySelector("img");
+      if (Math.abs(abstand(i, mitte)) > (bedient ? 2 : 1) || !img.hasAttribute("data-src")) return;
+      if (img.getAttribute("data-srcset")) img.setAttribute("srcset", img.getAttribute("data-srcset"));
+      img.setAttribute("src", img.getAttribute("data-src"));
+      img.removeAttribute("data-srcset");
+      img.removeAttribute("data-src");
+    });
+  }
 
   var pos = 0;        // Lage der Reihe in Fotos (Kommazahl beim Ziehen und Gleiten)
   var aktuell = 0;    // vorderes Foto
@@ -62,8 +89,10 @@
     g = { seiten: v("--cf-seiten", 1), x1: v("--cf-x1", 0.64), s1: v("--cf-s1", 0.72), s2: v("--cf-s2", 0.52),
           r: v("--cf-r", 16), d1: v("--cf-d1", 0.42), d2: v("--cf-d2", 0.62) };
     breite = karten[0].offsetWidth || 1;
-    // Das zweite Seitenfoto rückt so weit nach außen, dass sein Rand knapp vor dem Bildschirmrand liegt
     var halb = root.clientWidth / 2;
+    // „auto“: das erste Seitenfoto rückt so weit nach außen, dass sein Außenrand knapp vor dem Fensterrand liegt
+    if (cs.getPropertyValue("--cf-x1").trim() === "auto") g.x1 = Math.max(0.3, (halb - 12) / breite - g.s1 / 2);
+    // Das zweite Seitenfoto ebenso
     var x2 = (halb - 12) / breite - g.s2 / 2;
     g.x2 = Math.min(Math.max(x2, g.x1 + 0.3), g.x1 + g.s1 / 2 + g.s2 / 2);
   }
@@ -75,9 +104,12 @@
       if (a <= 1) { x = g.x1 * a; groesse = 1 - (1 - g.s1) * a; dunkel = g.d1 * a; }
       else { x = g.x1 + (g.x2 - g.x1) * (a - 1); groesse = g.s1 - (g.s1 - g.s2) * Math.min(a - 1, 1); dunkel = g.d1 + (g.d2 - g.d1) * Math.min(a - 1, 1); }
       var sicht = a <= g.seiten ? 1 : Math.max(0, 1 - (a - g.seiten) / 0.5);
-      k.style.transform = "translateX(" + (s * x * breite).toFixed(1) + "px) rotateY(" + (-s * Math.min(a, 1) * g.r).toFixed(2) +
+      // Das vordere Foto in Ruhe ganz ohne Transformation und Deckkraft-Angabe: so zeichnet der Browser es pixelgenau
+      // wie ein gewöhnliches Bild (keine eigene Ebene, keine Drehung, keine Skalierung).
+      var vornRuhig = d === 0;
+      k.style.transform = vornRuhig ? "none" : "translateX(" + (s * x * breite).toFixed(1) + "px) rotateY(" + (-s * Math.min(a, 1) * g.r).toFixed(2) +
         "deg) scale(" + groesse.toFixed(4) + ")";
-      k.style.opacity = sicht.toFixed(3);
+      k.style.opacity = vornRuhig ? "" : sicht.toFixed(3);
       k.style.visibility = sicht < 0.01 ? "hidden" : "visible";
       k.style.zIndex = String(100 - Math.round(a * 10));
       k.querySelector(".cf-dim").style.opacity = dunkel.toFixed(3);
@@ -95,13 +127,20 @@
     });
     title.textContent = karten[aktuell].getAttribute("data-title");
     text.textContent = karten[aktuell].getAttribute("data-text");
+    if (quelleZeile) {
+      quelleZeile.textContent = "";
+      var q = quelle(karten[aktuell]);
+      if (q) quelleZeile.appendChild(q);
+    }
+    laden(aktuell);
     dots.forEach(function (d, k) { d.setAttribute("aria-current", k === aktuell ? "true" : "false"); });
   }
 
   /* ---- Bewegen: gleiten (requestAnimationFrame, nur transform) oder bei „Bewegung reduzieren“ überblenden ---- */
   var lauf = 0, blende = 0;
   function halt() { cancelAnimationFrame(lauf); }
-  function ruhe() { pos = mod(Math.round(pos)); zeichnen(); }
+  /* Einrasten: ganze Lage, Bewegungs-Ebenen wieder auflösen, damit das vordere Foto scharf steht */
+  function ruhe() { pos = mod(Math.round(pos)); reihe.classList.remove("cf-bewegt"); zeichnen(); }
   function gleiten(ziel, dauer) {
     halt();
     if (ruhig.matches) {
@@ -110,6 +149,7 @@
       blende = setTimeout(function () { pos = ziel; ruhe(); reihe.classList.remove("cf-blende"); }, 160);
       return;
     }
+    reihe.classList.add("cf-bewegt");
     var start = pos, t0 = performance.now();
     dauer = dauer || 460;
     function schritt(t) {
@@ -122,6 +162,7 @@
   }
   /* Zu Foto i (beliebige ganze Zahl, wird im Kreis gerechnet) auf dem kürzesten Weg */
   function gehe(i, dauer) {
+    bedient = true;
     aktuell = mod(i);
     zustand();
     gleiten(pos + abstand(aktuell, pos), dauer);
@@ -142,12 +183,14 @@
       if (Math.abs(dx) < ZIEHEN_AB) return;
       if (Math.abs(e.clientY - zug.y0) > Math.abs(dx)) { zug = null; return; }   // eher senkrecht: die Seite scrollt
       zug.aktiv = true;
+      bedient = true;
       try { reihe.setPointerCapture(e.pointerId); } catch (_) { /* Zeiger schon weg */ }
-      reihe.classList.add("cf-zieht");
+      reihe.classList.add("cf-zieht", "cf-bewegt");
     }
     zug.spur.push({ x: e.clientX, t: e.timeStamp });
     if (zug.spur.length > 6) zug.spur.shift();
-    pos = zug.p0 - dx / (g.x1 * breite);
+    // Je Foto mindestens knapp ein halbes Foto Weg, auch wenn die Nachbarn nah an der Mitte liegen (Tablettbreite)
+    pos = zug.p0 - dx / (Math.max(g.x1, 0.45) * breite);
     zeichnen();
     var vorn = mod(Math.round(pos));
     if (vorn !== aktuell) { aktuell = vorn; zustand(); }
@@ -186,7 +229,11 @@
     if (!G || !img) return;
     var srcset = img.getAttribute("srcset");
     G.oeffnen({ src: G.groesste(srcset, img.currentSrc || img.src), srcset: srcset, alt: img.alt,
-      titel: k.getAttribute("data-title"), text: k.getAttribute("data-text"), von: k });
+      titel: k.getAttribute("data-title"), text: k.getAttribute("data-text"), quelle: quelle(k), von: k });
+  }
+  /* Quellenangabe eines Fotos als Knoten (nur beim Luftbild), sonst null */
+  function quelle(k) {
+    return k.getAttribute("data-quelle") === "luftbild" && vorlage ? vorlage.content.cloneNode(true) : null;
   }
 
   /* ---- Tastatur: Pfeiltasten blättern, der Fokus wandert mit nach vorn ---- */

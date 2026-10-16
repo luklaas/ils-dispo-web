@@ -52,9 +52,9 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .skip:focus { top: 12px; }
 .eyebrow { font: 600 0.8125rem/1.35 var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); }
 .small { font-size: 0.9375rem; color: var(--muted); }
-.section { padding-block: clamp(64px, 9vw, 120px) 0; }
+.section { padding-block: clamp(64px, 9vw, 104px) 0; }
 .section-head { display: grid; gap: 14px; margin-bottom: clamp(28px, 4vw, 48px); max-width: 780px; }
-.section-head h2 { font-size: clamp(2.1rem, 4.6vw, 3.4rem); }
+.section-head h2 { font-size: clamp(2.1rem, 4.6vw, 3rem); }
 .section-head p { color: var(--muted); font-size: 1.125rem; }
 
 /* Knöpfe */
@@ -68,7 +68,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 /* KI-Kennzeichnung direkt am Bild: kleines Schild in einer Bildecke (oben rechts, beim Aufmacher breit unten rechts) */
 .ki-tag { position: absolute; z-index: 3; top: 12px; right: 12px; max-width: calc(100% - 24px); font: 600 0.75rem/1.3 var(--font-body); letter-spacing: 0.02em; color: var(--ink); background: rgba(10, 12, 14, 0.72); border: 1px solid rgba(247, 245, 240, 0.18); border-radius: 3px; padding: 3px 8px; pointer-events: none; }
-.hero > .ki-tag { top: auto; bottom: calc(clamp(96px, 14vw, 210px) + 14px); }   /* über dem Karussell, das den Aufmacher unten überdeckt */
+.hero > .ki-tag { top: auto; bottom: calc(clamp(96px, 14vw, 180px) + 14px); }   /* über dem Karussell, das den Aufmacher unten überdeckt */
 @media (max-width: 760px) { .hero > .ki-tag { bottom: auto; top: 10px; } }   /* Handy: oben rechts im Bild */
 
 /* ---------- Kopf ---------------------------------------------------------------------------- */
@@ -97,10 +97,10 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: 100% 55%; }
 /* Breite Bildschirme: Bild endet über dem Karussell und läuft weich aus – so bleibt mehr vom Motiv sichtbar */
 @media (min-width: 761px) {
-  .hero-media img { height: calc(100% - clamp(96px, 14vw, 210px)); -webkit-mask-image: linear-gradient(180deg, #000 76%, transparent); mask-image: linear-gradient(180deg, #000 76%, transparent); }
+  .hero-media img { height: calc(100% - clamp(96px, 14vw, 180px)); -webkit-mask-image: linear-gradient(180deg, #000 76%, transparent); mask-image: linear-gradient(180deg, #000 76%, transparent); }
 }
 .hero-shade { position: absolute; inset: 0; z-index: -1; background:
-  linear-gradient(90deg, rgba(var(--shade), 0.96) 0%, rgba(var(--shade), 0.86) 30%, rgba(var(--shade), 0.35) 56%, rgba(var(--shade), 0.05) 72%),
+  linear-gradient(90deg, rgba(var(--shade), 0.96) 0, rgba(var(--shade), 0.9) calc(var(--gutter) + 520px), rgba(var(--shade), 0.5) calc(var(--gutter) + 720px), rgba(var(--shade), 0.05) calc(var(--gutter) + 980px)),
   linear-gradient(0deg, var(--bg) 0%, rgba(var(--shade), 0) 34%),
   linear-gradient(180deg, rgba(var(--shade), 0.7) 0%, rgba(var(--shade), 0) 18%); }
 .hero-glow { position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0; background: radial-gradient(34% 44% at 80% 22%, rgba(61, 123, 255, 0.35), transparent 70%); }
@@ -108,17 +108,15 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   .hero-glow { animation: glow 2.6s ease-in-out infinite alternate; }
   @keyframes glow { from { opacity: 0; } to { opacity: 1; } }
 }
-.hero .wrap { padding-block: clamp(140px, 15vw, 210px) clamp(150px, 16vw, 240px); }
+.hero .wrap { padding-block: clamp(140px, 15vw, 180px) clamp(150px, 16vw, 210px); }
 .hero-text { display: grid; gap: 20px; max-width: 600px; }
-.hero h1 { font-size: clamp(2.9rem, 6.6vw, 5.4rem); letter-spacing: -0.005em; }
+.hero h1 { font-size: clamp(2.9rem, 6.6vw, 4.6rem); letter-spacing: -0.005em; }
 .hero h1 em { font-style: normal; color: var(--blue); }
 .hero .lead { font-size: clamp(1.0625rem, 1.5vw, 1.2rem); }
 .hero .local { font-size: 0.9375rem; color: var(--ink-soft); display: flex; align-items: center; gap: 10px; }
 .hero .local::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--fms-1); box-shadow: 0 0 0 4px rgba(67, 160, 71, 0.2); flex: none; }
 .hint { font-size: 0.875rem; color: #b9bbbf; max-width: 46ch; }
-/* Lesbarkeit über Bildern: feiner dunkler Rand um die Schrift (zählt nach WCAG als Hintergrund) */
-.hero-text, .band .wrap { text-shadow: 0 0 3px rgba(var(--shade), 0.9), 0 1px 2px rgba(var(--shade), 0.75); }
-.hero-text .btn { text-shadow: none; }
+/* Lesbarkeit über Bildern allein über die Abdunklung des Bildes (kein Schatten um die Schrift, der sie weich macht) */
 .hero .eyebrow, .band .eyebrow { color: #bcd5ee; }   /* über Bildern ein helleres Blau, damit es auch vor Lichtern 4,5 : 1 erreicht */
 /* Mittlere Breiten: der Text steht hier direkt über dem Fahrzeug, also unter dem Text kräftiger abdunkeln */
 @media (min-width: 761px) and (max-width: 1099px) {
@@ -143,11 +141,11 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 /* Ohne JavaScript: ein Monitor mit seitlich scrollbarem Streifen (.slides). Mit JavaScript (karussell.js) wird daraus eine
    Reihe (.cf): vorn das aktuelle Foto im Monitorrahmen, links und rechts die Nachbarn kleiner, nach hinten versetzt und
    abgedunkelt. Breite des vorderen Monitors und Zahl der Seitenfotos je Breite stehen hier, die Lage rechnet das Skript. */
-.showcase { position: relative; z-index: 2; margin-top: clamp(-210px, -14vw, -96px); overflow-x: clip; }
+.showcase { position: relative; z-index: 2; margin-top: clamp(-180px, -14vw, -96px); overflow-x: clip; }
 .stage { position: relative; max-width: 1180px; margin-inline: auto; --cf-w: 64%; --cf-seiten: 1; --cf-x1: 0.64; --cf-s1: 0.72; --cf-s2: 0.52; --cf-r: 16; --cf-d1: 0.42; --cf-d2: 0.62; }
 .mon { margin: 0; }
 .bezel { background: #0b0c0e; border-radius: 10px; padding: 8px; box-shadow: 0 0 0 1px #3a3e44, 0 40px 80px -20px rgba(0, 0, 0, 0.8), 0 0 90px -30px rgba(61, 123, 255, 0.45); }
-.screen { aspect-ratio: 16 / 10; overflow: hidden; border-radius: 3px; background: #15171a; position: relative; }
+.screen { aspect-ratio: 16 / 9; overflow: hidden; border-radius: 3px; background: #15171a; position: relative; }
 .mon::after { content: ""; display: block; width: 18%; height: 18px; margin: 0 auto; background: linear-gradient(180deg, #0b0c0e, #1a1c1f); border-radius: 0 0 6px 6px; }
 .mon-main { position: relative; z-index: 2; width: var(--cf-w); margin-inline: auto; }
 .slides { display: flex; height: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
@@ -159,7 +157,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .cf-an .mon-main { display: none; }
 .cf { display: grid; perspective: 1700px; cursor: grab; user-select: none; -webkit-user-select: none; touch-action: pan-y; -webkit-tap-highlight-color: transparent; }
 .cf.cf-zieht { cursor: grabbing; }
-.cf-card { grid-area: 1 / 1; justify-self: center; width: var(--cf-w); padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: inherit; transform-origin: 50% 50%; will-change: transform, opacity; }
+.cf-card { grid-area: 1 / 1; justify-self: center; width: var(--cf-w); padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: inherit; transform-origin: 50% 50%; }
+.cf-bewegt .cf-card { will-change: transform, opacity; }   /* nur während einer Bewegung eigene Ebenen */
 .cf-card .bezel, .cf-card .screen { display: block; }
 .cf-card img { width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none; -webkit-user-drag: none; }
 .cf-dim { position: absolute; inset: 0; z-index: 1; background: #08090b; opacity: 0; pointer-events: none; }
@@ -172,9 +171,11 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .car-btn { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-strong); display: grid; place-items: center; cursor: pointer; padding: 0; }
 .car-btn:hover { border-color: var(--blue); color: var(--blue); }
 .car-btn svg { width: 22px; height: 22px; }
-.car-text { text-align: center; display: grid; gap: 4px; min-height: 3.4em; align-content: start; }
+.car-text { text-align: center; display: grid; gap: 4px; min-height: 3.4em; align-content: start; max-width: none; }   /* mittig unter dem Foto */
 .car-text b { font: 700 1.3rem/1.15 var(--font-display); color: var(--ink-strong); }
 .car-text span { font-size: 0.9375rem; color: var(--ink-soft); }
+.car-quelle { font-size: 0.8125rem; color: var(--muted); }
+.car-quelle:empty { display: none; }
 .car-dots { grid-column: 1 / -1; display: flex; justify-content: center; gap: 4px; }
 .car-dots button { width: 32px; height: 32px; border: 0; background: transparent; cursor: pointer; display: grid; place-items: center; padding: 0; }
 .car-dots button::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--line-strong); }
@@ -184,8 +185,14 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
    könnte ohne Skript nicht mit dem Foto wechseln. */
 .no-js .car-btn, .no-js .car-dots, .no-js .car-text { display: none; }
 .no-js .car-bar { grid-template-columns: minmax(0, 1fr); }
-/* Breit: zwei Seitenfotos je Seite */
-@media (min-width: 1700px) { .stage { --cf-w: 56%; --cf-seiten: 2; --cf-x1: 0.6; } }
+/* Ab Tablettbreite über die ganze Breite: vorn das Foto mit 60 bis 78 % der Breite, so groß, dass es mit Bildunterschrift
+   in die Fensterhöhe passt (190 px für Rahmen, Fuß und Unterschrift); die Nachbarn schauen am Rand hervor
+   (--cf-x1: auto = das Skript legt ihren Außenrand an den Fensterrand). */
+@media (min-width: 761px) {
+  .stage { max-width: none; margin-inline: calc(-1 * var(--gutter)); --cf-w: clamp(60%, calc((100vh - 190px) * 16 / 9 + 16px), 78%); --cf-x1: auto; --cf-s1: 0.7; --cf-r: 12; }
+  @supports (height: 100svh) { .stage { --cf-w: clamp(60%, calc((100svh - 190px) * 16 / 9 + 16px), 78%); } }
+  .car-text { min-height: 4.6em; }   /* Platz für die Quellenzeile beim Luftbild, damit nichts springt */
+}
 @media (max-width: 760px) {
   .showcase { margin-top: 8px; }
   .stage { --cf-w: 84%; --cf-x1: 0.66; --cf-s1: 0.74; --cf-r: 10; }
@@ -205,10 +212,36 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .grossansicht-bild figcaption { text-align: center; display: grid; gap: 2px; max-width: 70ch; }
 .grossansicht-bild figcaption b { font: 700 1.2rem/1.2 var(--font-display); color: var(--ink-strong); }
 .grossansicht-bild figcaption span { font-size: 0.9375rem; color: var(--ink-soft); }
-.grossansicht-bild figcaption:empty, .grossansicht-bild figcaption b:empty, .grossansicht-bild figcaption span:empty { display: none; }
+.grossansicht-bild figcaption small { font-size: 0.8125rem; color: var(--muted); }
+.grossansicht-bild figcaption:empty, .grossansicht-bild figcaption b:empty, .grossansicht-bild figcaption span:empty, .grossansicht-bild figcaption small:empty { display: none; }
 .grossansicht-zu { position: fixed; top: 12px; right: 12px; z-index: 1; width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(247, 245, 240, 0.6); background: rgba(20, 22, 24, 0.92); color: var(--ink-strong); display: grid; place-items: center; cursor: pointer; padding: 0; }
 .grossansicht-zu:hover { border-color: var(--ink-strong); background: var(--surface-2); }
 .grossansicht-zu svg { width: 26px; height: 26px; }
+
+/* ---------- Vergleich mit Trennlinie (vergleich.js) ----------------------------------------- */
+/* Ohne JavaScript: beide Bilder untereinander, jedes mit seinem Namen. Mit JavaScript: übereinander, links das erste,
+   rechts das zweite Bild; --teil ist die Lage der Trennlinie. */
+.vergleich { margin: 0; display: grid; gap: 10px; min-width: 0; max-width: 1477px; }   /* höchstens in Originalgröße */
+.vergleich-bilder { display: grid; gap: 12px; }
+.vergleich-teil { margin: 0; position: relative; border: 1px solid var(--line-strong); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+.vergleich-teil img { width: 100%; height: auto; }
+.vergleich-name { position: absolute; bottom: 36px; z-index: 3; font: 600 0.8125rem/1.3 var(--font-mono); letter-spacing: 0.04em; color: var(--ink-strong); background: rgba(10, 12, 14, 0.82); border: 1px solid rgba(247, 245, 240, 0.22); border-radius: 3px; padding: 4px 8px; pointer-events: none; }
+.vergleich-a .vergleich-name { left: 10px; }
+.vergleich-b .vergleich-name { right: 10px; }
+.vergleich figcaption { font: 500 0.8125rem/1.4 var(--font-mono); color: var(--muted); }
+.vergleich-an .vergleich-bilder { position: relative; display: block; gap: 0; border: 1px solid var(--line-strong); border-radius: var(--radius); overflow: hidden; background: var(--surface); touch-action: pan-y; cursor: ew-resize; user-select: none; -webkit-user-select: none; --teil: 50%; }
+.vergleich-an .vergleich-teil { border: 0; border-radius: 0; }
+.vergleich-an .vergleich-b { position: absolute; inset: 0; clip-path: inset(0 0 0 var(--teil)); }
+.vergleich-an .vergleich-b img { height: 100%; object-fit: cover; }
+.vergleich-an img { pointer-events: none; -webkit-user-drag: none; }
+.vergleich-regler { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; pointer-events: none; }
+.vergleich-linie { position: absolute; top: 0; bottom: 0; left: var(--teil); z-index: 4; width: 2px; margin-left: -1px; background: var(--ink-strong); box-shadow: 0 0 0 1px rgba(10, 12, 14, 0.55); pointer-events: none; }
+.vergleich-griff { position: absolute; top: 50%; left: 50%; width: 48px; height: 48px; margin: -24px 0 0 -24px; border-radius: 50%; background: rgba(20, 22, 24, 0.92); border: 2px solid var(--ink-strong); color: var(--ink-strong); display: grid; place-items: center; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5); }
+.vergleich-griff svg { width: 24px; height: 24px; }
+/* :focus statt :focus-visible: den Regler erreicht nur die Tastatur (Maus und Finger greifen die Fläche), so ist der Rahmen
+   in jedem Browser verlässlich da */
+.vergleich-regler:focus ~ .vergleich-linie .vergleich-griff { outline: 3px solid var(--blue); outline-offset: 3px; }
+.vergleich-zieht .vergleich-griff { background: var(--accent); }
 
 /* ---------- Vorteile ------------------------------------------------------------------------ */
 .benefits { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
@@ -220,11 +253,11 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .benefit p { color: var(--ink-soft); font-size: 1rem; line-height: 1.55; }
 
 /* ---------- Bildbänder ---------------------------------------------------------------------- */
-.band { position: relative; overflow: hidden; isolation: isolate; margin-top: clamp(64px, 9vw, 120px); min-height: clamp(320px, 36vw, 560px); display: grid; align-items: end; }
+.band { position: relative; overflow: hidden; isolation: isolate; margin-top: clamp(64px, 9vw, 104px); min-height: clamp(320px, 36vw, 560px); display: grid; align-items: end; }
 .band-img { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; }
 .band-shade { position: absolute; inset: 0; z-index: 1; background: linear-gradient(0deg, rgba(var(--shade), 0.95) 0%, rgba(var(--shade), 0.55) 45%, rgba(var(--shade), 0.2) 100%); }
 .band .wrap { position: relative; z-index: 2; width: 100%; padding-block: 48px; display: grid; gap: 12px; }
-.band h2 { font-size: clamp(2.1rem, 4.6vw, 3.4rem); }
+.band h2 { font-size: clamp(2.1rem, 4.6vw, 3rem); }
 /* Handy: Bild oben als eigener Block, Text darunter auf ruhigem Grund statt über dem Bild */
 @media (max-width: 560px) {
   .band { display: block; min-height: 0 !important; }
@@ -234,6 +267,11 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   .band .wrap { padding-block: 4px 8px; }
 }
 .band p { color: #d6d5d1; font-size: 1.125rem; }
+/* Mittlere Breiten: der Text rückt mit dem breiteren Seitenrand weiter ins Bild, links etwas kräftiger abdunkeln */
+@media (min-width: 561px) and (max-width: 1099px) {
+  .band-shade { background: linear-gradient(90deg, rgba(var(--shade), 0.5) 0%, rgba(var(--shade), 0) 65%),
+    linear-gradient(0deg, rgba(var(--shade), 0.95) 0%, rgba(var(--shade), 0.55) 45%, rgba(var(--shade), 0.2) 100%); }
+}
 
 /* ---------- Ablauf in vier Schritten -------------------------------------------------------- */
 .steps { display: grid; gap: 32px 18px; grid-template-columns: minmax(0, 1fr); }
@@ -254,7 +292,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .area { display: grid; gap: 32px; padding-top: clamp(40px, 6vw, 72px); }
 @media (min-width: 980px) { .area { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 56px; align-items: center; } }
 .area-map { margin: 0; position: relative; aspect-ratio: 1040 / 662; background: #0f1113; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
-.area-map::before { content: ""; position: absolute; inset: 0; background: url("../img/strassennetz-1800.webp") center / 100% 100% no-repeat; opacity: 0.38; }
+.area-netz { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.38; }   /* als Bild statt Hintergrund: lädt erst, wenn die Karte in die Nähe kommt */
 .area-map svg { position: relative; width: 100%; height: 100%; display: block; }
 .map-place { font: 500 24px var(--font-mono); fill: var(--ink-soft); paint-order: stroke; stroke: #0f1113; stroke-width: 7px; stroke-linejoin: round; }
 .map-ils-label { font: 600 25px var(--font-mono); fill: var(--blue); paint-order: stroke; stroke: #0f1113; stroke-width: 7px; stroke-linejoin: round; }
@@ -292,16 +330,22 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 }
 
 /* ---------- Interesse: Headset als Hintergrund ---------------------------------------------- */
-.cta { position: relative; overflow: hidden; isolation: isolate; margin-top: clamp(64px, 9vw, 120px); background: var(--bg-2); border-top: 1px solid var(--line); }
+.cta { position: relative; overflow: hidden; isolation: isolate; margin-top: clamp(64px, 9vw, 104px); background: var(--bg-2); border-top: 1px solid var(--line); }
 .cta-bg { position: absolute; inset: 0; z-index: -2; }
 .cta-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 80% 50%; }
 .cta-shade { position: absolute; inset: 0; z-index: -1; background:
   linear-gradient(90deg, rgba(var(--shade), 0.85) 0%, rgba(var(--shade), 0.6) 38%, rgba(var(--shade), 0.1) 62%, rgba(var(--shade), 0) 78%),
   linear-gradient(180deg, rgba(var(--shade), 0.55) 0%, rgba(var(--shade), 0) 22%),
   linear-gradient(0deg, rgba(var(--shade), 0.6) 0%, rgba(var(--shade), 0) 25%); }
-.cta .wrap { padding-block: clamp(72px, 9vw, 128px); min-height: clamp(520px, 46vw, 760px); display: grid; align-content: center; }
+.cta .wrap { padding-block: clamp(72px, 9vw, 112px); min-height: clamp(520px, 46vw, 680px); display: grid; align-content: center; }
 .cta-text { display: grid; gap: 16px; max-width: 540px; }
-.cta h2 { font-size: clamp(2.1rem, 4.6vw, 3.4rem); }
+@media (min-width: 761px) and (max-width: 1099px) {
+  .cta-shade { background:
+    linear-gradient(90deg, rgba(var(--shade), 0.9) 0%, rgba(var(--shade), 0.75) 45%, rgba(var(--shade), 0.3) 75%, rgba(var(--shade), 0.1) 100%),
+    linear-gradient(180deg, rgba(var(--shade), 0.55) 0%, rgba(var(--shade), 0) 22%),
+    linear-gradient(0deg, rgba(var(--shade), 0.6) 0%, rgba(var(--shade), 0) 25%); }
+}
+.cta h2 { font-size: clamp(2.1rem, 4.6vw, 3rem); }
 .addr { font: 500 0.9375rem/1.4 var(--font-mono); color: #b9bbbf; }
 .mail-tpl { margin: 0; background: rgba(33, 35, 39, 0.82); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; font: 500 0.875rem/1.7 var(--font-mono); white-space: pre-wrap; overflow-wrap: anywhere; color: var(--ink); }
 @media (max-width: 760px) {
@@ -324,7 +368,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .page-hero::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("../img/strassennetz-1800.webp") 60% 40% / cover no-repeat; opacity: 0.16; }
 .page-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, var(--bg) 0%, rgba(var(--shade), 0.6) 60%, rgba(var(--shade), 0.2) 100%); }
 .page-hero .wrap { padding-block: clamp(48px, 7vw, 96px) clamp(40px, 5vw, 64px); display: grid; gap: 14px; }
-.page-hero h1 { font-size: clamp(2.5rem, 5.6vw, 4.4rem); }
+.page-hero h1 { font-size: clamp(2.5rem, 5.6vw, 3.6rem); }
 .page-hero p { color: var(--ink-soft); font-size: 1.125rem; }
 
 /* Funktionen: je Bereich eine Zeile, Bildschirmfoto daneben oder darunter */
@@ -338,9 +382,10 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .shot { margin: 0; display: grid; gap: 10px; align-content: start; min-width: 0; }
 .shot-link { display: block; border: 1px solid var(--line-strong); border-radius: var(--radius); overflow: hidden; background: var(--surface); cursor: zoom-in; }
 .shot-link:hover { border-color: var(--blue); }
-.shot img { width: 100%; height: auto; }
+.shot img { width: 100%; height: auto; }   /* die Höchstbreite (Originalgröße + Rahmen) steht am Link, so wird nichts hochgezogen */
 .shot figcaption { font: 500 0.8125rem/1.4 var(--font-mono); color: var(--muted); }
 .feature-row .shot { max-width: 560px; }
+.feature-row.flip .shot-link { margin-left: auto; }   /* Foto links: an den Text heranrücken, wenn es schmaler als seine Spalte ist */
 @media (min-width: 760px) {
   .feature-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
   .feature-row.flip .feature-text { order: 2; }
@@ -394,11 +439,19 @@ table.data tr.total td { font-weight: 600; color: var(--ink-strong); border-bott
 .plan li::before { content: ""; position: absolute; left: 0; top: 0.7em; width: 7px; height: 2px; background: var(--blue); }
 
 /* Rechtstexte und 404 */
-.page .wrap { padding-block: clamp(40px, 6vw, 72px) 72px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; max-width: 860px; }
+.page .wrap { padding-block: clamp(40px, 6vw, 72px) 72px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+.page .wrap > * { max-width: 860px; }   /* linksbündig am Seitenrand wie die übrigen Seiten */
+.page .wrap > p { max-width: 64ch; }     /* Absätze behalten ihre Zeilenlänge */
 .page h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); }
 .page h2 { font-size: 1.6rem; margin-top: 16px; }
 
 /* ---------- Breite Bildschirme: mehr Fläche, Schrift wächst leicht mit ---------------------- */
-@media (min-width: 1600px) { :root { --wrap: 1400px; } .stage { max-width: 1320px; } }
-@media (min-width: 2000px) { html { font-size: 106.25%; } :root { --wrap: 1560px; } .stage { max-width: 1460px; } .hero-text { max-width: 680px; } }
-@media (min-width: 2500px) { html { font-size: 115%; } :root { --wrap: 1760px; } .stage { max-width: 1640px; } }
+/* Ab Tablettbreite ein fester Seitenrand von 5,5 % der Breite (bei 1920 px gut 100 px) statt einer schmalen Mitte;
+   Text bleibt durch seine eigene Höchstbreite lesbar. Das Handy (bis 760 px) behält seinen Rand. */
+@media (min-width: 761px) { :root { --wrap: 2600px; --gutter: 5.5vw; } }
+/* Große Bildschirme nutzen die Breite, zeichnen aber nicht größer: Schrift, Knöpfe und Abstände bleiben wie bei 1440 px.
+   Fließtext ab 1100 px höchstens etwa 70 Zeichen je Zeile (56ch in Barlow). */
+@media (min-width: 1100px) {
+  p, .page .wrap > p, .feature li, .plan li, .page .wrap li, .site-foot blockquote { max-width: 56ch; }
+  .car-text { max-width: none; }
+}
