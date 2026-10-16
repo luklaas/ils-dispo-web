@@ -90,17 +90,23 @@
 
   window.ILSGrossansicht = { oeffnen: oeffnen, schliessen: schliessen, groesste: groesste };
 
-  /* Funktionsseite: die Fotos sind Links auf die große Datei */
-  document.querySelectorAll("a.shot-link").forEach(function (a) {
+  /* Funktionsseite: die Fotos (auch die Programmfenster im Monitorrahmen) sind Links auf die große Datei */
+  document.querySelectorAll("a.shot-link, a.mon-link").forEach(function (a) {
     a.addEventListener("click", function (e) {
       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;   // neuer Tab bleibt möglich
       e.preventDefault();
       var img = a.querySelector("img");
       var figur = a.closest("figure");
       var unterschrift = figur ? figur.querySelector("figcaption") : null;
+      // Unterschrift mit Titel (b) und Text (span) wie im Karussell, sonst die ganze Unterschrift als Titel
+      var b = unterschrift ? unterschrift.querySelector("b") : null, s = unterschrift ? unterschrift.querySelector("span") : null;
+      var q = figur ? figur.querySelector("figcaption small") : null;
+      var quelle = null;
+      if (q) { quelle = document.createDocumentFragment(); [].forEach.call(q.childNodes, function (n) { quelle.appendChild(n.cloneNode(true)); }); }
       oeffnen({ src: a.getAttribute("href"), srcset: img ? img.getAttribute("srcset") : "", alt: img ? img.alt : "",
         breite: img ? img.getAttribute("width") : null, hoehe: img ? img.getAttribute("height") : null,
-        titel: unterschrift ? unterschrift.textContent.trim() : "", von: a });
+        titel: b ? b.textContent.trim() : (unterschrift ? unterschrift.textContent.trim() : ""), text: s ? s.textContent.trim() : "",
+        quelle: quelle, von: a });
     });
   });
 })();
