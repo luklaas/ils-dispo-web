@@ -66,18 +66,10 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .btn-ghost:hover { border-color: var(--ink-strong); }
 .btn[aria-disabled="true"] { opacity: 0.6; cursor: default; }
 
-/* Platzhalter für ein Bild, das noch fehlt */
-.ph-tag { position: absolute; z-index: 3; top: 14px; right: 14px; max-width: calc(100% - 28px); font: 600 0.75rem/1.35 var(--font-mono); letter-spacing: 0.04em; color: #dbe8f5; background: rgba(8, 10, 12, 0.72); border: 1px dashed var(--blue); border-radius: 4px; padding: 6px 10px; }
-.ph-fill { position: absolute; inset: 0; z-index: 0; background:
-  repeating-linear-gradient(135deg, rgba(143, 182, 218, 0.045) 0 2px, transparent 2px 14px),
-  radial-gradient(55% 70% at 75% 35%, rgba(61, 123, 255, 0.28), transparent 70%),
-  radial-gradient(45% 60% at 20% 85%, rgba(72, 116, 160, 0.22), transparent 70%),
-  linear-gradient(180deg, #101215, #191b1f); }
-
-/* KI-Kennzeichnung direkt am Bild: kleines Schild in einer Bildecke (oben rechts, beim Aufmacher unten rechts) */
+/* KI-Kennzeichnung direkt am Bild: kleines Schild in einer Bildecke (oben rechts, beim Aufmacher breit unten rechts) */
 .ki-tag { position: absolute; z-index: 3; top: 12px; right: 12px; max-width: calc(100% - 24px); font: 600 0.75rem/1.3 var(--font-body); letter-spacing: 0.02em; color: var(--ink); background: rgba(10, 12, 14, 0.72); border: 1px solid rgba(247, 245, 240, 0.18); border-radius: 3px; padding: 3px 8px; pointer-events: none; }
 .hero > .ki-tag { top: auto; bottom: calc(clamp(96px, 14vw, 210px) + 14px); }   /* über dem Karussell, das den Aufmacher unten überdeckt */
-@media (max-width: 760px) { .hero > .ki-tag { bottom: auto; top: calc(min(80vw, 520px) - 72px); } }   /* Handy: unten rechts im Bild oben */
+@media (max-width: 760px) { .hero > .ki-tag { bottom: auto; top: 10px; } }   /* Handy: oben rechts im Bild */
 
 /* ---------- Kopf ---------------------------------------------------------------------------- */
 .site-head { position: relative; z-index: 10; border-bottom: 1px solid var(--line); background: var(--bg); }
@@ -102,12 +94,16 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 /* ---------- Aufmacher der Startseite -------------------------------------------------------- */
 .hero { position: relative; overflow: hidden; isolation: isolate; }
 .hero-media { position: absolute; inset: 0; z-index: -2; }
-.hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: 75% 55%; }
+.hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: 100% 55%; }
+/* Breite Bildschirme: Bild endet über dem Karussell und läuft weich aus – so bleibt mehr vom Motiv sichtbar */
+@media (min-width: 761px) {
+  .hero-media img { height: calc(100% - clamp(96px, 14vw, 210px)); -webkit-mask-image: linear-gradient(180deg, #000 76%, transparent); mask-image: linear-gradient(180deg, #000 76%, transparent); }
+}
 .hero-shade { position: absolute; inset: 0; z-index: -1; background:
   linear-gradient(90deg, rgba(var(--shade), 0.96) 0%, rgba(var(--shade), 0.86) 30%, rgba(var(--shade), 0.35) 56%, rgba(var(--shade), 0.05) 72%),
   linear-gradient(0deg, var(--bg) 0%, rgba(var(--shade), 0) 34%),
   linear-gradient(180deg, rgba(var(--shade), 0.7) 0%, rgba(var(--shade), 0) 18%); }
-.hero-glow { position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0; background: radial-gradient(34% 44% at 78% 36%, rgba(61, 123, 255, 0.35), transparent 70%); }
+.hero-glow { position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0; background: radial-gradient(34% 44% at 80% 22%, rgba(61, 123, 255, 0.35), transparent 70%); }
 @media (prefers-reduced-motion: no-preference) {
   .hero-glow { animation: glow 2.6s ease-in-out infinite alternate; }
   @keyframes glow { from { opacity: 0; } to { opacity: 1; } }
@@ -120,34 +116,58 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .hero .local { font-size: 0.9375rem; color: var(--ink-soft); display: flex; align-items: center; gap: 10px; }
 .hero .local::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--fms-1); box-shadow: 0 0 0 4px rgba(67, 160, 71, 0.2); flex: none; }
 .hint { font-size: 0.875rem; color: #b9bbbf; max-width: 46ch; }
+/* Lesbarkeit über Bildern: feiner dunkler Rand um die Schrift (zählt nach WCAG als Hintergrund) */
+.hero-text, .band .wrap { text-shadow: 0 0 3px rgba(var(--shade), 0.9), 0 1px 2px rgba(var(--shade), 0.75); }
+.hero-text .btn { text-shadow: none; }
+.hero .eyebrow, .band .eyebrow { color: #bcd5ee; }   /* über Bildern ein helleres Blau, damit es auch vor Lichtern 4,5 : 1 erreicht */
+/* Mittlere Breiten: der Text steht hier direkt über dem Fahrzeug, also unter dem Text kräftiger abdunkeln */
+@media (min-width: 761px) and (max-width: 1099px) {
+  .hero-shade { background:
+    linear-gradient(90deg, rgba(var(--shade), 0.96) 0%, rgba(var(--shade), 0.9) 45%, rgba(var(--shade), 0.62) 72%, rgba(var(--shade), 0.3) 100%),
+    linear-gradient(0deg, var(--bg) 0%, rgba(var(--shade), 0) 34%),
+    linear-gradient(180deg, rgba(var(--shade), 0.7) 0%, rgba(var(--shade), 0) 18%); }
+}
 /* Handy: Bild oben, Text darunter auf ruhigem Grund */
 @media (max-width: 760px) {
+  /* Handy: Kopfzeile über dem Bild statt darauf, Bild läuft unten weich aus, Text beginnt erst darunter */
+  .site-head.over { position: relative; background: var(--bg); border-bottom: 1px solid var(--line); }
   .hero-media { bottom: auto; height: min(80vw, 520px); }
-  .hero-media img { object-position: 75% 50%; }
-  .hero-shade { background: linear-gradient(180deg, rgba(var(--shade), 0.6) 0%, rgba(var(--shade), 0.1) 26%, rgba(var(--shade), 0.2) 58%, var(--bg) calc(min(80vw, 520px) - 40px)); }
-  .hero-glow { background: radial-gradient(60% 40% at 80% 11%, rgba(61, 123, 255, 0.35), transparent 70%); }
-  .hero .wrap { padding-block: calc(min(80vw, 520px) - 8px) 40px; }
+  .hero-media img { object-position: 100% 50%; -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent); mask-image: linear-gradient(180deg, #000 70%, transparent); }
+  .hero-shade { background: none; }
+  .hero-glow { bottom: auto; height: min(80vw, 520px); background: radial-gradient(60% 45% at 75% 28%, rgba(61, 123, 255, 0.35), transparent 70%); }
+  .hero .wrap { padding-block: calc(min(80vw, 520px) + 4px) 40px; }
   .actions .btn { flex: 1 1 auto; }
 }
 
 /* ---------- Bildschirmfotos zum Blättern ---------------------------------------------------- */
-.showcase { position: relative; z-index: 2; margin-top: clamp(-210px, -14vw, -96px); }
-.stage { position: relative; perspective: 2000px; max-width: 1180px; margin-inline: auto; }
+/* Ohne JavaScript: ein Monitor mit seitlich scrollbarem Streifen (.slides). Mit JavaScript (karussell.js) wird daraus eine
+   Reihe (.cf): vorn das aktuelle Foto im Monitorrahmen, links und rechts die Nachbarn kleiner, nach hinten versetzt und
+   abgedunkelt. Breite des vorderen Monitors und Zahl der Seitenfotos je Breite stehen hier, die Lage rechnet das Skript. */
+.showcase { position: relative; z-index: 2; margin-top: clamp(-210px, -14vw, -96px); overflow-x: clip; }
+.stage { position: relative; max-width: 1180px; margin-inline: auto; --cf-w: 64%; --cf-seiten: 1; --cf-x1: 0.64; --cf-s1: 0.72; --cf-s2: 0.52; --cf-r: 16; --cf-d1: 0.42; --cf-d2: 0.62; }
 .mon { margin: 0; }
 .bezel { background: #0b0c0e; border-radius: 10px; padding: 8px; box-shadow: 0 0 0 1px #3a3e44, 0 40px 80px -20px rgba(0, 0, 0, 0.8), 0 0 90px -30px rgba(61, 123, 255, 0.45); }
 .screen { aspect-ratio: 16 / 10; overflow: hidden; border-radius: 3px; background: #15171a; position: relative; }
 .mon::after { content: ""; display: block; width: 18%; height: 18px; margin: 0 auto; background: linear-gradient(180deg, #0b0c0e, #1a1c1f); border-radius: 0 0 6px 6px; }
-.mon-main { position: relative; z-index: 2; width: 70%; margin-inline: auto; }
-.peek { position: absolute; z-index: 1; top: 11%; width: 34%; cursor: pointer; filter: brightness(0.72); }
-.peek:hover { filter: brightness(0.92); }
-.peek-prev { left: 0; transform: rotateY(24deg); transform-origin: right center; }
-.peek-next { right: 0; transform: rotateY(-24deg); transform-origin: left center; }
-.peek img { width: 100%; height: 100%; object-fit: contain; }
-@media (prefers-reduced-motion: no-preference) { .peek { transition: filter 0.2s ease; } }
+.mon-main { position: relative; z-index: 2; width: var(--cf-w); margin-inline: auto; }
 .slides { display: flex; height: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
 .slides::-webkit-scrollbar { display: none; }
 .slide { flex: 0 0 100%; height: 100%; scroll-snap-align: center; scroll-snap-stop: always; }
 .slide img { width: 100%; height: 100%; object-fit: contain; }
+
+/* Reihe (nur mit JavaScript) */
+.cf-an .mon-main { display: none; }
+.cf { display: grid; perspective: 1700px; cursor: grab; user-select: none; -webkit-user-select: none; touch-action: pan-y; -webkit-tap-highlight-color: transparent; }
+.cf.cf-zieht { cursor: grabbing; }
+.cf-card { grid-area: 1 / 1; justify-self: center; width: var(--cf-w); padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: inherit; transform-origin: 50% 50%; will-change: transform, opacity; }
+.cf-card .bezel, .cf-card .screen { display: block; }
+.cf-card img { width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none; -webkit-user-drag: none; }
+.cf-dim { position: absolute; inset: 0; z-index: 1; background: #08090b; opacity: 0; pointer-events: none; }
+.cf-card:focus-visible { outline: none; }
+.cf-card:focus-visible .bezel { outline: 3px solid var(--blue); outline-offset: 3px; }
+.cf-blende { opacity: 0.12; }
+@media (prefers-reduced-motion: reduce) { .cf { transition: opacity 0.16s ease; } }
+
 .car-bar { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px 16px; max-width: 820px; margin: 18px auto 0; }
 .car-btn { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink-strong); display: grid; place-items: center; cursor: pointer; padding: 0; }
 .car-btn:hover { border-color: var(--blue); color: var(--blue); }
@@ -160,19 +180,35 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .car-dots button::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--line-strong); }
 .car-dots button[aria-current="true"]::before { background: var(--blue); transform: scale(1.3); }
 .car-note { text-align: center; font: 500 0.8125rem/1.4 var(--font-mono); color: var(--muted); padding-top: 6px; margin-inline: auto; }
-/* Ohne JavaScript: wischen oder seitlich scrollen, Knöpfe und Seitenmonitore entfallen */
-.no-js .car-btn, .no-js .car-dots, .no-js .peek { display: none; }
+/* Ohne JavaScript: wischen oder seitlich scrollen. Knöpfe, Punkte und die Bildunterschrift entfallen – die Unterschrift
+   könnte ohne Skript nicht mit dem Foto wechseln. */
+.no-js .car-btn, .no-js .car-dots, .no-js .car-text { display: none; }
 .no-js .car-bar { grid-template-columns: minmax(0, 1fr); }
+/* Breit: zwei Seitenfotos je Seite */
+@media (min-width: 1700px) { .stage { --cf-w: 56%; --cf-seiten: 2; --cf-x1: 0.6; } }
 @media (max-width: 760px) {
   .showcase { margin-top: 8px; }
-  .stage { perspective: none; }
-  .mon-main { width: 100%; }
-  .peek { display: none; }
+  .stage { --cf-w: 84%; --cf-x1: 0.66; --cf-s1: 0.74; --cf-r: 10; }
   .bezel { padding: 5px; border-radius: 8px; }
   .mon::after { height: 12px; }
   .car-btn { width: 44px; height: 44px; }
   .car-text b { font-size: 1.15rem; }
 }
+
+/* ---------- Großansicht (grossansicht.js) --------------------------------------------------- */
+.grossansicht-offen { overflow: hidden; }
+.grossansicht { border: 0; padding: 0; margin: 0; width: 100%; height: 100%; max-width: none; max-height: none; background: transparent; color: var(--ink); overflow: hidden; }
+.grossansicht[open] { display: grid; place-items: center; }
+.grossansicht::backdrop { background: rgba(8, 9, 11, 0.9); }
+.grossansicht-bild { margin: 0; display: grid; gap: 10px; justify-items: center; align-content: center; padding: 72px 12px 16px; max-width: 100%; max-height: 100%; }
+.grossansicht-bild img { max-width: min(100%, 2560px); max-height: calc(100vh - 170px); max-height: calc(100dvh - 170px); width: auto; height: auto; border-radius: 4px; background: #15171a; box-shadow: 0 0 0 1px #3a3e44, 0 30px 80px -20px rgba(0, 0, 0, 0.9); }
+.grossansicht-bild figcaption { text-align: center; display: grid; gap: 2px; max-width: 70ch; }
+.grossansicht-bild figcaption b { font: 700 1.2rem/1.2 var(--font-display); color: var(--ink-strong); }
+.grossansicht-bild figcaption span { font-size: 0.9375rem; color: var(--ink-soft); }
+.grossansicht-bild figcaption:empty, .grossansicht-bild figcaption b:empty, .grossansicht-bild figcaption span:empty { display: none; }
+.grossansicht-zu { position: fixed; top: 12px; right: 12px; z-index: 1; width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(247, 245, 240, 0.6); background: rgba(20, 22, 24, 0.92); color: var(--ink-strong); display: grid; place-items: center; cursor: pointer; padding: 0; }
+.grossansicht-zu:hover { border-color: var(--ink-strong); background: var(--surface-2); }
+.grossansicht-zu svg { width: 26px; height: 26px; }
 
 /* ---------- Vorteile ------------------------------------------------------------------------ */
 .benefits { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
@@ -189,6 +225,14 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .band-shade { position: absolute; inset: 0; z-index: 1; background: linear-gradient(0deg, rgba(var(--shade), 0.95) 0%, rgba(var(--shade), 0.55) 45%, rgba(var(--shade), 0.2) 100%); }
 .band .wrap { position: relative; z-index: 2; width: 100%; padding-block: 48px; display: grid; gap: 12px; }
 .band h2 { font-size: clamp(2.1rem, 4.6vw, 3.4rem); }
+/* Handy: Bild oben als eigener Block, Text darunter auf ruhigem Grund statt über dem Bild */
+@media (max-width: 560px) {
+  .band { display: block; min-height: 0 !important; }
+  .band-img { position: relative; display: block; height: auto; aspect-ratio: 16 / 10; -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent); mask-image: linear-gradient(180deg, #000 72%, transparent); }
+  .band-shade { display: none; }
+  .band .hero-glow { bottom: auto; height: auto; aspect-ratio: 16 / 10; }
+  .band .wrap { padding-block: 4px 8px; }
+}
 .band p { color: #d6d5d1; font-size: 1.125rem; }
 
 /* ---------- Ablauf in vier Schritten -------------------------------------------------------- */
@@ -287,8 +331,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .features { display: grid; border-top: 1px solid var(--line); }
 .feature { padding-block: 36px 40px; border-bottom: 1px solid var(--line); min-width: 0; display: grid; gap: 28px; align-content: start; }
 .feature-text { display: grid; gap: 16px; align-content: start; min-width: 0; }
-.feature h3 { font-size: 1.7rem; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
-.feature h3 .tag { font: 600 0.75rem/1 var(--font-mono); letter-spacing: 0.08em; color: var(--blue); text-transform: uppercase; }
+.feature h2, .feature h3 { font-size: 1.7rem; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.feature h2 .tag, .feature h3 .tag { font: 600 0.75rem/1 var(--font-mono); letter-spacing: 0.08em; color: var(--blue); text-transform: uppercase; }
 .feature ul { display: grid; align-content: start; }
 .feature li { padding-block: 11px; border-top: 1px solid var(--line); font-size: 1rem; line-height: 1.5; }
 .shot { margin: 0; display: grid; gap: 10px; align-content: start; min-width: 0; }
@@ -350,10 +394,9 @@ table.data tr.total td { font-weight: 600; color: var(--ink-strong); border-bott
 .plan li::before { content: ""; position: absolute; left: 0; top: 0.7em; width: 7px; height: 2px; background: var(--blue); }
 
 /* Rechtstexte und 404 */
-.page .wrap { padding-block: clamp(40px, 6vw, 72px) 72px; display: grid; gap: 20px; max-width: 860px; }
+.page .wrap { padding-block: clamp(40px, 6vw, 72px) 72px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; max-width: 860px; }
 .page h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); }
 .page h2 { font-size: 1.6rem; margin-top: 16px; }
-.page .gap { border-left: 3px solid var(--fms-3); padding: 10px 14px; background: var(--surface); color: var(--ink); }
 
 /* ---------- Breite Bildschirme: mehr Fläche, Schrift wächst leicht mit ---------------------- */
 @media (min-width: 1600px) { :root { --wrap: 1400px; } .stage { max-width: 1320px; } }
