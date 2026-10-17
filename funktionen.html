@@ -48,7 +48,7 @@
   <section class="section" style="padding-top: clamp(24px, 4vw, 48px)" aria-label="Funktionen im Einzelnen">
     <div class="wrap">
       <div class="features">
-        <article class="feature feature-row">
+        <article class="feature feature-row" id="telefon">
           <div class="feature-text">
             <h2>Am Telefon <span class="tag">Notruf</span></h2>
             <ul role="list">
@@ -60,6 +60,8 @@
               <li>Du kannst zurückrufen und erreichst andere Stellen über das Telefonbuch.</li>
               <li>Nähert sich ein Fahrzeug mit Martinshorn, hörst du es im Hintergrund des Anrufs, beim Hubschrauber den Rotor.</li>
               <li>Lieber schreiben? Anrufe und Funk gibt es auch als Text. Der Anrufer tippt dann im Chat.</li>
+              <li>Ein Telefon mit festen Feldern: Annehmen, Halten, Auflegen. Ein Klick auf einen wartenden Anruf nimmt genau diesen an.</li>
+              <li>Die Anrufer reagieren natürlich: Ein „Mm-hmm“ unterbricht sie nicht, „Moment“ schon. Schweigst du, reden sie weiter oder fragen nach.</li>
             </ul>
           </div>
           <figure class="shot">
@@ -67,7 +69,7 @@
             <figcaption>Notrufabfrage</figcaption>
           </figure>
         </article>
-        <article class="feature feature-row flip">
+        <article class="feature feature-row flip" id="disposition">
           <div class="feature-text">
             <h2>Abfrage und Einsatz <span class="tag">Disposition</span></h2>
             <ul role="list">
@@ -78,6 +80,10 @@
               <li>Zu jedem Stichwort schlägt das Programm Fahrzeuge vor, sortiert nach geschätzter Ankunftszeit. Im Landkreis alarmierst du die Feuerwehren über ihre Alarmschleifen.</li>
               <li>Stichwort erhöhen oder verringern, nachalarmieren, weitere Anrufe einem laufenden Einsatz zuordnen.</li>
               <li>Einheiten benachbarter Leitstellen und Hubschrauber aus der Schweiz und Frankreich forderst du über deren Leitstelle an.</li>
+              <li>Probeabfrage: dieselben Fragen und dieselbe Alarmierungsseite zum Üben – nichts davon wird angelegt.</li>
+              <li>Den Ort findest du auch über Rettungspunkte im Wald, Straßennummern wie B 31 sowie Feld- und Waldwege. Ein Punkt auf Gleisen oder im Wasser wird nachgefragt.</li>
+              <li>Bei vielen Verletzten wächst die Alarmierung mit: Stufen nach Patientenzahl, Leitender Notarzt, Organisatorischer Leiter und Einsatzleitwagen nach RDPlanVO.</li>
+              <li>Laufende Einsätze steuerst du nach: Sondersignal ändern, Fahrzeuge umleiten oder abbestellen. Freie Fahrzeuge setzt du an eine andere Wache um.</li>
             </ul>
           </div>
           <figure class="shot">
@@ -85,15 +91,17 @@
             <figcaption>Alarmierungsseite mit Fahrzeugvorschlag</figcaption>
           </figure>
         </article>
-        <article class="feature feature-wide">
+        <article class="feature feature-wide" id="karte">
           <div class="feature-text">
             <h2>Karte und Fahrzeuge <span class="tag">Lage</span></h2>
             <ul role="list">
               <li>Live-Karte mit taktischen Zeichen oder Fahrzeugbildern, mit Fahrzeugbildern auch mit Blaulicht. Die Fahrzeuge fahren auf echten Straßen und berechnen ihren Weg selbst.</li>
               <li>Tableau mit den Statusmeldungen aller Fahrzeuge. Zu jeder Wache ein Fenster mit ihren Fahrzeugen.</li>
-              <li>Zuschaltbar: Luftbild, Hydranten, Defibrillatoren, Heime, Bahnübergänge, Tunnel, Bahnkilometer und Flurnamen.</li>
+              <li>Zuschaltbar: Luftbild, Hydranten, Defibrillatoren, Pflegeheime und Kindergärten, Bahnübergänge, Tunnel, Bahnkilometer und Flurnamen.</li>
               <li>Die Landestelle des Rettungshubschraubers wählst du selbst; wählst du keine, entscheidet der Pilot. Nachts fliegen andere Hubschrauber als am Tag.</li>
               <li>Die Kliniken in Freiburg und im Umland als Transportziele.</li>
+              <li>Ist der Ort ungenau, suchen die Fahrzeuge sichtbar. Der Anrufer weist ein und hört das Martinshorn näher kommen.</li>
+              <li>Meldet sich eine ehrenamtliche Besatzung nicht, fragt das Programm: „Keine Rückmeldung – nachalarmieren?“</li>
             </ul>
           </div>
           <figure class="vergleich" data-vergleich data-regler="Trennlinie zwischen taktischen Zeichen und Fahrzeugbildern">
@@ -108,7 +116,7 @@
             <figcaption>Wachenfenster und Tableau</figcaption>
           </figure>
         </article>
-        <article class="feature feature-wide">
+        <article class="feature feature-wide" id="funk">
           <div class="feature-text">
             <h2>Funk <span class="tag">Status 5</span></h2>
             <ul role="list">
@@ -150,8 +158,30 @@
             <p class="monitore-note">Vier abgetrennte Fenster aus demselben Moment einer Schicht.</p>
           </div>
         </article>
+        <article class="feature feature-wide" id="designs">
+          <div class="feature-text">
+            <h2>Drei Designs <span class="tag">Darstellung</span></h2>
+            <ul role="list">
+              <li>Anthrazit dunkel, Anthrazit hell oder Blau – umschaltbar in den Einstellungen, jedes Fenster folgt sofort.</li>
+            </ul>
+          </div>
+          <figure class="designs">
+            <fieldset class="designs-wahl">
+              <legend>Design zeigen</legend>
+              <input type="radio" name="design" id="d-dunkel" checked><label for="d-dunkel"><i style="background:#1c1e21"></i>Anthrazit dunkel</label>
+              <input type="radio" name="design" id="d-hell"><label for="d-hell"><i style="background:#eef0f2"></i>Anthrazit hell</label>
+              <input type="radio" name="design" id="d-blau"><label for="d-blau"><i style="background:#1d3a5c"></i>Blau</label>
+            </fieldset>
+            <div class="designs-bilder">
+              <img class="b-dunkel" src="assets/img/screens/design-anthrazit-dunkel-1280.webp" srcset="assets/img/screens/design-anthrazit-dunkel-1280.webp 1280w, assets/img/screens/design-anthrazit-dunkel-1920.webp 1920w, assets/img/screens/design-anthrazit-dunkel-2560.webp 2560w" sizes="(min-width: 1700px) 1477px, (min-width: 761px) 89vw, 92vw" width="2560" height="1440" alt="Arbeitsplatz im Design Anthrazit dunkel: dunkelgraue Flächen, helle Schrift; links die Karte mit drei Einsatzstellen und Fahrzeugen, darunter vier Sprechwünsche im Funk, rechts ein klingelnder Notruf und die Übersicht mit vier offenen Einsätzen." loading="lazy" decoding="async">
+              <img class="b-hell" src="assets/img/screens/design-anthrazit-hell-1280.webp" srcset="assets/img/screens/design-anthrazit-hell-1280.webp 1280w, assets/img/screens/design-anthrazit-hell-1920.webp 1920w, assets/img/screens/design-anthrazit-hell-2560.webp 2560w" sizes="(min-width: 1700px) 1477px, (min-width: 761px) 89vw, 92vw" width="2560" height="1440" alt="Derselbe Arbeitsplatz im selben Moment im Design Anthrazit hell: helle Flächen, dunkle Schrift." loading="lazy" decoding="async">
+              <img class="b-blau" src="assets/img/screens/design-blau-1280.webp" srcset="assets/img/screens/design-blau-1280.webp 1280w, assets/img/screens/design-blau-1920.webp 1920w, assets/img/screens/design-blau-2560.webp 2560w" sizes="(min-width: 1700px) 1477px, (min-width: 761px) 89vw, 92vw" width="2560" height="1440" alt="Derselbe Arbeitsplatz im selben Moment im Design Blau: dunkelblaue Flächen." loading="lazy" decoding="async">
+            </div>
+            <figcaption>Derselbe Moment in allen drei Designs. Die Karte bleibt in allen Designs gleich.</figcaption>
+          </figure>
+        </article>
         <div class="feature-pair">
-          <article class="feature">
+          <article class="feature" id="simulation">
             <h2>Simulation <span class="tag">Schicht</span></h2>
             <ul role="list">
               <li>Anrufe kommen von selbst: aus, leicht, mittel oder schwer. Höchstens drei warten gleichzeitig.</li>
@@ -160,7 +190,7 @@
               <li>Einsätze enden von selbst, wenn alle Kräfte wieder frei sind. Du kannst sie archivieren oder wieder öffnen.</li>
             </ul>
           </article>
-          <article class="feature">
+          <article class="feature" id="programm">
             <h2>Programm <span class="tag">Windows</span></h2>
             <ul role="list">
               <li>Eigenes Programm für Windows. Es startet alle Dienste selbst und beendet sie wieder.</li>
@@ -168,6 +198,8 @@
               <li>Drei Designs: Anthrazit dunkel, Anthrazit hell und Blau. Zeichengrößen einstellbar.</li>
               <li>Gespräche und Protokolle bleiben auf deinem Rechner. Nur das zuschaltbare Luftbild lädt aus dem Netz.</li>
               <li>Technik: Gesprächsmodell Gemma 4, Stimme Qwen3-TTS, Spracherkennung Parakeet, Wegberechnung GraphHopper, Karte aus OpenStreetMap-Daten.</li>
+              <li>Über 50 Tastenkürzel, die Tastenhilfe „?“ in jedem Fenster. Jedes Fenster auch im Vollbild, Bereiche per Griff in der Größe veränderbar.</li>
+              <li>Mikrofontest in den Einstellungen; Funk und Telefon auf getrennten Geräten oder Kopfhörerseiten.</li>
             </ul>
           </article>
         </div>
@@ -183,6 +215,13 @@
   </section>
 </main>
 
+<section class="weiter" aria-labelledby="weiter-titel">
+  <div class="wrap">
+    <h2 id="weiter-titel">Weiter auf der Website</h2>
+    <div class="weiter-karten"><a class="weiter-karte" href="gebiet.html"><b>Gebiet und Wachen</b><span>Das ganze Leitstellengebiet mit 192 Standorten und rund 480 Fahrzeugen.</span></a><a class="weiter-karte" href="system.html"><b>System</b><span>Systemanforderungen, getestete Ausstattung und Stand des Projekts.</span></a><a class="weiter-karte" href="index.html#interesse"><b>Interesse melden</b><span>Selbst ausprobieren? Schreib eine kurze Mail.</span></a></div>
+  </div>
+</section>
+
 <footer class="site-foot">
   <div class="wrap">
     <blockquote>ILS Dispo ist ein privates Übungsprogramm und kein offizielles Produkt. Es steht in keiner Verbindung zur Integrierten Leitstelle Freiburg oder zu den genannten Organisationen, Kliniken und Behörden. Viele Angaben sind vereinfacht oder Annahmen – das Programm ist nicht für echte Einsätze gedacht.</blockquote>
@@ -197,5 +236,6 @@
 </footer>
 <script src="assets/js/grossansicht.js" defer></script>
 <script src="assets/js/vergleich.js" defer></script>
+<script src="assets/js/seite.js" defer></script>
 </body>
 </html>

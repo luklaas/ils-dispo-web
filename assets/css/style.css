@@ -51,6 +51,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .skip { position: absolute; left: 16px; top: -100px; z-index: 50; background: var(--ink-strong); color: var(--bg); padding: 10px 14px; border-radius: 4px; }
 .skip:focus { top: 12px; }
 .eyebrow { font: 600 0.8125rem/1.35 var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); }
+.eyebrow::before { content: ""; display: inline-block; width: 20px; height: 2px; background: currentColor; vertical-align: middle; margin: -2px 10px 0 0; }   /* wie der farbige Rand der Bereiche im Programm */
 .small { font-size: 0.9375rem; color: var(--muted); }
 .section { padding-block: clamp(64px, 9vw, 104px) 0; }
 .section-head { display: grid; gap: 14px; margin-bottom: clamp(28px, 4vw, 48px); max-width: 780px; }
@@ -253,14 +254,31 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .benefits { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 620px) { .benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1080px) { .benefits { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.benefit { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 24px 28px; display: grid; gap: 12px; align-content: start; }
-.benefit svg { width: 34px; height: 34px; color: var(--blue); }
+.benefit { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 24px 24px; display: flex; flex-direction: column; gap: 12px; transition: border-color .2s ease, transform .2s ease, background-color .2s ease; }
+.benefit .zeichen { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: rgba(143, 182, 218, 0.12); box-shadow: inset 0 0 0 1px rgba(143, 182, 218, 0.28); }
+.benefit svg { width: 28px; height: 28px; color: var(--blue); }
 .benefit h3 { font-size: 1.5rem; }
 .benefit p { color: var(--ink-soft); font-size: 1rem; line-height: 1.55; }
+/* Die ganze Kachel ist ein Link: der Link sitzt in der Überschrift und spannt sich über die Kachel */
+.benefit .kachel-link { color: inherit; text-decoration: none; }
+.benefit .kachel-link::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.benefit .kachel-link:focus-visible { outline: none; }
+.benefit:has(.kachel-link:focus-visible) { outline: 2px solid var(--blue); outline-offset: 3px; }
+.benefit .mehr { margin-top: auto; padding-top: 4px; font-size: .9375rem; font-weight: 600; color: var(--blue); }
+@media (hover: hover) { .benefit:hover { border-color: var(--blue); transform: translateY(-3px); background: #24272b; } }
+@media (prefers-reduced-motion: reduce) { .benefit { transition: none; } .benefit:hover { transform: none; } }
+/* Ruhige, etwas hellere Fläche hinter einem Abschnitt: setzt ihn von den Nachbarn ab */
+.flaeche { background: linear-gradient(180deg, var(--bg) 0, var(--bg-2) 140px, var(--bg-2) calc(100% - 140px), var(--bg) 100%); padding-bottom: clamp(64px, 9vw, 104px); }
+/* Weiter-Link am Ende eines Abschnitts */
+.weiter-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 22px; min-height: 44px; font-weight: 600; color: var(--blue); text-decoration: none; }
+.weiter-link:hover { text-decoration: underline; }
 
 /* ---------- Bildbänder ---------------------------------------------------------------------- */
 .band { position: relative; overflow: hidden; isolation: isolate; margin-top: clamp(64px, 9vw, 104px); min-height: clamp(320px, 36vw, 560px); display: grid; align-items: end; }
 .band-img { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; }
+/* Bildbänder und das Interesse-Bild laufen oben weich in den Seitengrund aus (Handy: eigene Darstellung, unten) */
+@media (min-width: 561px) { .band-img { -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 140px); mask-image: linear-gradient(180deg, transparent 0, #000 140px); } }
+@media (min-width: 761px) { .cta-bg img { -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 140px); mask-image: linear-gradient(180deg, transparent 0, #000 140px); } }
 .band-shade { position: absolute; inset: 0; z-index: 1; background: linear-gradient(0deg, rgba(var(--shade), 0.95) 0%, rgba(var(--shade), 0.55) 45%, rgba(var(--shade), 0.2) 100%); }
 .band .wrap { position: relative; z-index: 2; width: 100%; padding-block: 48px; display: grid; gap: 12px; }
 .band h2 { font-size: clamp(2.1rem, 4.6vw, 3rem); }
@@ -284,15 +302,19 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 @media (min-width: 640px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1080px) { .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 .step { display: grid; gap: 14px; align-content: start; }
-.step .thumb { display: block; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line-strong); background: var(--surface); cursor: zoom-in; }
+.step .thumb { position: relative; display: block; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line-strong); background: var(--surface); cursor: zoom-in; }
+/* Lupe: das Bild lässt sich groß öffnen */
+.step .thumb::after { content: ""; position: absolute; right: 10px; bottom: 10px; width: 36px; height: 36px; border-radius: 50%; box-shadow: 0 0 0 1px rgba(247, 245, 240, 0.25); background: rgba(10, 12, 14, 0.82) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e9e7e2' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6'/%3E%3Cpath d='M15 15l5 5M10.5 8v5M8 10.5h5'/%3E%3C/svg%3E") center / 20px no-repeat; }
 .step .thumb:hover { border-color: var(--blue); }
 .step .thumb img { width: 100%; height: 100%; object-fit: cover; }
 @media (prefers-reduced-motion: no-preference) { .step .thumb img { transition: transform 0.4s ease; } .step .thumb:hover img { transform: scale(1.03); } }
 .step-head { display: flex; align-items: baseline; gap: 12px; }
-.step-no { font: 600 0.875rem/1 var(--font-mono); color: var(--bg); background: var(--blue); border-radius: 50%; width: 28px; height: 28px; display: inline-grid; place-items: center; flex: none; }
+.step-no { font: 600 1rem/1 var(--font-mono); color: var(--bg); background: var(--blue); border-radius: 50%; width: 32px; height: 32px; display: inline-grid; place-items: center; flex: none; box-shadow: 0 0 0 5px rgba(143, 182, 218, 0.15); }
 .step h3 { font-size: 1.45rem; }
 .step p { color: var(--ink-soft); font-size: 1rem; line-height: 1.55; }
-.step .rail { height: 2px; background: linear-gradient(90deg, var(--blue), rgba(143, 182, 218, 0)); }
+.step .rail { height: 3px; border-radius: 2px; background: linear-gradient(90deg, var(--blue), rgba(143, 182, 218, 0)); }
+/* Breit: die Linien laufen von Schritt zu Schritt durch wie eine Zeitleiste */
+@media (min-width: 1080px) { .step:not(:last-child) .rail { margin-right: -18px; background: linear-gradient(90deg, var(--blue), rgba(143, 182, 218, 0.4)); } }
 
 /* ---------- Gebiet über dem Straßennetz ----------------------------------------------------- */
 .area { display: grid; gap: 32px; padding-top: clamp(40px, 6vw, 72px); }
@@ -359,6 +381,66 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   .cta-bg img { object-position: 90% 50%; }
   .cta-shade { background: linear-gradient(180deg, rgba(var(--shade), 0.35) 0%, rgba(var(--shade), 0.1) 30%, var(--bg-2) calc(min(68vw, 440px) - 4px)); }
   .cta .wrap { min-height: 0; padding-block: calc(min(68vw, 440px) - 40px) 56px; }
+}
+
+/* ---------- Kompakte Kopfzeile (seite.js) ---------------------------------------------------- */
+/* Erscheint, sobald der Seitenkopf aus dem Bild ist: breit (ab 1024 px) bleibt sie stehen, schmaler kommt sie beim
+   Hochscrollen. Auf dem Handy klappt „Seiten“ die Liste auf. */
+.kopf-kompakt { position: fixed; inset: 0 0 auto; z-index: 60; background: rgba(20, 22, 24, 0.97); border-bottom: 1px solid var(--line); transform: translateY(-105%); transition: transform .25s ease; }
+.kopf-kompakt.zeigen { transform: none; }
+@media (prefers-reduced-motion: reduce) { .kopf-kompakt { transition: none; } }
+.kopf-kompakt .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 56px; padding-block: 0; }
+.kopf-kompakt .wordmark b { font-size: 1.3rem; }
+.kopf-kompakt .nav { width: auto; gap: 4px 20px; }
+.kopf-kompakt .nav a { padding-block: 6px; }
+.kopf-kompakt .menue { display: none; }
+@media (max-width: 760px) {
+  .kopf-kompakt .nav { display: none; }
+  .kopf-kompakt .wordmark { white-space: nowrap; }
+  .kopf-kompakt .wordmark span { display: none; }
+  .kopf-kompakt .menue { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 14px; border: 1px solid rgba(247, 245, 240, 0.4); border-radius: 4px; background: transparent; color: var(--ink-strong); font: 600 .95rem/1 var(--font-body); cursor: pointer; }
+  .kopf-kompakt .menue svg { width: 18px; height: 18px; }
+  .kopf-kompakt.offen .nav { display: grid; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px var(--gutter) 16px; gap: 0; }
+  .kopf-kompakt.offen .nav a { padding: 12px 0; border-top: 1px solid var(--line); font-size: 1.05rem; }
+  .kopf-kompakt.offen .nav .nav-cta { display: block; border: 0; border-top: 1px solid var(--line); padding: 12px 0; border-radius: 0; }
+}
+
+/* ---------- Weiter auf der Website (am Seitenende) ------------------------------------------ */
+.weiter { border-top: 1px solid var(--line); background: var(--bg-2); }
+.weiter .wrap { padding-block: 48px 52px; display: grid; gap: 20px; }
+.weiter h2 { font-size: 1.5rem; }
+.weiter-karten { display: grid; gap: 12px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 620px) { .weiter-karten { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1080px) { .weiter-karten { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.weiter-karte { display: grid; gap: 6px; align-content: start; padding: 20px 22px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--surface); color: var(--ink); text-decoration: none; transition: border-color .2s ease; }
+.weiter-karte b { font: 700 1.3rem/1.15 var(--font-display); color: var(--ink-strong); }
+.weiter-karte b::after { content: " →"; color: var(--blue); }
+.weiter-karte span { font-size: .9375rem; color: var(--ink-soft); }
+.weiter-karte:hover, .weiter-karte:focus-visible { border-color: var(--blue); }
+
+/* ---------- Drei Designs (Funktionen): ein Foto, drei Auswahlfelder – auch ohne JavaScript ------ */
+.designs { margin: 0; display: grid; gap: 14px; min-width: 0; max-width: 1477px; }
+.designs-wahl { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; border: 0; padding: 0; margin: 0; min-width: 0; }
+.designs-wahl legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.designs-wahl input { position: absolute; opacity: 0; pointer-events: none; }
+.designs-wahl label { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 16px; border: 1px solid var(--line-strong); border-radius: 999px; cursor: pointer; font-weight: 600; color: var(--ink); background: var(--surface); }
+.designs-wahl label i { width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgba(247, 245, 240, 0.5); }
+.designs-wahl input:checked + label { border-color: var(--blue); background: rgba(143, 182, 218, 0.16); color: var(--ink-strong); }
+.designs-wahl input:focus-visible + label { outline: 2px solid var(--blue); outline-offset: 3px; }
+.designs-bilder { position: relative; display: grid; border: 1px solid var(--line-strong); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+.designs-bilder img { grid-area: 1 / 1; width: 100%; height: auto; transition: opacity .35s ease; }
+.designs-bilder img + img { opacity: 0; }   /* ohne :has() bleibt das erste Foto stehen */
+@media (prefers-reduced-motion: reduce) { .designs-bilder img { transition: none; } }
+@supports selector(:has(*)) {
+  .designs-bilder img { opacity: 0; }
+  .designs:has(#d-dunkel:checked) .b-dunkel, .designs:has(#d-hell:checked) .b-hell, .designs:has(#d-blau:checked) .b-blau { opacity: 1; }
+}
+.designs > figcaption { font: 500 .8125rem/1.4 var(--font-mono); color: var(--muted); text-align: center; }
+
+/* ---------- Sanftes Einblenden beim Hereinscrollen (seite.js; nicht bei „Bewegung reduzieren“) ---- */
+@media (prefers-reduced-motion: no-preference) {
+  .einblenden { opacity: 0; transform: translateY(16px); transition: opacity .7s ease, transform .7s ease; }
+  .einblenden.ist-da { opacity: 1; transform: none; }
 }
 
 /* ---------- Fuß ----------------------------------------------------------------------------- */
