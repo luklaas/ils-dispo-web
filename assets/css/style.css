@@ -193,6 +193,12 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
   @supports (height: 100svh) { .stage { --cf-w: clamp(60%, calc((100svh - 190px) * 16 / 9 + 16px), 78%); } }
   .car-text { min-height: 4.6em; }   /* Platz für die Quellenzeile beim Luftbild, damit nichts springt */
 }
+/* Große Bildschirme (ab 1600 px): vorn 55 bis 62 % der Breite, so dass Foto, Unterschrift, Pfeile und Punkte mit Luft
+   ins Fenster passen (330 px für Rahmen, Fuß, Unterschrift, Punkte und Rand oben und unten). */
+@media (min-width: 1600px) {
+  .stage { --cf-w: clamp(55%, calc((100vh - 330px) * 16 / 9 + 16px), 62%); }
+  @supports (height: 100svh) { .stage { --cf-w: clamp(55%, calc((100svh - 330px) * 16 / 9 + 16px), 62%); } }
+}
 @media (max-width: 760px) {
   .showcase { margin-top: 8px; }
   .stage { --cf-w: 84%; --cf-x1: 0.66; --cf-s1: 0.74; --cf-r: 10; }
