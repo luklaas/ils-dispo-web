@@ -224,7 +224,16 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
   .mon::after { height: 12px; }
   .car-btn { width: 44px; height: 44px; }
   .car-text b { font-size: 1.15rem; }
+  /* Pfeile und Punkte in einer Zeile direkt unter dem Foto, die Bildunterschrift darunter über die volle Breite:
+     so braucht sie weniger Zeilen (ihre feste Höhe setzt karussell.js, damit beim Blättern nichts springt) */
+  .car-bar { row-gap: 10px; }
+  .car-btn[data-dir="-1"] { grid-row: 1; grid-column: 1; }
+  .car-dots { grid-row: 1; grid-column: 2; gap: 0; align-self: center; }
+  .car-dots button { width: 28px; height: 28px; flex: none; }   /* Tippfläche bleibt mindestens 24 px */
+  .car-btn[data-dir="1"] { grid-row: 1; grid-column: 3; }
+  .car-text { grid-row: 2; grid-column: 1 / -1; padding-inline: 4px; }
 }
+@media (max-width: 359px) { .car-bar { column-gap: 8px; } .car-btn { width: 40px; height: 40px; } .car-dots button { width: 26px; } }
 
 /* ---------- Großansicht (grossansicht.js) --------------------------------------------------- */
 .grossansicht-offen { overflow: hidden; }

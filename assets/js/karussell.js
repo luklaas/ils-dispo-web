@@ -289,7 +289,7 @@
     });
     probe.parentNode.removeChild(probe);
     var wert = Math.ceil(hoechste) + "px";
-    if (unterschrift.style.minHeight !== wert) unterschrift.style.minHeight = wert;   // nur bei Änderung: keine Schleife im ResizeObserver
+    if (unterschrift.style.minHeight !== wert) unterschrift.style.minHeight = wert;
   }
 
   /* ---- Start und Größenänderungen ---- */
@@ -300,6 +300,8 @@
   zeichnen();
   unterschriftHoehe();
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(unterschriftHoehe);   // Schrift ändert die Zeilenumbrüche
-  var neu = function () { messen(); zustand(); zeichnen(); requestAnimationFrame(unterschriftHoehe); };   // Höhe erst nach der Beobachtung ändern
-  if (window.ResizeObserver) new ResizeObserver(neu).observe(root); else window.addEventListener("resize", neu);
+  var neu = function () { messen(); zustand(); zeichnen(); unterschriftHoehe(); };
+  // Beobachtet wird die Bühne (ihre Breite zählt), nicht der ganze Bereich: Die Höhe der Bildunterschrift ändert die Bühne
+  // nicht – so kann sie hier sofort gesetzt werden, ohne Schleife im ResizeObserver und ohne Nachrücken beim Laden.
+  if (window.ResizeObserver) new ResizeObserver(neu).observe(stage); else window.addEventListener("resize", neu);
 })();
