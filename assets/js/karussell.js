@@ -47,7 +47,8 @@
     k.innerHTML = '<span class="sr-only">Bild ' + (i + 1) + " von " + n + ": </span>" +
       '<span class="bezel"><span class="screen"><span class="cf-dim"></span></span></span><span class="sr-only cf-hint"></span>';
     img.draggable = false;
-    k.querySelector(".screen").insertBefore(img, k.querySelector(".cf-dim"));
+    // mit <picture> (Handy-Ausschnitt) wandert das ganze Bild-Element mit
+    k.querySelector(".screen").insertBefore(img.closest("picture") || img, k.querySelector(".cf-dim"));
     reihe.appendChild(k);
     return k;
   });
@@ -64,13 +65,17 @@
     img.setAttribute("data-src", img.getAttribute("src") || "");
     img.removeAttribute("srcset");
     img.removeAttribute("src");
+    quellen(img).forEach(function (q) { q.setAttribute("data-srcset", q.getAttribute("srcset") || ""); q.removeAttribute("srcset"); });
   });
+  /* <source> des Handy-Ausschnitts zu einem Bild */
+  function quellen(img) { var p = img.closest("picture"); return p ? Array.prototype.slice.call(p.querySelectorAll("source")) : []; }
   /* Das vordere Foto und seine Nachbarn bekommen ihre Quellen zurück; sobald jemand blättert, auch die übernächsten */
   var bedient = false;
   function laden(mitte) {
     karten.forEach(function (k, i) {
       var img = k.querySelector("img");
       if (Math.abs(abstand(i, mitte)) > (bedient ? 2 : 1) || !img.hasAttribute("data-src")) return;
+      quellen(img).forEach(function (q) { if (q.hasAttribute("data-srcset")) { q.setAttribute("srcset", q.getAttribute("data-srcset")); q.removeAttribute("data-srcset"); } });
       if (img.getAttribute("data-srcset")) img.setAttribute("srcset", img.getAttribute("data-srcset"));
       img.setAttribute("src", img.getAttribute("data-src"));
       img.removeAttribute("data-srcset");
@@ -140,7 +145,7 @@
   var lauf = 0, blende = 0;
   function halt() { cancelAnimationFrame(lauf); }
   /* Einrasten: ganze Lage, Bewegungs-Ebenen wieder auflösen, damit das vordere Foto scharf steht */
-  function ruhe() { pos = mod(Math.round(pos)); reihe.classList.remove("cf-bewegt"); zeichnen(); }
+  function ruhe() { pos = mod(Math.round(pos)); reihe.classList.remove("cf-bewegt"); zeichnen(); if (window.ILSRaster) window.ILSRaster(); }   // vorderes Foto aufs Pixelraster (seite.js)
   function gleiten(ziel, dauer) {
     halt();
     if (ruhig.matches) {

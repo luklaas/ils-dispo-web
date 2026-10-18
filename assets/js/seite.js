@@ -67,6 +67,34 @@
     lage();
   }
 
+  /* ---- Pixelgenaue Bildschirmfotos bei 125 und 150 % Skalierung: Chrome legt ein Bild auf ganze CSS-Pixel. Bei 125 %
+     trifft das nur jedes vierte CSS-Pixel genau ein Bildschirmpixel (bei 150 % jedes zweite), sonst wird das Foto um
+     einen Bruchteil verschoben und dabei weichgezeichnet. Deshalb rückt jeder Rahmen mit [data-raster] (und das vordere
+     Foto im Karussell) um höchstens 3 px, bis sein Foto auf dem Raster liegt. Bei 100 und 200 % passiert nichts. ---- */
+  function raster() {
+    var d = window.devicePixelRatio || 1, teiler = 0;
+    for (var q = 1; q <= 4; q++) if (Math.abs(d * q - Math.round(d * q)) < 0.001) { teiler = q; break; }
+    document.querySelectorAll("[data-raster], .cf-card").forEach(function (rahmen) {
+      if (rahmen.style.translate) rahmen.style.translate = "";
+      var bild = rahmen.querySelector("img");
+      if (teiler < 2 || !bild || (rahmen.classList.contains("cf-card") && !rahmen.classList.contains("ist-vorn"))) return;
+      var r = bild.getBoundingClientRect();
+      if (!r.width) return;
+      var x = Math.round(r.left + window.scrollX), y = Math.round(r.top + window.scrollY);
+      var dx = (teiler - (x % teiler)) % teiler, dy = (teiler - (y % teiler)) % teiler;
+      if (dx || dy) rahmen.style.translate = dx + "px " + dy + "px";
+    });
+  }
+  var rasterGeplant = 0;
+  function rasterBald() { cancelAnimationFrame(rasterGeplant); rasterGeplant = requestAnimationFrame(raster); }
+  window.ILSRaster = rasterBald;
+  window.addEventListener("load", rasterBald);
+  window.addEventListener("resize", rasterBald);
+  document.addEventListener("transitionend", function (e) { if (e.propertyName === "transform") rasterBald(); });   // nach dem Einblenden
+  document.addEventListener("toggle", rasterBald, true);   // aufgeklappte Fahrzeuggruppe
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(rasterBald);
+  rasterBald();
+
   if (ruhig || !("IntersectionObserver" in window)) return;
 
   /* ---- Sanftes Einblenden: nur, was beim Laden noch unterhalb des Fensters liegt. Geprüft wird beim Scrollen

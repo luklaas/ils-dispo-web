@@ -7,6 +7,7 @@
   if (typeof HTMLDialogElement !== "function") return;   // sehr alte Browser: Links öffnen weiter die Bilddatei
 
   var dialog = null, zu, bild, titel, text, quelle, opener = null;
+  var dateien = [];   // Dateien des geöffneten Fotos mit ihrer Breite in Pixeln
 
   function bauen() {
     dialog = document.createElement("dialog");
@@ -16,7 +17,7 @@
       '<button type="button" class="grossansicht-zu" aria-label="Großansicht schließen">' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">' +
       '<path d="M6 6l12 12M18 6L6 18"/></svg></button>' +
-      '<figure class="grossansicht-bild"><img alt="" decoding="async"><figcaption><b></b><span></span><small></small></figcaption></figure>';
+      '<figure class="grossansicht-bild" data-raster><img alt="" decoding="async"><figcaption><b></b><span></span><small></small></figcaption></figure>';
     document.body.appendChild(dialog);
     zu = dialog.querySelector(".grossansicht-zu");
     bild = dialog.querySelector("img");
@@ -42,6 +43,7 @@
     if (o.breite && o.hoehe) { bild.setAttribute("width", o.breite); bild.setAttribute("height", o.hoehe); }
     else { bild.removeAttribute("width"); bild.removeAttribute("height"); }
     bild.style.width = "";
+    dateien = liste(o.srcset);
     if (o.srcset) { bild.setAttribute("sizes", "96vw"); bild.setAttribute("srcset", o.srcset); }
     bild.src = o.src;
     bild.alt = o.alt || "";
@@ -62,7 +64,29 @@
     var bw = Number(bild.getAttribute("width")), bh = Number(bild.getAttribute("height"));
     if (!bw || !bh) { bild.style.width = ""; return; }
     var s = Math.min(1, (dialog.clientWidth - 24) / bw, (window.innerHeight - 170) / bh);
-    bild.style.width = Math.max(1, Math.floor(bw * s)) + "px";
+    var breite = Math.max(1, Math.floor(bw * s));
+    // Scharf nur 1:1: die größte Datei, die in diese Breite passt und genau auf ganze CSS-Pixel kommt, in ihrer
+    // eigenen Größe zeigen (bei 125 % etwa 1600 px Datei auf 1280 CSS-Pixeln) – statt eine größere Datei zu verkleinern.
+    var d = window.devicePixelRatio || 1, passend = null;
+    dateien.forEach(function (f) {
+      var css = f.w / d;
+      if (f.w <= breite * d + 0.5 && Math.abs(css - Math.round(css)) < 0.01 && (!passend || f.w > passend.w)) passend = f;
+    });
+    if (passend && passend.w / d >= breite * 0.75) {
+      bild.removeAttribute("srcset");
+      bild.removeAttribute("sizes");
+      if (bild.getAttribute("src") !== passend.url) bild.src = passend.url;
+      breite = Math.round(passend.w / d);
+    }
+    bild.style.width = breite + "px";
+    if (window.ILSRaster) window.ILSRaster();
+  }
+  /* srcset in eine Liste {url, w} zerlegen */
+  function liste(srcset) {
+    return (srcset || "").split(",").map(function (teil) {
+      var t = teil.trim().split(/\s+/);
+      return { url: t[0], w: parseInt(t[1], 10) || 0 };
+    }).filter(function (f) { return f.url && f.w; });
   }
   window.addEventListener("resize", einpassen);
 
