@@ -219,9 +219,8 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
 }
 @media (max-width: 760px) {
   .showcase { margin-top: 8px; }
-  .stage { --cf-w: 84%; --cf-x1: 0.66; --cf-s1: 0.74; --cf-r: 10; }
+  .stage { --cf-w: 100%; --cf-x1: 0.66; --cf-s1: 0.74; --cf-r: 10; }   /* Handy: das breite Foto über die volle Inhaltsbreite; die Nachbarn schauen im Seitenrand hervor */
   .bezel { padding: 5px; border-radius: 8px; }
-  .stage .screen { aspect-ratio: 4 / 5; }   /* Handy: Ausschnitt im Format 4:5 statt des ganzen Fensters; groß öffnet das ganze */
   .mon::after { height: 12px; }
   .car-btn { width: 44px; height: 44px; }
   .car-text b { font-size: 1.15rem; }

@@ -267,12 +267,39 @@
     });
   });
 
+  /* ---- Handy (auch quer): Die Bildunterschrift ist so hoch wie die längste, damit beim Blättern nichts springt. Gemessen
+     an einer unsichtbaren Kopie (die echte Zeile wird vorgelesen und bleibt unberührt). Am Computer und auf dem Tablet gilt
+     die feste Höhe aus dem CSS. ---- */
+  var schmal = window.matchMedia ? window.matchMedia("(max-width: 760px), (max-height: 500px)") : { matches: false };
+  var unterschrift = root.querySelector(".car-text");
+  function unterschriftHoehe() {
+    if (!unterschrift) return;
+    if (!schmal.matches) { if (unterschrift.style.minHeight) unterschrift.style.minHeight = ""; return; }
+    var probe = unterschrift.cloneNode(true);
+    probe.removeAttribute("aria-live");
+    probe.setAttribute("aria-hidden", "true");
+    probe.style.cssText = "position:absolute;left:0;top:0;visibility:hidden;min-height:0;width:" + unterschrift.getBoundingClientRect().width + "px";
+    unterschrift.parentNode.appendChild(probe);
+    var b = probe.querySelector("b"), s = probe.querySelector("span"), q = probe.querySelector(".car-quelle"), hoechste = 0;
+    karten.forEach(function (k) {
+      b.textContent = k.getAttribute("data-title");
+      s.textContent = k.getAttribute("data-text");
+      if (q) { q.textContent = ""; var z = quelle(k); if (z) q.appendChild(z); }
+      hoechste = Math.max(hoechste, probe.getBoundingClientRect().height);
+    });
+    probe.parentNode.removeChild(probe);
+    var wert = Math.ceil(hoechste) + "px";
+    if (unterschrift.style.minHeight !== wert) unterschrift.style.minHeight = wert;   // nur bei Änderung: keine Schleife im ResizeObserver
+  }
+
   /* ---- Start und Größenänderungen ---- */
   var start = karten.findIndex(function (k) { return location.hash && "#" + k.id === location.hash; });
   if (start > 0) { aktuell = start; pos = start; }
   messen();
   zustand();
   zeichnen();
-  var neu = function () { messen(); zustand(); zeichnen(); };
+  unterschriftHoehe();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(unterschriftHoehe);   // Schrift ändert die Zeilenumbrüche
+  var neu = function () { messen(); zustand(); zeichnen(); requestAnimationFrame(unterschriftHoehe); };   // Höhe erst nach der Beobachtung ändern
   if (window.ResizeObserver) new ResizeObserver(neu).observe(root); else window.addEventListener("resize", neu);
 })();
