@@ -78,10 +78,16 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
 .btn-ghost:hover { border-color: var(--ink-strong); }
 .btn[aria-disabled="true"] { opacity: 0.6; cursor: default; }
 
-/* KI-Kennzeichnung direkt am Bild: kleines Schild in einer Bildecke (oben rechts, beim Aufmacher breit unten rechts) */
-.ki-tag { position: absolute; z-index: 3; top: 12px; right: 12px; max-width: calc(100% - 24px); font: 600 0.75rem/1.3 var(--font-body); letter-spacing: 0.02em; color: var(--ink); background: rgba(10, 12, 14, 0.72); border: 1px solid rgba(247, 245, 240, 0.18); border-radius: 3px; padding: 3px 8px; pointer-events: none; }
-.hero > .ki-tag { top: auto; bottom: calc(clamp(96px, 14vw, 180px) + 14px); }   /* über dem Karussell, das den Aufmacher unten überdeckt */
-@media (max-width: 760px) { .hero > .ki-tag { bottom: auto; top: 10px; } }   /* Handy: oben rechts im Bild */
+/* KI-Kennzeichnung direkt am Bild: ein kleines „KI“ unten rechts in der Bildecke; der volle Text („KI-generiertes Bild“)
+   steht als Tooltip (title) und für Screenreader (sr-only) daneben. Dunkler Grund zu 75 % deckend: Auch über reinem Weiß
+   oder hellem Blau bleibt der Kontrast über 8 : 1. */
+.ki-tag { position: absolute; z-index: 3; right: 10px; bottom: 10px; font: 700 0.6875rem/1 var(--font-body); letter-spacing: 0.06em; color: #f7f5f0; background: rgba(10, 12, 14, 0.75); border-radius: 3px; padding: 3px 5px; cursor: help; }
+.hero > .ki-tag { bottom: calc(clamp(96px, 14vw, 180px) + 14px); }   /* über dem Karussell, das den Aufmacher unten überdeckt */
+@media (max-width: 760px) {
+  .hero > .ki-tag { bottom: auto; top: calc(min(80vw, 520px) - 40px); }   /* Handy: unten rechts im Bild, über dem Text */
+  .cta > .ki-tag { bottom: auto; top: calc(min(68vw, 440px) - 72px); }
+}
+@media (max-width: 560px) { .band > .ki-tag { bottom: auto; top: calc(62.5vw - 30px); } }   /* Bild über dem Text: unten rechts im Bild */
 
 /* ---------- Kopf ---------------------------------------------------------------------------- */
 .site-head { position: relative; z-index: 10; border-bottom: 1px solid var(--line); background: var(--bg); }
