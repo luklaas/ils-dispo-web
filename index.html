@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ILS Dispo – Leitstellensimulator</title>
-<meta name="description" content="ILS Dispo: Notrufe mit KI-Anrufern annehmen und Einsätze im Gebiet Freiburg und Breisgau-Hochschwarzwald disponieren. Läuft auf dem eigenen Rechner.">
+<title>ILS Dispo – Leitstellensimulator mit KI-Notrufen</title>
+<meta name="description" content="Leitstellensimulator für Windows: Als Disponent nimmst du Notrufe von KI-Anrufern an und alarmierst Feuerwehr und Rettungsdienst in Freiburg.">
 <link rel="canonical" href="https://ils-dispo.de/">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="de_DE">
@@ -21,7 +21,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/fonts/barlow-semi-condensed-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=acb8c616">
+<link rel="stylesheet" href="assets/css/style.css?v=40eeb74c">
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
@@ -38,7 +38,16 @@
    "name": "ILS Dispo",
    "applicationCategory": "Simulation",
    "applicationSubCategory": "Leitstellensimulator",
-   "operatingSystem": "Windows",
+   "operatingSystem": "Windows 11",
+   "softwareRequirements": "Windows 11; für Anrufe mit Sprache eine Grafikkarte mit 16 GB Grafikspeicher, sonst Textbetrieb",
+   "screenshot": "https://ils-dispo.de/assets/img/screens/fenster-arbeitsplatz-1280.webp",
+   "featureList": [
+    "Notrufe mit KI-Anrufern, gesprochen oder im Chat",
+    "Das ganze Leitstellengebiet Freiburg und Breisgau-Hochschwarzwald",
+    "Notrufabfrage, Einsatzstichwort, Fahrzeugvorschlag nach Ankunftszeit und Funk",
+    "Läuft auf dem eigenen Rechner, ohne Cloud",
+    "Mehrere Bildschirme, drei Designs, über 50 Tastenkürzel"
+   ],
    "inLanguage": "de",
    "url": "https://ils-dispo.de/",
    "image": "https://ils-dispo.de/assets/img/og-bild.jpg",
@@ -58,7 +67,7 @@
       <a href="funktionen.html">Funktionen</a>
       <a href="gebiet.html">Gebiet und Wachen</a>
       <a href="system.html">System</a>
-      <a class="nav-cta" href="index.html#interesse">Interesse melden</a>
+      <a class="nav-cta" href="./#interesse">Interesse melden</a>
     </nav>
   </div>
 </header>
@@ -71,8 +80,7 @@
     <div class="hero-shade" aria-hidden="true"></div>
     <div class="wrap">
       <div class="hero-text">
-        <span class="eyebrow">Leitstellensimulator für Freiburg und den Breisgau-Hochschwarzwald</span>
-        <h1 id="h-title">Notrufe annehmen. <em>Einsätze disponieren.</em></h1>
+        <h1 id="h-title"><span class="eyebrow">Leitstellensimulator für Freiburg und den Breisgau-Hochschwarzwald</span> Notrufe annehmen. <em>Einsätze disponieren.</em></h1>
         <p class="lead">Am Telefon sprechen KI-Anrufer mit dir – aufgeregt, ängstlich, manchmal ungeduldig. Du fragst ab, legst den Einsatz an und schickst die passenden Fahrzeuge los. Auf der Karte fahren sie mit Blaulicht zum Einsatzort.</p>
         <p class="local">Anrufer, Stimmen und Simulation laufen auf deinem eigenen Rechner, ohne Cloud.</p>
         <div class="actions">
@@ -117,14 +125,14 @@
         <h2 id="v-title">Eine Schicht in der Leitstelle, an deinem Schreibtisch</h2>
       </div>
       <ul class="benefits">
-        <li class="benefit"><span class="zeichen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M19 19c0 1.7-2 3-5 3h-1.5"/></svg></span><h3><a class="kachel-link" href="funktionen.html#telefon">Notrufe zum Sprechen</a></h3><p>KI-Anrufer reden mit dir – aufgeregt, ängstlich, manchmal ungeduldig. Oder du schreibst im Chat.</p><span class="mehr" aria-hidden="true">Mehr dazu →</span></li>
-        <li class="benefit"><span class="zeichen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/></svg></span><h3><a class="kachel-link" href="gebiet.html">Das ganze Leitstellengebiet</a></h3><p>Freiburg und der Breisgau-Hochschwarzwald mit über 190 Standorten und rund 480 Fahrzeugen.</p><span class="mehr" aria-hidden="true">Mehr dazu →</span></li>
-        <li class="benefit"><span class="zeichen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 6h7a3 3 0 0 1 0 6h-4a3 3 0 0 0 0 6h7"/></svg></span><h3><a class="kachel-link" href="funktionen.html#disposition">Vom Notruf bis zum Einsatzende</a></h3><p>Abfrage, Einsatzstichwort, Fahrzeugvorschlag nach Ankunftszeit und Funk.</p><span class="mehr" aria-hidden="true">Mehr dazu →</span></li>
-        <li class="benefit"><span class="zeichen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M10 10.5V9a2 2 0 0 1 4 0v1.5"/><rect x="9" y="10.5" width="6" height="3.5" rx=".8"/></svg></span><h3><a class="kachel-link" href="system.html">Läuft auf deinem Rechner</a></h3><p>Ohne Cloud – Gespräche und Protokolle bleiben bei dir.</p><span class="mehr" aria-hidden="true">Mehr dazu →</span></li>
-        <li class="benefit"><span class="zeichen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="9" height="7" rx="1"/><rect x="13" y="5" width="9" height="7" rx="1"/><path d="M6.5 12v3M17.5 12v3M4 17h5M15 17h5"/></svg></span><h3><a class="kachel-link" href="funktionen.html#bildschirme">Mehrere Bildschirme</a></h3><p>Karte, Einsatz, Tableau, Telefon und Funk lassen sich als eigene Fenster abtrennen und auf mehrere Bildschirme legen. Das Programm merkt sich, wo sie stehen.</p><span class="mehr" aria-hidden="true">Mehr dazu →</span></li>
-        <li class="benefit"><span class="zeichen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor" stroke="none"/></svg></span><h3><a class="kachel-link" href="funktionen.html#designs">Dein Arbeitsplatz</a></h3><p>Drei Designs, jedes Fenster im Vollbild, Bereiche per Griff in der Größe ändern und die Kartenzeichen von 60 bis 160 %.</p><span class="mehr" aria-hidden="true">Mehr dazu →</span></li>
-        <li class="benefit"><span class="zeichen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg></span><h3><a class="kachel-link" href="funktionen.html#programm">Schnell mit der Tastatur</a></h3><p>Über 50 Tastenkürzel: Enter nimmt an, H hält, A öffnet die Alarmierung, Strg+Enter erstellt und alarmiert. Die Tastenhilfe zeigt alle.</p><span class="mehr" aria-hidden="true">Mehr dazu →</span></li>
-        <li class="benefit"><span class="zeichen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span><h3><a class="kachel-link" href="funktionen.html#karte">Luftbild und Kartenebenen</a></h3><p>Karte oder Luftbild, dazu zuschaltbar Hydranten, Defibrillatoren, Pflegeheime und Kindergärten, Bahnübergänge, Tunnel, Bahnkilometer und Flurnamen.</p><span class="mehr" aria-hidden="true">Mehr dazu →</span></li>
+        <li class="benefit"><span class="zeichen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/><path d="M19 19c0 1.7-2 3-5 3h-1.5"/></svg></span><h3><a class="kachel-link" href="funktionen.html#telefon">Notrufe zum Sprechen</a></h3><p>KI-Anrufer reden mit dir – aufgeregt, ängstlich, manchmal ungeduldig. Oder du schreibst im Chat.</p><span class="mehr" aria-hidden="true">Mehr zu den Notrufen →</span></li>
+        <li class="benefit"><span class="zeichen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6-5.3-6-10a6 6 0 0 1 12 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/></svg></span><h3><a class="kachel-link" href="gebiet.html">Das ganze Leitstellengebiet</a></h3><p>Freiburg und der Breisgau-Hochschwarzwald mit über 190 Standorten und rund 480 Fahrzeugen.</p><span class="mehr" aria-hidden="true">Wachen und Fahrzeuge im Gebiet →</span></li>
+        <li class="benefit"><span class="zeichen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 6h7a3 3 0 0 1 0 6h-4a3 3 0 0 0 0 6h7"/></svg></span><h3><a class="kachel-link" href="funktionen.html#disposition">Vom Notruf bis zum Einsatzende</a></h3><p>Abfrage, Einsatzstichwort, Fahrzeugvorschlag nach Ankunftszeit und Funk.</p><span class="mehr" aria-hidden="true">Abfrage und Alarmierung →</span></li>
+        <li class="benefit"><span class="zeichen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M8 20h8M12 16v4"/><path d="M10 10.5V9a2 2 0 0 1 4 0v1.5"/><rect x="9" y="10.5" width="6" height="3.5" rx=".8"/></svg></span><h3><a class="kachel-link" href="system.html">Läuft auf deinem Rechner</a></h3><p>Ohne Cloud – Gespräche und Protokolle bleiben bei dir.</p><span class="mehr" aria-hidden="true">Systemanforderungen →</span></li>
+        <li class="benefit"><span class="zeichen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="9" height="7" rx="1"/><rect x="13" y="5" width="9" height="7" rx="1"/><path d="M6.5 12v3M17.5 12v3M4 17h5M15 17h5"/></svg></span><h3><a class="kachel-link" href="funktionen.html#bildschirme">Mehrere Bildschirme</a></h3><p>Karte, Einsatz, Tableau, Telefon und Funk lassen sich als eigene Fenster abtrennen und auf mehrere Bildschirme legen. Das Programm merkt sich, wo sie stehen.</p><span class="mehr" aria-hidden="true">Fenster und Bildschirme →</span></li>
+        <li class="benefit"><span class="zeichen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 0 0 16z" fill="currentColor" stroke="none"/></svg></span><h3><a class="kachel-link" href="funktionen.html#designs">Dein Arbeitsplatz</a></h3><p>Drei Designs, jedes Fenster im Vollbild, Bereiche per Griff in der Größe ändern und die Kartenzeichen von 60 bis 160 %.</p><span class="mehr" aria-hidden="true">Designs und Einstellungen →</span></li>
+        <li class="benefit"><span class="zeichen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></svg></span><h3><a class="kachel-link" href="funktionen.html#programm">Schnell mit der Tastatur</a></h3><p>Über 50 Tastenkürzel: Enter nimmt an, H hält, A öffnet die Alarmierung, Strg+Enter erstellt und alarmiert. Die Tastenhilfe zeigt alle.</p><span class="mehr" aria-hidden="true">Alle Tastenkürzel →</span></li>
+        <li class="benefit"><span class="zeichen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2z"/><path d="M9 4v14M15 6v14"/></svg></span><h3><a class="kachel-link" href="funktionen.html#karte">Luftbild und Kartenebenen</a></h3><p>Karte oder Luftbild, dazu zuschaltbar Hydranten, Defibrillatoren, Pflegeheime und Kindergärten, Bahnübergänge, Tunnel, Bahnkilometer und Flurnamen.</p><span class="mehr" aria-hidden="true">Luftbild und Kartenebenen →</span></li>
       </ul>
       <a class="weiter-link" href="funktionen.html">Alle Funktionen im Einzelnen →</a>
     </div>
@@ -182,8 +190,8 @@
       <span class="ki-tag" title="KI-generiertes Bild"><span aria-hidden="true">KI</span><span class="sr-only">KI-generiertes Bild</span></span>
       <div class="band-shade" aria-hidden="true"></div>
       <div class="wrap">
-        <span class="eyebrow">Leitstellengebiet</span>
-        <h2 id="g-title">Vom Rhein und Kaiserstuhl bis auf den Feldberg</h2>
+        <span class="eyebrow">Gebiet und Wachen</span>
+        <h2 id="g-title">Leitstellengebiet: vom Rhein und Kaiserstuhl bis auf den Feldberg</h2>
         <p>Das ganze Gebiet der Integrierten Leitstelle Freiburg/Breisgau-Hochschwarzwald: Stadtkreis Freiburg und Landkreis Breisgau-Hochschwarzwald.</p>
       </div>
     </div>
@@ -482,7 +490,7 @@ Ich komme aus Feuerwehr / Rettungsdienst / Leitstelle / bin einfach interessiert
 <section class="weiter" aria-labelledby="weiter-titel">
   <div class="wrap">
     <h2 id="weiter-titel">Weiter auf der Website</h2>
-    <div class="weiter-karten"><a class="weiter-karte" href="funktionen.html"><b>Funktionen</b><span>Was ILS Dispo kann – vom ersten Klingeln bis zum Einsatzende.</span></a><a class="weiter-karte" href="gebiet.html"><b>Gebiet und Wachen</b><span>Das ganze Leitstellengebiet mit 192 Standorten und rund 480 Fahrzeugen.</span></a><a class="weiter-karte" href="system.html"><b>System</b><span>Systemanforderungen, getestete Ausstattung und Stand des Projekts.</span></a></div>
+    <div class="weiter-karten"><a class="weiter-karte" href="funktionen.html"><b>Funktionen</b><span>Was ILS Dispo kann – vom ersten Klingeln bis zum Einsatzende.</span></a><a class="weiter-karte" href="gebiet.html"><b>Gebiet und Wachen</b><span>Das ganze Leitstellengebiet mit 192 Standorten und rund 480 Fahrzeugen.</span></a><a class="weiter-karte" href="system.html"><b>System</b><span>Systemanforderungen, getestete Ausstattung und Stand des Projekts.</span></a><a class="weiter-karte" href="fragen.html"><b>Häufige Fragen</b><span>Was ILS Dispo ist, was dein Rechner braucht und wie du es bekommst.</span></a></div>
   </div>
 </section>
 
@@ -495,7 +503,7 @@ Ich komme aus Feuerwehr / Rettungsdienst / Leitstelle / bin einfach interessiert
       <span>Kartenausschnitte in den Bildschirmfotos: © OpenMapTiles, © OpenStreetMap-Mitwirkende (ODbL)</span>
       <span>Luftbild in den Bildschirmfotos: Datenquelle LGL, <a href="https://www.lgl-bw.de">www.lgl-bw.de</a>, Lizenz <a href="https://www.govdata.de/dl-de/by-2-0">dl-de/by-2-0</a></span>
     </div>
-    <div class="foot-links"><a href="funktionen.html">Funktionen</a><a href="gebiet.html">Gebiet und Wachen</a><a href="system.html">System</a><a href="https://www.paypal.com/donate/?hosted_button_id=VRBLR9CZUWMWN" target="_blank" rel="noopener noreferrer">Projekt unterstützen<span class="sr-only"> (öffnet in neuem Tab)</span></a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div>
+    <div class="foot-links"><a href="funktionen.html">Funktionen</a><a href="gebiet.html">Gebiet und Wachen</a><a href="system.html">System</a><a href="fragen.html">Häufige Fragen</a><a href="taktische-zeichen.html">Taktische Zeichen</a><a href="entwicklung.html">Entwicklung</a><a href="https://www.paypal.com/donate/?hosted_button_id=VRBLR9CZUWMWN" target="_blank" rel="noopener noreferrer">Projekt unterstützen<span class="sr-only"> (öffnet in neuem Tab)</span></a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div>
   </div>
 </footer>
 <script src="assets/js/grossansicht.js?v=020d781e" defer></script>

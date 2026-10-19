@@ -132,6 +132,7 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
 .hero-text { display: grid; gap: 20px; max-width: 600px; }
 .hero h1 { font-size: clamp(2.9rem, 6.6vw, 4.6rem); letter-spacing: -0.005em; }
 .hero h1 em { font-style: normal; color: var(--blue); }
+.hero h1 > .eyebrow { display: block; margin-bottom: 20px; text-wrap: wrap; }   /* die Unterzeile steht im H1 (für Suchmaschinen), sieht aber aus wie vorher: eigene Zeile, gleicher Abstand wie die übrigen Zeilen */
 .hero .lead { font-size: clamp(1.0625rem, 1.5vw, 1.2rem); }
 .hero .local { font-size: 0.9375rem; color: var(--ink-soft); display: flex; align-items: center; gap: 10px; }
 .hero .local::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--fms-1); box-shadow: 0 0 0 4px rgba(67, 160, 71, 0.2); flex: none; }
@@ -622,6 +623,21 @@ table.data tr.total td { font-weight: 600; color: var(--ink-strong); border-bott
 .page .wrap > p { max-width: 64ch; }     /* Absätze behalten ihre Zeilenlänge */
 .page h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); }
 .page h2 { font-size: 1.6rem; margin-top: 16px; }
+/* Häufige Fragen, Entwicklung, Taktische Zeichen: dieselbe ruhige Textseite; Einträge mit Datum, Beispielzeichen
+   (mit dem Code des Programms gezeichnet, wie im Fahrzeugkatalog) und die Statustabelle */
+.eintrag { display: grid; gap: var(--a-2); margin-top: var(--a-4); }
+.eintrag h2 { margin-top: 0; }
+.tz-beispiele { display: flex; flex-wrap: wrap; gap: var(--a-5) var(--a-6); }
+.tz-beispiel { display: grid; justify-items: start; align-content: start; gap: var(--a-2); width: 210px; margin: 0; }
+.tz-svg { display: block; height: 56px; width: auto; }
+.tz-beispiel figcaption { font-size: .9375rem; line-height: 1.4; color: var(--ink-soft); }
+.tz-beispiel figcaption b { display: block; color: var(--ink-strong); }
+.tz-status { border-collapse: collapse; }
+.tz-status th, .tz-status td { text-align: left; vertical-align: middle; padding: 8px 16px 8px 0; border-bottom: 1px solid var(--line); }
+.tz-status th { font: 600 .8125rem/1.3 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.tz-ziffer { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; font: 700 .9375rem/1 var(--font-body); }
+.tz-zusatz { color: var(--ink-soft); }
+.tz-quellen { display: grid; gap: var(--a-2); padding-left: 1.2em; color: var(--ink-soft); }
 
 /* ---------- Breite Bildschirme: mehr Fläche, Schrift wächst leicht mit ---------------------- */
 /* Ab Tablettbreite ein fester Seitenrand von 5,5 % der Breite (bei 1920 px gut 100 px) statt einer schmalen Mitte;
