@@ -422,6 +422,8 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
 .fz-bild { grid-column: 1 / -1; display: flex; justify-content: center; align-items: flex-end; height: 104px; border-bottom: 3px solid var(--surface-2); }
 .fz-bild img { height: 96px; width: auto; max-width: 100%; }
 .fz-zeichen { width: 64px; height: 56px; }
+.fz-gespann { grid-template-columns: 128px minmax(0, 1fr); }   /* Gespann (Zugfahrzeug mit Anhänger): zwei Zeichen nebeneinander, je so groß wie sonst eines */
+.fz-gespann .fz-zeichen { width: 128px; }
 .fz-name { display: grid; gap: 2px; min-width: 0; }
 .fz-name b { font: 600 1rem/1.25 var(--font-mono); color: var(--ink-strong); }
 .fz-name span { font-size: .9375rem; line-height: 1.35; color: var(--ink-soft); hyphens: auto; overflow-wrap: break-word; }
