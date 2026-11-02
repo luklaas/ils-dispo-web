@@ -95,6 +95,26 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(rasterBald);
   rasterBald();
 
+  /* ---- Hörprobe: schlichter Knopf statt des Abspielers. Geladen wird erst beim ersten Klick, von selbst spielt nichts. ---- */
+  document.querySelectorAll("[data-hoerprobe]").forEach(function (h) {
+    var ton = h.querySelector("audio"), knopf = h.querySelector("button"), wort = knopf.querySelector("[data-wort]"), zeit = knopf.querySelector("[data-zeit]");
+    var ICON = { spielen: '<path d="M7 4.5v15l12-7.5z" fill="currentColor"/>', pause: '<path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/>' };
+    var svg = knopf.querySelector("svg"), gesamt = zeit.textContent;
+    function uhr(s) { s = Math.max(0, Math.round(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
+    function zeigen(spielt) {
+      svg.innerHTML = spielt ? ICON.pause : ICON.spielen;
+      wort.textContent = spielt ? "Anhalten" : "Notruf anhören";
+    }
+    knopf.hidden = false;
+    ton.removeAttribute("controls");
+    h.classList.add("mit-knopf");
+    knopf.addEventListener("click", function () { if (ton.paused) ton.play(); else ton.pause(); });
+    ton.addEventListener("play", function () { zeigen(true); });
+    ton.addEventListener("pause", function () { zeigen(false); });
+    ton.addEventListener("timeupdate", function () { if (!ton.ended && ton.currentTime > 0) zeit.textContent = uhr(ton.currentTime) + " / " + gesamt; });
+    ton.addEventListener("ended", function () { ton.currentTime = 0; zeit.textContent = gesamt; zeigen(false); });
+  });
+
   if (ruhig || !("IntersectionObserver" in window)) return;
 
   /* ---- Sanftes Einblenden: nur, was beim Laden noch unterhalb des Fensters liegt. Geprüft wird beim Scrollen

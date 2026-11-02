@@ -279,6 +279,13 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
 .vergleich-a .vergleich-name { left: 10px; }
 .vergleich-b .vergleich-name { right: 10px; }
 .vergleich figcaption { font: 500 0.8125rem/1.4 var(--font-mono); color: var(--muted); }
+/* Handy: Das Bild ist klein, die Schilder rücken deshalb an den unteren Rand und werden kleiner, sonst liegen sie über den Fahrzeugen. Maßstab und Quellenzeile der Karte bleiben frei. */
+@media (max-width: 760px) {
+  .vergleich .vergleich-name { bottom: max(14px, 5%); font-size: 0.6875rem; line-height: 1.3; letter-spacing: 0; padding: 2px 5px; }
+  .vergleich-a .vergleich-name { left: 6px; }
+  .vergleich-b .vergleich-name { right: 6px; }
+}
+@media (max-width: 340px) { .vergleich .vergleich-name { font-size: 0.625rem; padding: 2px 4px; } }
 .vergleich-an .vergleich-bilder { position: relative; display: block; gap: 0; box-shadow: 0 0 0 1px var(--line-strong); border-radius: var(--radius); overflow: hidden; background: var(--surface); touch-action: pan-y; cursor: ew-resize; user-select: none; -webkit-user-select: none; --teil: 50%; }
 .vergleich-an .vergleich-teil { box-shadow: none; border-radius: 0; }
 .vergleich-an .vergleich-b { position: absolute; inset: 0; clip-path: inset(0 0 0 var(--teil)); }
@@ -311,6 +318,19 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
 .schicht-text h3 { font-size: clamp(1.75rem, 2.6vw, 2.3rem); }
 .schicht-text p { color: var(--ink-soft); font-size: 1.125rem; line-height: 1.55; max-width: 46ch; }
 .schicht-text .weiter-link { margin-top: 0; }
+/* Hörprobe im Abschnitt „Notrufe zum Sprechen“: Ohne JavaScript bleibt der Abspieler des Browsers, mit JavaScript ein schlichter Knopf */
+.hoerprobe { display: grid; gap: var(--a-3); justify-items: start; max-width: 46ch; margin-block: var(--a-2); }
+.hoerprobe audio { width: 100%; }
+.hoerprobe.mit-knopf audio { display: none; }
+.hoerprobe-knopf { min-height: 44px; padding: 10px 16px; font-variant-numeric: tabular-nums; }
+.hoerprobe-knopf[hidden] { display: none; }
+.hoerprobe-knopf svg { width: 16px; height: 16px; flex: none; }
+.hoerprobe-knopf:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.hoerprobe-zeit { color: var(--ink-soft); font-weight: 500; }
+.schicht-text .hoerprobe-hinweis { font-size: .8125rem; color: var(--muted); line-height: 1.4; }
+.hoerprobe-text { display: grid; gap: var(--a-2); margin: 0; padding: var(--a-3) 0 0; border-top: 1px solid var(--line); list-style: none; font-size: .9375rem; line-height: 1.45; color: var(--ink-soft); }
+.hoerprobe-text b { display: block; font: 500 .75rem/1.4 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.hoerprobe-text .ende { color: var(--ink); }
 .schicht-bild { min-width: 0; }
 .schicht-bild figcaption small { display: block; margin-top: 4px; }
 .schicht-teil:not(.gespiegelt) .shot-link { margin-left: auto; }   /* Foto links: an den Text heranrücken, wenn es schmaler als seine Spalte ist */
