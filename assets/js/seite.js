@@ -100,7 +100,7 @@
   /* ---- Sanftes Einblenden: nur, was beim Laden noch unterhalb des Fensters liegt. Geprüft wird beim Scrollen
      (nicht über IntersectionObserver), damit auch nach einem Sprung – Ende-Taste, Sprungmarke – nichts unsichtbar bleibt. ---- */
   var offen = [];
-  document.querySelectorAll(".section-head, .benefit, .step, .area, .feature, .weiter-karte, .designs, .vergleich").forEach(function (z) {
+  document.querySelectorAll(".section-head, .schicht-teil, .schicht-liste, .protokoll, .area, .feature, .weiter-karte, .designs, .vergleich").forEach(function (z) {
     if (z.getBoundingClientRect().top < window.innerHeight) return;
     z.classList.add("einblenden");
     offen.push(z);

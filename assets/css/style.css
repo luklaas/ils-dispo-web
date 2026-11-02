@@ -287,23 +287,50 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
 .vergleich-regler:focus ~ .vergleich-linie .vergleich-griff { outline: 3px solid var(--blue); outline-offset: 3px; }
 .vergleich-zieht .vergleich-griff { background: var(--accent); }
 
-/* ---------- Vorteile ------------------------------------------------------------------------ */
-.benefits { display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 620px) { .benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1080px) { .benefits { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.benefit { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 24px 24px; display: flex; flex-direction: column; gap: 12px; transition: border-color .2s ease, transform .2s ease, background-color .2s ease; }
-.benefit .zeichen { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: rgba(143, 182, 218, 0.12); box-shadow: inset 0 0 0 1px rgba(143, 182, 218, 0.28); }
-.benefit svg { width: 28px; height: 28px; color: var(--blue); }
-.benefit h3 { font-size: 1.5rem; }
-.benefit p { color: var(--ink-soft); font-size: 1rem; line-height: 1.55; }
-/* Die ganze Kachel ist ein Link: der Link sitzt in der Überschrift und spannt sich über die Kachel */
-.benefit .kachel-link { color: inherit; text-decoration: none; }
-.benefit .kachel-link::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
-.benefit .kachel-link:focus-visible { outline: none; }
-.benefit:has(.kachel-link:focus-visible) { outline: 2px solid var(--blue); outline-offset: 3px; }
-.benefit .mehr { margin-top: auto; padding-top: 4px; font-size: .9375rem; font-weight: 600; color: var(--blue); }
-@media (hover: hover) { .benefit:hover { border-color: var(--blue); transform: translateY(-3px); background: #24272b; } }
-@media (prefers-reduced-motion: reduce) { .benefit { transition: none; } .benefit:hover { transform: none; } }
+/* ---------- Eine Schicht in der Leitstelle: vier große Abschnitte, Bild abwechselnd links und rechts ---------- */
+/* Statusfarben des Programms (web/symbols.js des Programms) – nur als kleine Marken: im Einsatzprotokoll und unter dem Tableau */
+.st { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 3px; font: 600 .8125rem/1 var(--font-mono); font-style: normal; }
+.st-1 { background: #43a047; color: #0b1218; }
+.st-2 { background: #2e7d32; color: #fff; }
+.st-3 { background: #f9a825; color: #0b1218; }
+.st-4 { background: #ef6c00; color: #0b1218; }
+.st-5 { background: #8e24aa; color: #fff; }
+.st-7 { background: #1e88e5; color: #0b1218; }
+.st-8 { background: #2c4568; color: #fff; }
+/* Sehr breite Bildschirme: der Abschnitt bleibt höchstens 1600 px breit und steht mittig, die Überschrift mit ihm */
+#vorteile .wrap, #ablauf .wrap { max-width: calc(1600px + 2 * var(--gutter)); }
+.schicht { display: grid; gap: clamp(56px, 7vw, 104px); }
+.schicht-teil { display: grid; gap: var(--a-5); align-items: center; min-width: 0; }
+.schicht-text { display: grid; gap: var(--a-3); align-content: start; }
+.schicht-text h3 { font-size: clamp(1.75rem, 2.6vw, 2.3rem); }
+.schicht-text p { color: var(--ink-soft); font-size: 1.125rem; line-height: 1.55; max-width: 46ch; }
+.schicht-text .weiter-link { margin-top: 0; }
+.schicht-bild { min-width: 0; }
+.schicht-bild figcaption small { display: block; margin-top: 4px; }
+.schicht-teil:not(.gespiegelt) .shot-link { margin-left: auto; }   /* Foto links: an den Text heranrücken, wenn es schmaler als seine Spalte ist */
+.st-legende { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-left: 6px; white-space: nowrap; }
+.st-legende .st { width: 18px; height: 18px; font-size: .75rem; }
+.st-legende .st:nth-of-type(2) { margin-left: 8px; }
+.schicht-monitore { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--a-4) var(--a-5); }
+.schicht-monitore .monitor figcaption b { font-size: 1.05rem; }
+.schicht-monitore .monitor figcaption span { font-size: .875rem; }
+.schicht-quelle { grid-column: 1 / -1; text-align: center; font-size: .8125rem; color: var(--muted); max-width: none; }
+@media (min-width: 900px) {
+  .schicht-teil { grid-template-columns: minmax(0, min(960px, 60%)) minmax(0, 1fr); column-gap: clamp(40px, 5vw, 80px); }
+  .schicht-teil.gespiegelt { grid-template-columns: minmax(0, 1fr) minmax(0, min(960px, 60%)); }
+  .schicht-teil.gespiegelt .schicht-bild { order: 2; }
+}
+@media (max-width: 899px) { .schicht-teil .schicht-text { order: -1; } }   /* Handy und Tablett: erst Überschrift und Text, dann das Bild */
+/* Die übrigen Funktionen: kurze Liste ohne Symbole */
+.schicht-liste { display: grid; gap: 0 var(--a-6); margin-top: clamp(56px, 7vw, 104px); border-top: 1px solid var(--line); }
+@media (min-width: 700px) { .schicht-liste { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1200px) { .schicht-liste { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.schicht-liste li { display: grid; gap: 6px; align-content: start; padding-block: var(--a-5); border-bottom: 1px solid var(--line); }
+@media (min-width: 1200px) { .schicht-liste li { border-bottom: 0; } }
+.schicht-liste a { font: 700 1.3rem/1.15 var(--font-display); color: var(--ink-strong); text-decoration: none; }
+.schicht-liste a::after { content: " →"; color: var(--blue); }
+.schicht-liste a:hover { color: var(--blue); }
+.schicht-liste p { color: var(--ink-soft); font-size: .9375rem; line-height: 1.5; }
 /* Ruhige, etwas hellere Fläche hinter einem Abschnitt: setzt ihn von den Nachbarn ab */
 .flaeche { background: linear-gradient(180deg, var(--bg) 0, var(--bg-2) 140px, var(--bg-2) calc(100% - 140px), var(--bg) 100%); padding-bottom: var(--abschnitt); }
 /* Weiter-Link am Ende eines Abschnitts */
@@ -334,24 +361,25 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
     linear-gradient(0deg, rgba(var(--shade), 0.95) 0%, rgba(var(--shade), 0.55) 45%, rgba(var(--shade), 0.2) 100%); }
 }
 
-/* ---------- Ablauf in vier Schritten -------------------------------------------------------- */
-.steps { display: grid; gap: 32px 18px; grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 640px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1080px) { .steps { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.step { display: grid; gap: 14px; align-content: start; }
-.step .thumb { position: relative; display: block; aspect-ratio: 4 / 3; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line-strong); background: var(--surface); cursor: zoom-in; }
-/* Lupe: das Bild lässt sich groß öffnen */
-.step .thumb::after { content: ""; position: absolute; right: 10px; bottom: 10px; width: 36px; height: 36px; border-radius: 50%; box-shadow: 0 0 0 1px rgba(247, 245, 240, 0.25); background: rgba(10, 12, 14, 0.82) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e9e7e2' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6'/%3E%3Cpath d='M15 15l5 5M10.5 8v5M8 10.5h5'/%3E%3C/svg%3E") center / 20px no-repeat; }
-.step .thumb:hover { border-color: var(--blue); }
-.step .thumb img { width: 100%; height: 100%; object-fit: cover; }
-@media (prefers-reduced-motion: no-preference) { .step .thumb img { transition: transform 0.4s ease; } .step .thumb:hover img { transform: scale(1.03); } }
+/* ---------- So läuft ein Einsatz: Ereignisprotokoll eines Demo-Einsatzes ------------------------- */
+/* Die Zeilen stehen wörtlich so, wie das Programm sie zeigt (werkzeuge/aufnahme); je Schritt des Ablaufs ein Abschnitt */
+.protokoll { border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); }
+.protokoll-kopf { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px var(--a-5); max-width: none; padding: var(--a-3) var(--a-5);
+  border-bottom: 1px solid var(--line); background: var(--bg-2); border-radius: var(--radius) var(--radius) 0 0;
+  font: 600 .75rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.phase { display: grid; gap: var(--a-4) var(--a-7); padding: var(--a-5); }
+.phase + .phase { border-top: 1px solid var(--line); }
+.phase-text { display: grid; gap: var(--a-2); align-content: start; }
 .step-head { display: flex; align-items: baseline; gap: 12px; }
 .step-no { font: 600 1rem/1 var(--font-mono); color: var(--bg); background: var(--blue); border-radius: 50%; width: 32px; height: 32px; display: inline-grid; place-items: center; flex: none; box-shadow: 0 0 0 5px rgba(143, 182, 218, 0.15); }
-.step h3 { font-size: 1.45rem; }
-.step p { color: var(--ink-soft); font-size: 1rem; line-height: 1.55; }
-.step .rail { height: 3px; border-radius: 2px; background: linear-gradient(90deg, var(--blue), rgba(143, 182, 218, 0)); }
-/* Breit: die Linien laufen von Schritt zu Schritt durch wie eine Zeitleiste */
-@media (min-width: 1080px) { .step:not(:last-child) .rail { margin-right: -18px; background: linear-gradient(90deg, var(--blue), rgba(143, 182, 218, 0.4)); } }
+.phase-text h3 { font-size: 1.45rem; }
+.phase-text p { color: var(--ink-soft); font-size: 1rem; line-height: 1.55; }
+.protokoll-zeilen li { display: grid; grid-template-columns: auto 22px minmax(0, 1fr); gap: 0 var(--a-3); align-items: start; padding-block: 7px; font-size: .9375rem; line-height: 1.45; }
+.protokoll-zeilen li + li { border-top: 1px solid rgba(233, 231, 226, 0.06); }
+.protokoll-zeilen time { font: 500 .875rem/1.45 var(--font-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.protokoll-zeilen .st { margin-top: -1px; }
+.protokoll-zeilen span { overflow-wrap: anywhere; }
+@media (min-width: 900px) { .phase { grid-template-columns: minmax(0, 5fr) minmax(0, 8fr); padding: var(--a-6); } }
 
 /* ---------- Gebiet über dem Straßennetz ----------------------------------------------------- */
 .area { display: grid; gap: var(--block); padding-top: var(--kopf); }
@@ -395,19 +423,28 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
 .more { font-weight: 600; text-decoration: none; color: var(--blue); }
 .more:hover { text-decoration: underline; }
 
-/* ---------- Fahrzeugreihe: alle Bilder im gleichen Maßstab ---------------------------------- */
-.fleet { container-type: inline-size; --m: clamp(5px, 1vw, 12px); }
+/* ---------- Fahrzeugreihe: Bilder aus dem Programm im Maßstab des Fahrzeugkatalogs (werkzeuge/fahrzeugreihe.py) ---------
+   96 px hoch wie im Katalog, ab 1760 px 1,5-fach. Bildbreiten sind Vielfache von 8 px und die Abstände gerade Zahlen: So liegt
+   jedes Bild einer Zeile auf dem Bildschirmraster, sobald das erste es tut ([data-raster]) – scharf auch bei 125 und 150 %. */
+.fleet { --m: 6px; }
 .lineup-scroll { overflow-x: auto; scrollbar-width: thin; padding-bottom: 6px; }
-.lineup { display: flex; align-items: flex-end; min-width: max-content; }
+.lineup { display: flex; align-items: flex-end; width: max-content; margin-inline: auto; }
 .lineup + .lineup { margin-top: 10px; }
 .lineup figure { margin: 0; display: flex; flex-direction: column; align-items: center; }
-.lineup img { height: 78px; width: auto; margin-inline: var(--m); }
+.lineup img { height: 96px; width: auto; margin-inline: var(--m); }
 .lineup figcaption { align-self: stretch; text-align: center; border-top: 3px solid var(--surface-2); padding-top: 10px; font: 600 0.8125rem/1 var(--font-mono); color: var(--muted); white-space: nowrap; }
 .fleet-note { font-size: 0.8125rem; color: var(--muted); padding-top: var(--a-4); }
-/* Ab Tablettbreite zwei Reihen; die längere untere (Bildbreiten zusammen 1965 bei 200 Höhe) füllt die Zeile */
-@media (min-width: 900px) {
-  .lineup { min-width: 0; justify-content: center; }
-  .lineup img { height: min(140px, calc((100cqi - 12 * var(--m)) * 200 / 1965 - 2px)); }
+.lineup-bruch { display: none; }
+/* Handy: beide Reihen seitlich scrollbar. Ab Tablettbreite mittig ohne Scrollen; bis 1199 px bricht jede Reihe an fester
+   Stelle um (3 + 2 und 4 + 2), die leere Zeile dazwischen ist der Abstand */
+@media (min-width: 761px) {
+  .fleet { --m: 12px; }
+  .lineup { width: auto; flex-wrap: wrap; justify-content: center; }
+}
+@media (min-width: 761px) and (max-width: 1199px) { .lineup-bruch { display: block; flex-basis: 100%; height: 10px; } }
+@media (min-width: 1760px) {
+  .fleet { --m: 16px; }
+  .lineup img { height: 144px; }
 }
 
 /* ---------- Fahrzeugkatalog (Gebiet und Wachen): je Organisation aufklappbar, Bilder laden erst beim Aufklappen ---------- */
@@ -494,6 +531,7 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
 .weiter-karten { display: grid; gap: 12px; grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 620px) { .weiter-karten { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (min-width: 1080px) { .weiter-karten { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1080px) { .weiter-karten:has(> :nth-child(4):last-child) { grid-template-columns: repeat(4, minmax(0, 1fr)); } }   /* vier Karten in einer Reihe statt 3 + 1 */
 .weiter-karte { display: grid; gap: 6px; align-content: start; padding: 20px 22px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--surface); color: var(--ink); text-decoration: none; transition: border-color .2s ease; }
 .weiter-karte b { font: 700 1.3rem/1.15 var(--font-display); color: var(--ink-strong); }
 .weiter-karte b::after { content: " →"; color: var(--blue); }
@@ -714,6 +752,15 @@ table.data tr.total td { font-weight: 600; color: var(--ink-strong); border-bott
 @media (min-width: 1645px) { .shot[data-stufe="zeile"] { --raster-w: 768px; } }
 @media (min-width: 1909px) { .shot[data-stufe="zeile"] { --raster-w: 896px; } }
 @media (min-width: 2272px) { .shot[data-stufe="zeile"] { --raster-w: 1072px; } }
+/* schicht */
+@media (min-width: 900px) { .shot[data-stufe="schicht"] { --raster-w: 448px; } }
+@media (min-width: 959px) { .shot[data-stufe="schicht"] { --raster-w: 512px; } }
+@media (min-width: 761px) and (max-width: 899px) { .shot[data-stufe="schicht"] { --raster-w: 640px; } }
+@media (min-width: 1199px) { .shot[data-stufe="schicht"] { --raster-w: 640px; } }
+@media (min-width: 863px) and (max-width: 899px) { .shot[data-stufe="schicht"] { --raster-w: 768px; } }
+@media (min-width: 1439px) { .shot[data-stufe="schicht"] { --raster-w: 768px; } }
+@media (min-width: 1678px) { .shot[data-stufe="schicht"] { --raster-w: 896px; } }
+@media (min-width: 1798px) { .shot[data-stufe="schicht"] { --raster-w: 960px; } }
 /* monitore */
 @media (min-width: 944px) { .monitore { --raster-w: 384px; } }
 @media (min-width: 1232px) { .monitore { --raster-w: 512px; } }
