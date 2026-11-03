@@ -99,11 +99,12 @@
   document.querySelectorAll("[data-hoerprobe]").forEach(function (h) {
     var ton = h.querySelector("audio"), knopf = h.querySelector("button"), wort = knopf.querySelector("[data-wort]"), zeit = knopf.querySelector("[data-zeit]");
     var ICON = { spielen: '<path d="M7 4.5v15l12-7.5z" fill="currentColor"/>', pause: '<path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/>' };
-    var svg = knopf.querySelector("svg"), gesamt = zeit.textContent;
+    var svg = knopf.querySelector("svg"), gesamt = zeit.textContent, beschriftung = knopf.getAttribute("aria-label");
     function uhr(s) { s = Math.max(0, Math.round(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); }
     function zeigen(spielt) {
       svg.innerHTML = spielt ? ICON.pause : ICON.spielen;
       wort.textContent = spielt ? "Anhalten" : "Notruf anhören";
+      knopf.setAttribute("aria-label", spielt ? "Hörprobe anhalten" : beschriftung);   // die Beschriftung überdeckt den sichtbaren Text, auch für Screenreader muss der Knopf wechseln
     }
     knopf.hidden = false;
     ton.removeAttribute("controls");

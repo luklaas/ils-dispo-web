@@ -351,9 +351,6 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor ‚
 .hoerprobe-knopf:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 .hoerprobe-zeit { color: var(--ink-soft); font-weight: 500; }
 .schicht-text .hoerprobe-hinweis { font-size: .8125rem; color: var(--muted); line-height: 1.4; }
-.hoerprobe-text { display: grid; gap: var(--a-2); margin: 0; padding: var(--a-3) 0 0; border-top: 1px solid var(--line); list-style: none; font-size: .9375rem; line-height: 1.45; color: var(--ink-soft); }
-.hoerprobe-text b { display: block; font: 500 .75rem/1.4 var(--font-mono); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
-.hoerprobe-text .ende { color: var(--ink); }
 .schicht-bild { min-width: 0; }
 .schicht-bild figcaption small { display: block; margin-top: 4px; }
 .schicht-teil:not(.gespiegelt) .shot-link { margin-left: auto; }   /* Foto links: an den Text heranr√ºcken, wenn es schmaler als seine Spalte ist */
