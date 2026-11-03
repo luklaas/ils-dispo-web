@@ -180,7 +180,7 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor â
 .film-zeit { font: 500 1.0625rem/1 var(--font-mono); }
 .film-start[hidden] { display: none; }
 .film-fuss { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--a-1) var(--a-4); padding-top: var(--a-1); }
-.film-hinweis { padding-top: 0; margin-inline: 0; }
+.film-fuss .film-hinweis { padding-top: 0; margin-inline: 0; }
 .film-ut { min-height: 36px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: 4px; background: transparent; color: var(--ink); font: 500 0.8125rem/1 var(--font-mono); cursor: pointer; }
 .film-ut:hover { border-color: var(--blue); color: var(--blue); }
 .film-ut[hidden] { display: none; }
