@@ -104,7 +104,7 @@
     function zeigen(spielt) {
       svg.innerHTML = spielt ? ICON.pause : ICON.spielen;
       wort.textContent = spielt ? "Anhalten" : "Notruf anhören";
-      knopf.setAttribute("aria-label", spielt ? "Hörprobe anhalten" : beschriftung);   // die Beschriftung überdeckt den sichtbaren Text, auch für Screenreader muss der Knopf wechseln
+      knopf.setAttribute("aria-label", spielt ? "Notruf anhalten" : beschriftung);   // die Beschriftung überdeckt den sichtbaren Text, auch für Screenreader muss der Knopf wechseln
     }
     knopf.hidden = false;
     ton.removeAttribute("controls");
