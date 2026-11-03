@@ -82,7 +82,7 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
    steht als Tooltip (title) und für Screenreader (sr-only) daneben. Dunkler Grund zu 75 % deckend: Auch über reinem Weiß
    oder hellem Blau bleibt der Kontrast über 8 : 1. */
 .ki-tag { position: absolute; z-index: 3; right: 10px; bottom: 10px; font: 700 0.6875rem/1 var(--font-body); letter-spacing: 0.06em; color: #f7f5f0; background: rgba(10, 12, 14, 0.75); border-radius: 3px; padding: 3px 5px; cursor: help; }
-.hero > .ki-tag { bottom: calc(clamp(96px, 14vw, 180px) + 14px); }   /* über dem Karussell, das den Aufmacher unten überdeckt */
+.hero > .ki-tag { bottom: calc(clamp(96px, 14vw, 180px) + 14px); }   /* über dem Video, das den Aufmacher unten überdeckt */
 @media (max-width: 760px) {
   .cta > .ki-tag { bottom: auto; top: calc(min(68vw, 440px) - 72px); }
 }
@@ -111,26 +111,24 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
 @media (max-width: 360px) { .wordmark span { display: none; } .nav { gap: 0 11px; } .nav a { font-size: 0.875rem; } }
 
 /* ---------- Aufmacher der Startseite -------------------------------------------------------- */
-.hero { position: relative; overflow: hidden; isolation: isolate; }
-.hero-media { position: absolute; inset: 0; z-index: -2; }
-.hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: 100% 45%; }
-/* Breite Bildschirme (ab 1551 px): Bild endet über dem Karussell und läuft weich aus, das Fahrzeug endet über dem Ausblenden.
-   Ab 1800 px wächst es nicht mehr mit und steht rechts, sonst reicht die Höhe nicht für Leitstelle und Fahrzeug zusammen und die
-   Fenster rutschen unter die Navigation; sein linker Rand läuft aus. */
-@media (min-width: 1551px) {
-  .hero-media img { width: min(100%, 1800px); margin-left: auto; height: calc(100% - clamp(96px, 14vw, 180px));
-    -webkit-mask-image: linear-gradient(180deg, #000 87%, transparent), linear-gradient(90deg, transparent, #000 300px); -webkit-mask-composite: source-in;
-    mask-image: linear-gradient(180deg, #000 87%, transparent), linear-gradient(90deg, transparent, #000 300px); mask-composite: intersect; }
-}
-/* Links unter dem Text abgedunkelt, vor der Front des Fahrzeugs (52,8 % der Bildbreite) ist die Abdunklung zu Ende */
+/* Der Rettungswagen liegt im Bild bei 44–92 % der Breite und 10–75 % der Höhe. --bild-b und --bild-h sind die Fläche des Bildes (rechts oben im Aufmacher),
+   --bild-x und --bild-y seine Lage darin. Ab 1551 px: Text neben dem Bild, Bild endet über dem Video und läuft unten und links weich aus; der Wagen endet über dem Ausblenden.
+   Bis 1795 px bestimmt die Höhe den Maßstab, das Bild ist dann breiter als seine Fläche: --bild-x schiebt den Wagen vom Text weg. Die Mindesthöhe sorgt bei großen Breiten dafür,
+   dass er auch dann über dem Ausblenden endet, wenn der Text kürzer ist als das Bild. */
+.hero { --bild-b: clamp(1400px, 78vw, 1800px); --bild-h: calc(100% - clamp(96px, 14vw, 180px)); --bild-x: 30%; --bild-y: 0%; position: relative; overflow: hidden; isolation: isolate; min-height: calc(0.5 * var(--bild-b) + clamp(96px, 14vw, 180px)); }
+.hero-media { position: absolute; top: 0; right: 0; width: var(--bild-b); height: var(--bild-h); z-index: -2; }
+.hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: var(--bild-x) var(--bild-y);
+  -webkit-mask-image: linear-gradient(180deg, #000 87%, transparent), linear-gradient(90deg, transparent, #000 300px); -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(180deg, #000 87%, transparent), linear-gradient(90deg, transparent, #000 300px); mask-composite: intersect; }
+/* Links unter dem Text abgedunkelt, vor dem Heck des Wagens (44,25 % der Bildbreite) ist die Abdunklung zu Ende; oben nur so weit, wie die Navigation reicht */
 .hero-shade { position: absolute; inset: 0; z-index: -1; background:
-  linear-gradient(90deg, rgba(var(--shade), 0.96) 0, rgba(var(--shade), 0.9) calc(var(--gutter) + 520px), rgba(var(--shade), 0) calc(100vw - 0.472 * min(100vw, 1800px) - 16px)),
-  linear-gradient(0deg, var(--bg) 0%, rgba(var(--shade), 0) 34%),
-  linear-gradient(180deg, rgba(var(--shade), 0.7) 0%, rgba(var(--shade), 0) 18%); }
-/* Blauer Schein auf den beiden Blaulichtern auf dem Dach: Lage im Bild 63,3 % / 42,3 %. Aus Bildbreite und object-position
-   gerechnet, damit er bei jeder Fensterbreite sitzt; ändert sich dort etwas, muss es hier mit. */
-.hero-glow { position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0; }
-.hero > .hero-glow { --b: min(100vw, 1800px); background: radial-gradient(calc(0.11 * var(--b)) calc(0.05 * var(--b)) at calc(100% - 0.367 * min(100%, 1800px)) calc(0.45 * (100% - clamp(96px, 14vw, 180px)) - 0.0155 * var(--b)), rgba(61, 123, 255, 0.35), transparent 70%); }
+  linear-gradient(0deg, var(--bg) 0%, rgba(var(--shade), 0) 22%),
+  linear-gradient(90deg, rgba(var(--shade), 0.96) 0, rgba(var(--shade), 0.9) calc(var(--gutter) + 520px), rgba(var(--shade), 0) calc(100vw - 0.5575 * var(--bild-b) - 16px)),
+  linear-gradient(180deg, rgba(var(--shade), 0.7) 0%, rgba(var(--shade), 0) 76px); }
+/* Blauer Schein auf den Dach-Blaulichtern: eine Grafik in den Maßen des Bildes (1672 × 941), Lichter bei 1173 / 128. Sie skaliert und liegt
+   wie das Bild (gleiche Fläche, cover, gleiche Lage) und bleibt so bei jeder Breite auf den Lichtern. */
+.hero-glow { position: absolute; top: 0; right: 0; width: var(--bild-b); height: var(--bild-h); z-index: -1; pointer-events: none; opacity: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1672' height='941' viewBox='0 0 1672 941'%3E%3CradialGradient id='g'%3E%3Cstop stop-color='%233d7bff' stop-opacity='.35'/%3E%3Cstop offset='.7' stop-color='%233d7bff' stop-opacity='0'/%3E%3C/radialGradient%3E%3Cellipse cx='1173' cy='128' rx='300' ry='130' fill='url(%23g)'/%3E%3C/svg%3E") var(--bild-x) var(--bild-y) / cover no-repeat; }
 @media (prefers-reduced-motion: no-preference) {
   .hero-glow { animation: glow 2.6s ease-in-out infinite alternate; }
   @keyframes glow { from { opacity: 0; } to { opacity: 1; } }
@@ -147,32 +145,58 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
 /* Lesbarkeit über Bildern allein über die Abdunklung des Bildes (kein Schatten um die Schrift, der sie weich macht) */
 .hero .eyebrow, .band .eyebrow { color: #bcd5ee; }   /* über Bildern ein helleres Blau, damit es auch vor Lichtern 4,5 : 1 erreicht */
 /* Bis 1550 px (Handy, Tablett, Laptops): Bild oben, Text darunter auf ruhigem Grund. Kopfzeile über dem Bild statt darauf,
-   Bild läuft unten weich aus (das Fahrzeug endet darüber), Text beginnt erst darunter. --hero-bild ist die Höhe des Bildes;
-   der Abstand zum Karussell bleibt ab 761 px wie auf breiten Bildschirmen. */
+   Bild läuft unten weich aus (der Wagen endet darüber), Text beginnt erst darunter. --hero-bild ist die Höhe des Bildes;
+   der Abstand zum Video bleibt ab 761 px wie auf breiten Bildschirmen. Ab 1401 px wächst das Bild nicht mehr mit, sonst passt der Wagen nicht in die Höhe; es steht rechts, links läuft es aus. */
 @media (max-width: 1550px) {
-  .hero { --hero-bild: min(46vw, max(520px, 37.5vw)); }   /* ab 1387 px mit der Breite höher, damit Leitstelle und Fahrzeug Platz haben */
+  .hero { --hero-bild: min(46vw, 640px); --bild-b: min(100%, 1400px); --bild-h: var(--hero-bild); --bild-x: 100%; --bild-y: 34%; min-height: 0; }
   .site-head.over { position: relative; background: var(--bg); border-bottom: 1px solid var(--line); }
-  .hero-media { bottom: auto; height: var(--hero-bild); }
-  .hero-media img { object-position: 100% 61%; -webkit-mask-image: linear-gradient(180deg, #000 86%, transparent); mask-image: linear-gradient(180deg, #000 86%, transparent); }
   .hero-shade { background: none; }
-  .hero > .hero-glow { bottom: auto; height: var(--hero-bild); background: radial-gradient(11vw 5vw at 63.3% calc(61% - 10.55vw), rgba(61, 123, 255, 0.35), transparent 70%); }
   .hero .wrap { padding-top: calc(var(--hero-bild) + 4px); }
   .hero > .ki-tag { bottom: auto; top: calc(var(--hero-bild) - 40px); }   /* unten rechts im Bild, über dem Text */
 }
-/* Handy: Bild höher geschnitten, rechts ausgerichtet; das Karussell folgt mit kleinem Abstand */
+@media (max-width: 1400px) {
+  .hero-media img { -webkit-mask-image: linear-gradient(180deg, #000 88%, transparent); -webkit-mask-composite: source-over; mask-image: linear-gradient(180deg, #000 88%, transparent); mask-composite: add; }
+}
+/* Handy: Bild höher geschnitten, rechts ausgerichtet; das Video folgt mit kleinem Abstand */
 @media (max-width: 760px) {
-  .hero { --hero-bild: min(80vw, 520px); }
+  .hero { --hero-bild: min(80vw, 520px); --bild-b: 100%; }
   .hero-media img { -webkit-mask-image: linear-gradient(180deg, #000 82%, transparent); mask-image: linear-gradient(180deg, #000 82%, transparent); }
-  .hero > .hero-glow { background: radial-gradient(calc(0.2 * var(--hero-bild)) calc(0.09 * var(--hero-bild)) at calc(100% - 0.652 * var(--hero-bild)) 42.3%, rgba(61, 123, 255, 0.35), transparent 70%); }
   .hero .wrap { padding-bottom: 40px; }
   .actions .btn { flex: 1 1 auto; }
+}
+
+/* ---------- Demo-Video ---------------------------------------------------------------------- */
+/* Steht im Monitorrahmen unter dem Titelbild und überdeckt den Aufmacher unten. So breit wie das vordere Foto im Karussell auf „Funktionen“, passt in die Fensterhöhe. */
+.film { position: relative; z-index: 2; margin-top: clamp(-180px, -14vw, -96px); }
+.film-monitor.mon { width: min(100%, clamp(1040px, 62vw, 1552px), max(60%, calc((100vh - 190px) * 16 / 9 + 16px))); margin-inline: auto; }
+@supports (height: 100svh) { .film-monitor.mon { width: min(100%, clamp(1040px, 62vw, 1552px), max(60%, calc((100svh - 190px) * 16 / 9 + 16px))); } }
+.film-monitor video { display: block; width: 100%; height: 100%; object-fit: contain; background: #000; }
+.film-monitor video::cue { font-family: var(--font-body), sans-serif; font-size: 72%; color: #f7f5f0; background: rgba(14, 16, 18, 0.88); }
+.film-monitor video::cue(b) { font-weight: 600; color: var(--blue); }
+.film-start { position: absolute; left: 50%; top: 50%; translate: -50% -50%; display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 0 26px 0 20px; border: 1px solid rgba(247, 245, 240, 0.55); border-radius: 40px;
+  background: rgba(14, 16, 18, 0.82); color: #f7f5f0; cursor: pointer; }
+.film-start:hover { background: #4874a0; border-color: #f7f5f0; }
+.film-start svg { width: 34px; height: 34px; }
+.film-zeit { font: 500 1.0625rem/1 var(--font-mono); }
+.film-start[hidden] { display: none; }
+.film-fuss { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: var(--a-1) var(--a-4); padding-top: var(--a-1); }
+.film-hinweis { padding-top: 0; margin-inline: 0; }
+.film-ut { min-height: 36px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: 4px; background: transparent; color: var(--ink); font: 500 0.8125rem/1 var(--font-mono); cursor: pointer; }
+.film-ut:hover { border-color: var(--blue); color: var(--blue); }
+.film-ut[hidden] { display: none; }
+@media (max-width: 760px) {
+  .film { margin-top: 8px; }
+  .film-monitor video::cue { font-size: 135%; }
+  .film-start { min-height: 52px; padding: 0 20px 0 14px; }
+  .film-start svg { width: 28px; height: 28px; }
 }
 
 /* ---------- Bildschirmfotos zum Blättern ---------------------------------------------------- */
 /* Ohne JavaScript: ein Monitor mit seitlich scrollbarem Streifen (.slides). Mit JavaScript (karussell.js) wird daraus eine
    Reihe (.cf): vorn das aktuelle Foto im Monitorrahmen, links und rechts die Nachbarn kleiner, nach hinten versetzt und
    abgedunkelt. Breite des vorderen Monitors und Zahl der Seitenfotos je Breite stehen hier, die Lage rechnet das Skript. */
-.showcase { position: relative; z-index: 2; margin-top: clamp(-180px, -14vw, -96px); overflow-x: clip; }
+.showcase { position: relative; z-index: 2; overflow-x: clip; }
+.page-hero + .showcase { padding-top: var(--kopf); }
 .stage { position: relative; max-width: 1180px; margin-inline: auto; --cf-w: 64%; --cf-seiten: 1; --cf-x1: 0.64; --cf-s1: 0.72; --cf-s2: 0.52; --cf-r: 16; --cf-d1: 0.42; --cf-d2: 0.62; }
 .mon { margin: 0; }
 .bezel { background: #0b0c0e; border-radius: 10px; padding: 8px; box-shadow: 0 0 0 1px #3a3e44, 0 40px 80px -20px rgba(0, 0, 0, 0.8), 0 0 90px -30px rgba(61, 123, 255, 0.45); }
@@ -235,7 +259,6 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
   @supports (height: 100svh) { .stage { --cf-w: clamp(55%, calc((100svh - 330px) * 16 / 9 + 16px), 62%); } }
 }
 @media (max-width: 760px) {
-  .showcase { margin-top: 8px; }
   .stage { --cf-w: 100%; --cf-x1: 0.66; --cf-s1: 0.74; --cf-r: 10; }   /* Handy: das breite Foto über die volle Inhaltsbreite; die Nachbarn schauen im Seitenrand hervor */
   .bezel { padding: 5px; border-radius: 8px; }
   .mon::after { height: 12px; }
@@ -369,9 +392,6 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
 /* Bildbänder und das Interesse-Bild laufen oben weich in den Seitengrund aus (Handy: eigene Darstellung, unten) */
 @media (min-width: 561px) { .band-img { -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 140px); mask-image: linear-gradient(180deg, transparent 0, #000 140px); } }
 @media (min-width: 761px) { .cta-bg img { -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 140px); mask-image: linear-gradient(180deg, transparent 0, #000 140px); } }
-/* Blauer Schein auf den Dach-Blaulichtern des RTW-Bildes: eine Grafik in den Maßen des Bildes (1672 × 941), Lichter bei 1173 / 128.
-   Sie skaliert und liegt wie das Bild (cover, Lage wie dessen object-position) und bleibt so bei jeder Breite auf den Lichtern. */
-.band > .band-schein { z-index: 1; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1672' height='941' viewBox='0 0 1672 941'%3E%3CradialGradient id='g'%3E%3Cstop stop-color='%233d7bff' stop-opacity='.35'/%3E%3Cstop offset='.7' stop-color='%233d7bff' stop-opacity='0'/%3E%3C/radialGradient%3E%3Cellipse cx='1173' cy='128' rx='300' ry='130' fill='url(%23g)'/%3E%3C/svg%3E") 70% 8% / cover no-repeat; }
 .band-shade { position: absolute; inset: 0; z-index: 1; background: linear-gradient(0deg, rgba(var(--shade), 0.95) 0%, rgba(var(--shade), 0.55) 45%, rgba(var(--shade), 0.2) 100%); }
 .band .wrap { position: relative; z-index: 2; width: 100%; padding-block: var(--a-7); display: grid; gap: var(--a-3); }
 .band h2 { font-size: clamp(2.1rem, 4.6vw, 3rem); }
@@ -380,7 +400,6 @@ main > .section:last-child { padding-bottom: var(--abschnitt); }   /* Luft vor �
   .band { display: block; min-height: 0 !important; }
   .band-img { position: relative; display: block; height: auto; aspect-ratio: 16 / 10; -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent); mask-image: linear-gradient(180deg, #000 72%, transparent); }
   .band-shade { display: none; }
-  .band .hero-glow { bottom: auto; height: auto; aspect-ratio: 16 / 10; }
   .band .wrap { padding-block: 4px 8px; }
 }
 .band p { color: #d6d5d1; font-size: 1.125rem; }

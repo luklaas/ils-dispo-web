@@ -115,6 +115,18 @@
     ton.addEventListener("ended", function () { ton.currentTime = 0; zeit.textContent = gesamt; zeigen(false); });
   });
 
+  /* ---- Demo-Video: großer Knopf auf dem Vorschaubild. Geladen wird erst beim Klick, von selbst spielt nichts; danach die Bedienleiste des Browsers.
+     Untertitel-Knopf unter dem Video, weil Chrome die Untertitel sonst nur im Menü der Bedienleiste anbietet. ---- */
+  document.querySelectorAll("[data-film]").forEach(function (f) {
+    var film = f.querySelector("video"), knopf = f.querySelector(".film-start"), ut = f.querySelector(".film-ut"), spur = film.textTracks[0];
+    knopf.hidden = false;
+    knopf.addEventListener("click", function () { film.play(); film.focus({ preventScroll: true }); });
+    film.addEventListener("play", function () { knopf.hidden = true; });
+    ut.hidden = false;
+    ut.addEventListener("click", function () { spur.mode = spur.mode === "hidden" || spur.mode === "disabled" ? "showing" : "hidden"; });
+    film.textTracks.addEventListener("change", function () { ut.textContent = spur.mode === "showing" ? "Untertitel an" : "Untertitel aus"; });
+  });
+
   if (ruhig || !("IntersectionObserver" in window)) return;
 
   /* ---- Sanftes Einblenden: nur, was beim Laden noch unterhalb des Fensters liegt. Geprüft wird beim Scrollen
