@@ -120,7 +120,8 @@
   document.querySelectorAll("[data-film]").forEach(function (f) {
     var film = f.querySelector("video"), knopf = f.querySelector(".film-start"), ut = f.querySelector(".film-ut"), spur = film.textTracks[0];
     knopf.hidden = false;
-    knopf.addEventListener("click", function () { film.play(); film.focus({ preventScroll: true }); });
+    // Am Abspielen hängt sonst nichts: Pause, Weiterspielen und Vollbild bleiben ganz beim Player. Scheitert es, zeigt das seine Leiste
+    knopf.addEventListener("click", function () { var los = film.play(); if (los) los.catch(function () {}); film.focus({ preventScroll: true }); });
     film.addEventListener("play", function () { knopf.hidden = true; });
     ut.hidden = false;
     ut.addEventListener("click", function () { spur.mode = spur.mode === "hidden" || spur.mode === "disabled" ? "showing" : "hidden"; });
