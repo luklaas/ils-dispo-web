@@ -137,6 +137,8 @@
   window.addEventListener("resize", rasterBald);
   document.addEventListener("transitionend", function (e) { if (e.propertyName === "transform") rasterBald(); });   // nach dem Einblenden
   document.addEventListener("toggle", rasterBald, true);   // aufgeklappte Fahrzeuggruppe
+  // Ein nachgeladenes Bild kann alles darunter um einen Bruchteil verschieben (die Monitore der Kacheln stehen in der Höhe ihrer Datei)
+  document.addEventListener("load", function (e) { if (e.target && e.target.tagName === "IMG") rasterBald(); }, true);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(rasterBald);
   rasterBald();
 
@@ -249,7 +251,7 @@
   if (ruhig || !("IntersectionObserver" in window)) return;
 
   /* ---- Lichtkegel auf den Karten: folgt dem Zeiger (--mx, --my; gezeichnet wird er im CSS) ---- */
-  document.querySelectorAll(".weiter-karte").forEach(function (k) {
+  document.querySelectorAll(".weiter-karte, .kachel").forEach(function (k) {
     k.addEventListener("pointermove", function (e) {
       var r = k.getBoundingClientRect();
       k.style.setProperty("--mx", (e.clientX - r.left) + "px");
@@ -261,7 +263,7 @@
      (nicht über IntersectionObserver), damit auch nach einem Sprung – Ende-Taste, Sprungmarke – nichts unsichtbar bleibt.
      Die Fahrzeugreihe fährt von links ein (.einfahren), die Karten am Seitenende kommen nacheinander (--i). ---- */
   var offen = [];
-  document.querySelectorAll(".section-head, .schicht-teil, .schicht-liste, .schicht-liste + .weiter-link, .band > .wrap, .ablauf, .phase, .area, .lineup-scroll, .fleet-note, .cta-text, .weiter h2, .feature, .weiter-karte, .designs, .vergleich, .karte-gebiet, .area-grid, .fz-gruppe, .table-scroll, .two > *, .schluss, .eintrag, .tz-beispiele, .tz-status").forEach(function (z) {
+  document.querySelectorAll(".section-head, .kachel, .kacheln + .weiter-link, .band > .wrap, .ablauf, .phase, .area, .lineup-scroll, .fleet-note, .cta-text, .weiter h2, .feature, .weiter-karte, .designs, .vergleich, .karte-gebiet, .area-grid, .fz-gruppe, .table-scroll, .two > *, .schluss, .eintrag, .tz-beispiele, .tz-status").forEach(function (z) {
     // Scroll-Geschichte: als Ganzes; ohne sie jeder Schritt für sich
     if (z.classList.contains("phase") ? !!z.closest(".ablauf.an") : (z.classList.contains("ablauf") && !z.classList.contains("an"))) return;
     if (z.getBoundingClientRect().top < window.innerHeight) return;
@@ -269,7 +271,9 @@
       [].forEach.call(z.querySelectorAll("figure"), function (f, i) { f.style.setProperty("--i", i); });
       z.classList.add("einfahren");
     } else {
+      // Karten und Kacheln einer Reihe kommen nacheinander: Verzögerung nach der Spalte, in der sie beginnen
       if (z.classList.contains("weiter-karte")) z.style.setProperty("--i", [].indexOf.call(z.parentNode.children, z));
+      if (z.classList.contains("kachel")) z.style.setProperty("--i", Math.round((z.offsetLeft / z.parentNode.clientWidth) * 3));
       z.classList.add("einblenden");
     }
     offen.push(z);
@@ -292,8 +296,8 @@
   function anstossen() { if (!geplant) { geplant = true; requestAnimationFrame(einblenden); } }
   if (offen.length) { window.addEventListener("scroll", anstossen, { passive: true }); window.addEventListener("resize", anstossen); }
 
-  /* ---- Zahlen im Gebiet zählen einmal hoch (der Endwert steht im HTML) ---- */
-  var zahlen = document.querySelectorAll(".stats b");
+  /* ---- Zahlen im Gebiet und in der Gebiets-Kachel zählen einmal hoch (der Endwert steht im HTML) ---- */
+  var zahlen = document.querySelectorAll(".stats b, .zahlenpaar b");
   var io2 = new IntersectionObserver(function (eintraege) {
     eintraege.forEach(function (e) {
       if (!e.isIntersecting) return;

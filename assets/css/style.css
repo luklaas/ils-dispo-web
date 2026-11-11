@@ -180,6 +180,7 @@ h1 em, h2 em { font-style: normal; color: var(--blau-hell); }   /* einzelne Wör
   .js .mehr-knopf { display: none; }
   .js .mehr-liste { display: grid; position: static; min-width: 0; gap: 2px; padding: 0; border: 0; border-radius: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none; }
   .js .nav-liste a { display: flex; min-height: 54px; padding: 0 16px; border-radius: 14px; font: 600 1.25rem/1.1 var(--font-display); letter-spacing: 0.01em; }
+  .js .mit-flaeche > li > a[aria-current="page"] { background: rgba(255, 255, 255, 0.13); }   /* die aktuelle Seite: helle Fläche direkt am Eintrag (die gleitende Fläche gibt es hier nicht) */
   .js .nav .nav-cta { justify-content: center; min-height: 54px; border-radius: 14px; font-size: 1.05rem; }
 }
 @media (max-width: 760px) and (prefers-reduced-motion: no-preference) {
@@ -435,12 +436,125 @@ h1 em, h2 em { font-style: normal; color: var(--blau-hell); }   /* einzelne Wör
 .st-8 { background: #2c4568; color: #fff; }
 /* Sehr breite Bildschirme: der Abschnitt bleibt höchstens 1600 px breit und steht mittig, die Überschrift mit ihm */
 #vorteile .wrap, #ablauf .wrap { max-width: calc(1600px + 2 * var(--gutter)); }
-.schicht { display: grid; gap: clamp(56px, 7vw, 104px); }
-.schicht-teil { display: grid; gap: var(--a-5); align-items: center; min-width: 0; }
-.schicht-text { display: grid; gap: var(--a-3); align-content: start; }
-.schicht-text h3 { font-size: clamp(1.75rem, 2.6vw, 2.3rem); }
-.schicht-text p { color: var(--ink-soft); font-size: 1.125rem; line-height: 1.55; max-width: 46ch; }
-.schicht-text .weiter-link { margin-top: 0; }
+/* ---------- Kachel-Raster „Eine Schicht in der Leitstelle“ (Startseite) --------------------------------------------------
+   Bis 620 px eine Spalte, bis 1040 px zwei, darüber sechs: Notruf groß (4 × 2), daneben Gebiet und Luftbild; darunter
+   genauso Bildschirme groß (4 × 2), daneben Ablauf und Rechner; zuletzt Arbeitsplatz und Tastatur je zur Hälfte. Die Fotos stehen ab 761 px in festen Stufen (bauen.py, unten);
+   wo ein Rahmen kleiner ist als sein Foto, schneidet er rechts und unten ab. */
+.kacheln { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.kachel { --mx: 50%; --my: 0%; --innen: clamp(20px, 2.2vw, 28px); position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; min-width: 0; padding: var(--innen); border: 1px solid var(--kante); border-radius: var(--radius); background: linear-gradient(180deg, var(--surface-2), var(--surface)); box-shadow: 0 22px 48px -30px rgba(var(--tief), 1), inset 0 1px 0 rgba(255, 255, 255, 0.1); overflow: hidden; overflow: clip; }
+.kachel::before { content: ""; position: absolute; inset: 0; background: radial-gradient(320px circle at var(--mx) var(--my), rgba(var(--licht-rgb), 0.2), transparent 70%); opacity: 0; pointer-events: none; }
+.kachel > * { position: relative; }
+.kachel h3 { font-size: clamp(1.5rem, 2.2vw, 1.9rem); }
+.kachel p { color: var(--ink); max-width: 46ch; }   /* auf dem helleren Verlauf nicht kontrastärmer als bisher */
+.kachel .weiter-link { margin-top: auto; font-size: .97rem; color: var(--blau-hell); }   /* helleres Blau: auf der Kachel so kontrastreich wie der Link bisher auf dem Abschnitt (8 : 1) */
+.kachel-quelle { font-size: .75rem; line-height: 1.4; color: var(--ink-soft); }
+.kachel-quelle a { color: inherit; }
+@media (hover: hover) {
+  .kachel:hover { border-color: rgba(var(--licht-rgb), 0.5); box-shadow: 0 30px 60px -30px rgba(var(--tief), 1), 0 0 60px -24px rgba(var(--licht-rgb), 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.14); }
+  .kachel:hover::before { opacity: 1; }
+}
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .kachel { transition: transform .22s ease, border-color .22s ease, box-shadow .22s ease; }
+  .kachel::before { transition: opacity .25s ease; }
+  .kachel:hover { transform: translateY(-4px); }   /* 4 px: Die Fotos bleiben auch bei 125 und 150 % auf dem Bildschirmraster */
+}
+.kacheln + .weiter-link { margin-top: clamp(24px, 3vw, 36px); }
+
+/* Foto in einer Kachel: der Rahmen schneidet ab, das Foto behält seine Stufe */
+.kachel-bild { align-self: stretch; min-height: 0; overflow: hidden; overflow: clip; }   /* clip: Der Rahmen rollt auch nicht, wenn der Link den Fokus bekommt */
+.kachel-bild .shot-link { width: 100%; max-width: none; border-radius: 0; box-shadow: none; }
+.kachel-bild .shot-link::after { content: none; }
+.kachel-bild .shot-link:hover { box-shadow: none; }
+.kachel-bild .shot-link:focus-visible { outline-offset: -4px; }
+/* Fokus auf einem Foto: der Umriss liegt um den ganzen Rahmen bzw. um die Luftbild-Kachel (das Foto selbst ist größer als sein Rahmen) */
+@supports selector(:has(a)) {
+  .kachel-bild .shot-link:focus-visible { outline: none; }
+  .k-notruf .kachel-bild:has(.shot-link:focus-visible) { outline: 2px solid var(--blue); outline-offset: -4px; }
+  .k-luft:has(.shot-link:focus-visible) { outline: 2px solid var(--blue); outline-offset: 3px; }
+}
+@media (min-width: 761px) { .kachel-bild .shot-link { width: var(--raster-w, 100%); } }
+
+/* Notruf: große Kachel, das Foto läuft unten rechts aus der Kachel */
+.kachel-kopf { display: grid; gap: 12px; justify-items: start; max-width: 520px; }
+.kachel-kopf .weiter-link { margin-top: 0; }
+.k-notruf { padding-bottom: 0; }
+.k-notruf h3 { font-size: clamp(2rem, 3.6vw, 3rem); }
+.k-notruf .kachel-kopf > p { font-size: 1.125rem; }
+.k-notruf .kachel-bild { margin: 8px calc(-1 * var(--innen)) 0 0; aspect-ratio: 4 / 3; border: 1px solid var(--kante); border-width: 1px 0 0 1px; border-radius: 12px 0 0 0; background: #15171a; box-shadow: 0 0 80px -20px rgba(var(--licht-rgb), 0.55); }
+@media (min-width: 621px) { .k-notruf .kachel-bild { margin-left: clamp(40px, 12%, 120px); aspect-ratio: 16 / 9; } }
+
+/* Gebiet: zwei Kennzahlen */
+.zahlenpaar { display: flex; gap: 22px; margin-bottom: 4px; }
+.zahlenpaar div { display: grid; gap: 4px; }
+.zahlenpaar b { font: 700 clamp(2.6rem, 4.2vw, 3.6rem)/0.95 var(--font-display); color: var(--ink-strong); font-variant-numeric: tabular-nums; }
+.zahlenpaar span { font: 500 0.6875rem/1.3 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+
+/* Luftbild: das Foto liegt oben in der Kachel und läuft nach unten in ihren Grund aus, der Text steht darauf */
+.k-luft { --frei: clamp(84px, 7vw, 116px); justify-content: flex-end; padding-top: calc(var(--frei) + var(--innen)); background: #1b1e22; }
+.k-luft .kachel-bild { position: absolute; inset: 0 0 auto 0; margin: 0; }
+.k-luft .kachel-bild::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(27, 30, 34, 0.05) 0, rgba(27, 30, 34, 0.88) calc(var(--frei) + 10px), rgba(27, 30, 34, 0.97) 100%); }
+.k-luft .weiter-link { margin-top: 0; }
+
+/* Mehrere Bildschirme: drei Programmfenster im schmalen Monitorrahmen. Bis 620 px die Karte über die ganze Breite, darunter
+   Einsatz und Tableau; bis 760 px drei nebeneinander, fließend */
+.kachel-schirme { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; align-self: stretch; margin-bottom: 8px; }
+.kachel-schirme .monitor:first-child { grid-column: 1 / -1; }
+@media (min-width: 621px) { .kachel-schirme { grid-template-columns: repeat(3, minmax(0, 1fr)); } .kachel-schirme .monitor:first-child { grid-column: auto; } }
+.kachel-schirme .monitor { gap: 6px; }
+/* Ab 761 px stehen die Monitore in ihrer Stufe links nebeneinander, bündig mit dem Text darunter. Das Foto steht in der Höhe
+   seiner Datei statt im festen 16:9-Rahmen: so bleibt es bei jeder Stufe und Skalierung 1:1 (bei 125 % ein halbes Pixel höher) */
+@media (min-width: 761px) {
+  .kachel-schirme { display: flex; }
+  .kachel-schirme .monitor { flex: 0 1 calc(var(--raster-w, 224px) + 8px); }
+  .kachel-schirme .monitor:first-child { flex-basis: calc(var(--raster-gross, var(--raster-w, 224px)) + 8px); }
+  .kachel-schirme .monitor:first-child .mon-link { width: calc(var(--raster-gross, var(--raster-w, calc(100% - 8px))) + 8px); }
+  .kachel-schirme .screen { aspect-ratio: auto; }
+  .kachel-schirme .mon-link img { height: auto; }
+}
+.kachel-schirme .mon-link { width: calc(var(--raster-w, calc(100% - 8px)) + 8px); border-radius: 9px; }
+.kachel-schirme .bezel { padding: 4px; border-radius: 9px; box-shadow: 0 0 0 1px #3a3e44, inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 18px 36px -18px rgba(0, 0, 0, 0.8); }
+.kachel-schirme .screen { border-radius: 5px; }
+.kachel-schirme .monitor figcaption b { font: 500 0.6875rem/1.3 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+
+/* Ablauf: die vier Schritte als Kette */
+.kette { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 4px; }
+.kette li { font: 500 0.8125rem/1 var(--font-mono); letter-spacing: 0.04em; color: var(--ink); padding: 9px 11px; border-radius: 8px; border: 1px solid var(--line); background: rgba(12, 14, 16, 0.6); }
+.kette li + li::before { content: "→"; content: "→" / ""; color: var(--blue); margin-right: 8px; }
+
+/* Rechner, Arbeitsplatz, Tastatur */
+.kachel-marke { display: inline-flex; align-items: center; gap: 10px; font: 600 0.75rem/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.kachel-marke i { width: 10px; height: 10px; border-radius: 50%; background: var(--fms-1); box-shadow: 0 0 0 5px rgba(67, 160, 71, 0.18); }
+.kachel-designs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; align-self: stretch; margin-bottom: 6px; }
+.kachel-designs img { width: 100%; height: auto; border-radius: 6px; box-shadow: 0 0 0 1px var(--line); }
+@media (min-width: 761px) { .kachel-designs { grid-template-columns: repeat(3, var(--raster-w, minmax(0, 1fr))); justify-content: start; } }
+.tasten { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-bottom: 6px; }
+.tasten li { display: inline-flex; align-items: center; gap: 8px; font-size: 0.875rem; color: var(--ink-soft); }
+kbd { font: 600 0.8125rem/1 var(--font-mono); color: var(--ink-strong); padding: 7px 9px; border-radius: 7px; background: linear-gradient(180deg, #343941, #23272c); border: 1px solid #4a505a; border-bottom-width: 3px; }
+
+/* Von 1041 bis 1579 px (Grenze wie in bauen.py): die Karte groß, daneben Einsatz und Tableau übereinander. Der große Monitor
+   ist 2 × klein + 96 px breit und damit so hoch wie die beiden kleinen zusammen; die Kachel füllt so die Höhe ihrer Nachbarn.
+   Darüber stehen die drei wieder nebeneinander. */
+@media (min-width: 1041px) and (max-width: 1579.98px) {
+  .kachel-schirme { display: grid; grid-template-columns: max-content max-content; justify-content: start; align-items: start; }
+  .kachel-schirme .monitor { width: calc(var(--raster-w, 208px) + 8px); }
+  .kachel-schirme .monitor:first-child { grid-row: span 2; width: calc(var(--raster-gross, 512px) + 8px); }
+}
+@media (min-width: 621px) {
+  .kacheln { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .k-notruf, .k-schirme, .k-ablauf, .k-tasten { grid-column: span 2; }
+}
+@media (min-width: 1041px) {
+  .kacheln { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .kachel { grid-column: span 2; }
+  .k-notruf, .k-schirme { grid-column: span 4; grid-row: span 2; }
+  .k-platz, .k-tasten { grid-column: span 3; }
+  .k-tasten .tasten { display: grid; gap: 10px; }   /* die vier Tasten untereinander: so ist die Kachel so hoch wie „Dein Arbeitsplatz“ daneben */
+  .k-notruf { min-height: 560px; }
+  .k-gebiet, .k-luft { min-height: 272px; }
+  .kachel-kopf { margin-bottom: 8px; }
+  /* Das Foto füllt den Rest der Kachel, höchstens in seiner eigenen Höhe (Format 4:3) */
+  .k-notruf .kachel-bild { aspect-ratio: auto; flex: 1 1 220px; min-height: 220px; max-height: calc(var(--raster-w, 640px) * 0.75); margin-top: auto; }
+}
 /* Hörprobe im Abschnitt „Notrufe zum Sprechen“: Ohne JavaScript bleibt der Abspieler des Browsers, mit JavaScript ein schlichter Knopf */
 .hoerprobe { display: grid; gap: var(--a-3); justify-items: start; max-width: 46ch; margin-block: var(--a-2); }
 .hoerprobe audio { width: 100%; }
@@ -450,33 +564,12 @@ h1 em, h2 em { font-style: normal; color: var(--blau-hell); }   /* einzelne Wör
 .hoerprobe-knopf svg { width: 16px; height: 16px; flex: none; }
 .hoerprobe-knopf:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
 .hoerprobe-zeit { color: var(--ink-soft); font-weight: 500; }
-.schicht-text .hoerprobe-hinweis { font-size: .8125rem; color: var(--muted); line-height: 1.4; }
-.schicht-bild { min-width: 0; }
-.schicht-bild figcaption small { display: block; margin-top: 4px; }
-.schicht-teil:not(.gespiegelt) .shot-link { margin-left: auto; }   /* Foto links: an den Text heranrücken, wenn es schmaler als seine Spalte ist */
-.st-legende { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-left: 6px; white-space: nowrap; }
-.st-legende .st { width: 18px; height: 18px; font-size: .75rem; }
-.st-legende .st:nth-of-type(2) { margin-left: 8px; }
-.schicht-monitore { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--a-4) var(--a-5); }
-.schicht-monitore .monitor figcaption b { font-size: 1.05rem; }
-.schicht-monitore .monitor figcaption span { font-size: .875rem; }
-.schicht-quelle { grid-column: 1 / -1; text-align: center; font-size: .8125rem; color: var(--muted); max-width: none; }
-@media (min-width: 900px) {
-  .schicht-teil { grid-template-columns: minmax(0, min(960px, 60%)) minmax(0, 1fr); column-gap: clamp(40px, 5vw, 80px); }
-  .schicht-teil.gespiegelt { grid-template-columns: minmax(0, 1fr) minmax(0, min(960px, 60%)); }
-  .schicht-teil.gespiegelt .schicht-bild { order: 2; }
-}
-@media (max-width: 899px) { .schicht-teil .schicht-text { order: -1; } }   /* Handy und Tablett: erst Überschrift und Text, dann das Bild */
-/* Die übrigen Funktionen: kurze Liste ohne Symbole */
-.schicht-liste { display: grid; gap: 0 var(--a-6); margin-top: clamp(56px, 7vw, 104px); border-top: 1px solid var(--line); }
-@media (min-width: 700px) { .schicht-liste { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 1200px) { .schicht-liste { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.schicht-liste li { display: grid; gap: 6px; align-content: start; padding-block: var(--a-5); border-bottom: 1px solid var(--line); }
-@media (min-width: 1200px) { .schicht-liste li { border-bottom: 0; } }
-.schicht-liste a { font: 700 1.3rem/1.15 var(--font-display); color: var(--ink-strong); text-decoration: none; }
-.schicht-liste a::after { content: " →"; color: var(--blue); }
-.schicht-liste a:hover { color: var(--blue); }
-.schicht-liste p { color: var(--ink-soft); font-size: .9375rem; line-height: 1.5; }
+.hoerprobe-hinweis { font-size: .8125rem; color: var(--muted); line-height: 1.4; }
+/* In der Kachel: Knopf im Blau des Hauptknopfs, der Hinweis daneben */
+.kachel .hoerprobe { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; max-width: none; margin-block: 0; }
+.kachel .hoerprobe-knopf { padding: 13px 18px; min-height: 48px; }
+.kachel .hoerprobe-zeit { color: #fff; font: 500 0.875rem/1 var(--font-mono); }
+.kachel .hoerprobe-hinweis { color: var(--ink-soft); }
 /* Ruhige, etwas hellere Fläche hinter einem Abschnitt: setzt ihn von den Nachbarn ab */
 .flaeche { background: linear-gradient(180deg, var(--bg) 0, var(--bg-2) 140px, var(--bg-2) calc(100% - 140px), var(--bg) 100%); padding-bottom: var(--abschnitt); }
 /* Weiter-Link am Ende eines Abschnitts */
@@ -738,7 +831,7 @@ h1 em, h2 em { font-style: normal; color: var(--blau-hell); }   /* einzelne Wör
 @media (prefers-reduced-motion: no-preference) {
   .einblenden { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1); }
   .einblenden.ist-da { opacity: 1; transform: none; }
-  .weiter-karte.einblenden { transition-delay: calc(var(--i, 0) * 80ms); }
+  .weiter-karte.einblenden, .kachel.einblenden { transition-delay: calc(var(--i, 0) * 80ms); }
   /* Fahrzeugreihe: die Fahrzeuge fahren nacheinander von links ein (140 px: ein Vielfaches von 4, die Bilder bleiben auf dem Bildschirmraster) */
   .einfahren figure { opacity: 0; transform: translateX(-140px); transition: opacity .6s ease, transform 1s cubic-bezier(.16, .8, .2, 1); transition-delay: calc(var(--i, 0) * 90ms); }
   .einfahren.ist-da figure { opacity: 1; transform: none; }
@@ -952,15 +1045,71 @@ table.data tr:last-child td { border-bottom: 0; }
 @media (min-width: 1645px) { .shot[data-stufe="zeile"] { --raster-w: 768px; } }
 @media (min-width: 1909px) { .shot[data-stufe="zeile"] { --raster-w: 896px; } }
 @media (min-width: 2272px) { .shot[data-stufe="zeile"] { --raster-w: 1072px; } }
-/* schicht */
-@media (min-width: 900px) { .shot[data-stufe="schicht"] { --raster-w: 448px; } }
-@media (min-width: 959px) { .shot[data-stufe="schicht"] { --raster-w: 512px; } }
-@media (min-width: 761px) and (max-width: 899px) { .shot[data-stufe="schicht"] { --raster-w: 640px; } }
-@media (min-width: 1199px) { .shot[data-stufe="schicht"] { --raster-w: 640px; } }
-@media (min-width: 863px) and (max-width: 899px) { .shot[data-stufe="schicht"] { --raster-w: 768px; } }
-@media (min-width: 1439px) { .shot[data-stufe="schicht"] { --raster-w: 768px; } }
-@media (min-width: 1678px) { .shot[data-stufe="schicht"] { --raster-w: 896px; } }
-@media (min-width: 1798px) { .shot[data-stufe="schicht"] { --raster-w: 960px; } }
+/* kachel-notruf */
+@media (min-width: 1041px) { .k-notruf .kachel-bild { --raster-w: 576px; } }
+@media (min-width: 761px) and (max-width: 1040.98px) { .k-notruf .kachel-bild { --raster-w: 640px; } }
+@media (min-width: 1151px) { .k-notruf .kachel-bild { --raster-w: 640px; } }
+@media (min-width: 838px) and (max-width: 1040.98px) { .k-notruf .kachel-bild { --raster-w: 704px; } }
+@media (min-width: 1278px) { .k-notruf .kachel-bild { --raster-w: 704px; } }
+@media (min-width: 920px) and (max-width: 1040.98px) { .k-notruf .kachel-bild { --raster-w: 768px; } }
+@media (min-width: 1400px) { .k-notruf .kachel-bild { --raster-w: 768px; } }
+@media (min-width: 1004px) and (max-width: 1040.98px) { .k-notruf .kachel-bild { --raster-w: 832px; } }
+@media (min-width: 1523px) { .k-notruf .kachel-bild { --raster-w: 832px; } }
+@media (min-width: 1646px) { .k-notruf .kachel-bild { --raster-w: 896px; } }
+@media (min-width: 1768px) { .k-notruf .kachel-bild { --raster-w: 960px; } }
+/* kachel-luft */
+@media (min-width: 1041px) { .k-luft .kachel-bild { --raster-w: 320px; } }
+@media (min-width: 761px) and (max-width: 1040.98px) { .k-luft .kachel-bild { --raster-w: 384px; } }
+@media (min-width: 1122px) { .k-luft .kachel-bild { --raster-w: 384px; } }
+@media (min-width: 886px) and (max-width: 1040.98px) { .k-luft .kachel-bild { --raster-w: 448px; } }
+@media (min-width: 1338px) { .k-luft .kachel-bild { --raster-w: 448px; } }
+@media (min-width: 1030px) and (max-width: 1040.98px) { .k-luft .kachel-bild { --raster-w: 512px; } }
+@media (min-width: 1553px) { .k-luft .kachel-bild { --raster-w: 512px; } }
+@media (min-width: 1769px) { .k-luft .kachel-bild { --raster-w: 576px; } }
+/* kachel-monitor-gross */
+@media (min-width: 761px) and (max-width: 1040.98px) { .kachel-schirme { --raster-gross: 192px; } }
+@media (min-width: 813px) and (max-width: 1040.98px) { .kachel-schirme { --raster-gross: 208px; } }
+@media (min-width: 867px) and (max-width: 1040.98px) { .kachel-schirme { --raster-gross: 224px; } }
+@media (min-width: 921px) and (max-width: 1040.98px) { .kachel-schirme { --raster-gross: 240px; } }
+@media (min-width: 978px) and (max-width: 1040.98px) { .kachel-schirme { --raster-gross: 256px; } }
+@media (min-width: 1035px) and (max-width: 1040.98px) { .kachel-schirme { --raster-gross: 272px; } }
+@media (min-width: 1580px) { .kachel-schirme { --raster-gross: 272px; } }
+@media (min-width: 1650px) { .kachel-schirme { --raster-gross: 288px; } }
+@media (min-width: 1731px) { .kachel-schirme { --raster-gross: 304px; } }
+@media (min-width: 1812px) { .kachel-schirme { --raster-gross: 320px; } }
+@media (min-width: 1041px) and (max-width: 1579.98px) { .kachel-schirme { --raster-gross: 384px; } }
+@media (min-width: 1127px) and (max-width: 1579.98px) { .kachel-schirme { --raster-gross: 416px; } }
+@media (min-width: 1214px) and (max-width: 1579.98px) { .kachel-schirme { --raster-gross: 448px; } }
+@media (min-width: 1299px) and (max-width: 1579.98px) { .kachel-schirme { --raster-gross: 480px; } }
+@media (min-width: 1380px) and (max-width: 1579.98px) { .kachel-schirme { --raster-gross: 512px; } }
+/* kachel-monitore */
+@media (min-width: 1041px) and (max-width: 1579.98px) { .kachel-schirme { --raster-w: 144px; } }
+@media (min-width: 1127px) and (max-width: 1579.98px) { .kachel-schirme { --raster-w: 160px; } }
+@media (min-width: 1214px) and (max-width: 1579.98px) { .kachel-schirme { --raster-w: 176px; } }
+@media (min-width: 761px) and (max-width: 1040.98px) { .kachel-schirme { --raster-w: 192px; } }
+@media (min-width: 1299px) and (max-width: 1579.98px) { .kachel-schirme { --raster-w: 192px; } }
+@media (min-width: 813px) and (max-width: 1040.98px) { .kachel-schirme { --raster-w: 208px; } }
+@media (min-width: 1380px) and (max-width: 1579.98px) { .kachel-schirme { --raster-w: 208px; } }
+@media (min-width: 867px) and (max-width: 1040.98px) { .kachel-schirme { --raster-w: 224px; } }
+@media (min-width: 921px) and (max-width: 1040.98px) { .kachel-schirme { --raster-w: 240px; } }
+@media (min-width: 978px) and (max-width: 1040.98px) { .kachel-schirme { --raster-w: 256px; } }
+@media (min-width: 1035px) and (max-width: 1040.98px) { .kachel-schirme { --raster-w: 272px; } }
+@media (min-width: 1580px) { .kachel-schirme { --raster-w: 272px; } }
+@media (min-width: 1650px) { .kachel-schirme { --raster-w: 288px; } }
+@media (min-width: 1731px) { .kachel-schirme { --raster-w: 304px; } }
+@media (min-width: 1812px) { .kachel-schirme { --raster-w: 320px; } }
+/* kachel-designs */
+@media (min-width: 761px) and (max-width: 1040.98px) { .kachel-designs { --raster-w: 80px; } }
+@media (min-width: 815px) and (max-width: 1040.98px) { .kachel-designs { --raster-w: 96px; } }
+@media (min-width: 924px) and (max-width: 1040.98px) { .kachel-designs { --raster-w: 112px; } }
+@media (min-width: 1041px) { .kachel-designs { --raster-w: 112px; } }
+@media (min-width: 1044px) { .kachel-designs { --raster-w: 128px; } }
+@media (min-width: 1164px) { .kachel-designs { --raster-w: 144px; } }
+@media (min-width: 1283px) { .kachel-designs { --raster-w: 160px; } }
+@media (min-width: 1390px) { .kachel-designs { --raster-w: 176px; } }
+@media (min-width: 1498px) { .kachel-designs { --raster-w: 192px; } }
+@media (min-width: 1606px) { .kachel-designs { --raster-w: 208px; } }
+@media (min-width: 1714px) { .kachel-designs { --raster-w: 224px; } }
 /* ablauf */
 @media (min-width: 1100px) { .ablauf { --raster-w: 512px; } }
 @media (min-width: 1174px) { .ablauf { --raster-w: 576px; } }

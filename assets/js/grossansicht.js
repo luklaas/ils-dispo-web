@@ -125,6 +125,8 @@
       // Unterschrift mit Titel (b) und Text (span) wie im Karussell, sonst die ganze Unterschrift als Titel
       var b = unterschrift ? unterschrift.querySelector("b") : null, s = unterschrift ? unterschrift.querySelector("span") : null;
       var q = figur ? figur.querySelector("figcaption small") : null;
+      // Kachel-Raster der Startseite: Die Quellenangabe zum Luftbild steht in der Kachel statt in einer Bildunterschrift (nur Fotos mit Luftbild)
+      if (!q && figur && figur.getAttribute("data-quelle") === "luftbild" && a.closest(".kachel")) q = a.closest(".kachel").querySelector(".kachel-quelle");
       var quelle = null;
       if (q) { quelle = document.createDocumentFragment(); [].forEach.call(q.childNodes, function (n) { quelle.appendChild(n.cloneNode(true)); }); }
       oeffnen({ src: a.getAttribute("href"), srcset: img ? img.getAttribute("srcset") : "", alt: img ? img.alt : "",
