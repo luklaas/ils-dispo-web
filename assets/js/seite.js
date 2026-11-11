@@ -255,14 +255,14 @@
     var themen = [];
     fragen.forEach(function (d) { var t = d.getAttribute("data-thema"); if (t && themen.indexOf(t) < 0) themen.push(t); });
     var leiste = document.createElement("div");
-    leiste.className = "fragen-leiste";
-    leiste.innerHTML = '<label class="fragen-suche"><span class="sr-only">Fragen durchsuchen</span>' +
+    leiste.className = "such-leiste";
+    leiste.innerHTML = '<label class="such-feld"><span class="sr-only">Fragen durchsuchen</span>' +
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>' +
       '<input type="search" placeholder="Fragen durchsuchen" autocomplete="off" spellcheck="false"></label>' +
-      '<div class="fragen-themen" role="group" aria-label="Thema"></div><p class="fragen-zahl" role="status"></p>';
-    var feld = leiste.querySelector("input"), gruppe = leiste.querySelector(".fragen-themen"), zahl = leiste.querySelector(".fragen-zahl");
+      '<div class="fragen-themen" role="group" aria-label="Thema"></div><p class="such-zahl" role="status"></p>';
+    var feld = leiste.querySelector("input"), gruppe = leiste.querySelector(".fragen-themen"), zahl = leiste.querySelector(".such-zahl");
     var leer = document.createElement("p");
-    leer.className = "fragen-leer";
+    leer.className = "such-leer";
     leer.hidden = true;
     leer.innerHTML = '<span>Keine Frage passt dazu.</span><button type="button">Alle Fragen zeigen</button>';
     var thema = "", vonSelbstOffen = [];
@@ -302,6 +302,231 @@
     filtern();
   });
 
+  /* ---- Gebiet und Wachen: Karte zum Anfassen. Die Namen stehen an den Punkten (data-wache, werkzeuge/standortkarte.py). Ein Tipp
+     wählt den nächsten sichtbaren Punkt im Umkreis; dieselbe Auswahl gibt es als Liste (für Tastatur und Vorleser). Die Legende
+     wird zum Filter. ---- */
+  document.querySelectorAll("[data-standortkarte]").forEach(function (k) {
+    var svg = k.querySelector("svg"), legende = k.querySelector(".legend");
+    var punkte = [].slice.call(svg.querySelectorAll("circle[data-wache]"));
+    if (!punkte.length || !legende) return;
+    var arten = {}, aus = {}, gewaehlt = null;
+    [].forEach.call(legende.querySelectorAll("li[data-art]"), function (li) {
+      var art = li.getAttribute("data-art"), knopf = document.createElement("button");
+      arten[art] = { name: li.querySelector("span").textContent, farbe: li.querySelector("i").style.backgroundColor };
+      knopf.type = "button";
+      knopf.setAttribute("aria-pressed", "true");
+      while (li.firstChild) knopf.appendChild(li.firstChild);
+      li.appendChild(knopf);
+      knopf.addEventListener("click", function () { setze(art, !!aus[art]); });
+      arten[art].knopf = knopf;
+    });
+    legende.removeAttribute("aria-hidden");
+    legende.setAttribute("role", "group");
+    legende.setAttribute("aria-label", "Standorte zeigen");
+    var ring = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    ring.setAttribute("class", "wache-ring");
+    ring.setAttribute("r", "10");
+    ring.style.display = "none";
+    svg.appendChild(ring);
+    var feld = document.createElement("div");
+    feld.className = "wache-feld";
+    feld.innerHTML = '<p class="wache-info" role="status"></p><label class="wache-wahl"><span class="sr-only">Wache wählen</span><select><option value="">Wache wählen …</option></select></label>';
+    var info = feld.querySelector(".wache-info"), wahl = feld.querySelector("select");
+    Object.keys(arten).forEach(function (art) {
+      var gruppe = document.createElement("optgroup");
+      gruppe.label = arten[art].name;
+      punkte.map(function (p, i) { return { i: i, name: p.getAttribute("data-wache"), art: p.getAttribute("data-art") }; })
+        .filter(function (w) { return w.art === art; })
+        .sort(function (a, b) { return a.name.localeCompare(b.name, "de"); })
+        .forEach(function (w) { var o = document.createElement("option"); o.value = w.i; o.textContent = w.name; gruppe.appendChild(o); });
+      wahl.appendChild(gruppe);
+    });
+    function zeige(p) {
+      gewaehlt = p;
+      info.textContent = "";
+      if (!p) {
+        ring.style.display = "none";
+        info.textContent = "Tippe auf einen Punkt der Karte oder wähle eine Wache.";
+        wahl.value = "";
+        return;
+      }
+      var art = arten[p.getAttribute("data-art")], name = document.createElement("b"), zeile = document.createElement("span"), punkt = document.createElement("i");
+      name.textContent = p.getAttribute("data-wache");
+      punkt.style.backgroundColor = art.farbe;
+      zeile.appendChild(punkt);
+      zeile.appendChild(document.createTextNode(art.name));
+      info.appendChild(name);
+      info.appendChild(zeile);
+      ring.setAttribute("cx", p.getAttribute("cx"));
+      ring.setAttribute("cy", p.getAttribute("cy"));
+      ring.style.display = "";
+      wahl.value = String(punkte.indexOf(p));
+    }
+    function setze(art, an) {
+      aus[art] = !an;
+      svg.classList.toggle("ohne-" + art, !an);
+      arten[art].knopf.setAttribute("aria-pressed", an ? "true" : "false");
+      if (!an && gewaehlt && gewaehlt.getAttribute("data-art") === art) zeige(null);
+    }
+    svg.addEventListener("click", function (e) {
+      // Die Karte ist gestreckt (preserveAspectRatio none): Lage der Punkte aus dem Rahmen und der viewBox
+      var r = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal, beste = null, weit = e.pointerType === "mouse" ? 14 : 26;
+      punkte.forEach(function (p) {
+        if (aus[p.getAttribute("data-art")]) return;
+        var x = r.left + (p.cx.baseVal.value - vb.x) * r.width / vb.width, y = r.top + (p.cy.baseVal.value - vb.y) * r.height / vb.height;
+        var d = Math.hypot(x - e.clientX, y - e.clientY);
+        if (d <= weit && (!beste || d < beste.d)) beste = { d: d, p: p };
+      });
+      if (beste) zeige(beste.p);
+    });
+    wahl.addEventListener("change", function () {
+      var p = wahl.value === "" ? null : punkte[Number(wahl.value)];
+      if (p && aus[p.getAttribute("data-art")]) setze(p.getAttribute("data-art"), true);
+      zeige(p);
+    });
+    legende.parentNode.insertBefore(feld, legende);   // neben der Karte (PC) bzw. gleich darunter (Handy), vor der Legende
+    k.classList.add("karte-an");
+    zeige(null);
+  });
+
+  /* ---- Fahrzeugkatalog: Suchfeld über alle Typen. Gruppen mit Treffern klappen auf, Gruppen ohne Treffer verschwinden. ---- */
+  document.querySelectorAll("[data-katalogsuche]").forEach(function (kat) {
+    var gruppen = [].slice.call(kat.querySelectorAll(".fz-gruppe")), karten = [].slice.call(kat.querySelectorAll(".fz"));
+    if (!karten.length) return;
+    function schlicht(s) { return s.toLowerCase().replace(/\u00ad/g, "").replace(/\s+/g, " ").trim(); }
+    var texte = karten.map(function (li) { var n = li.querySelector(".fz-name"); return schlicht((n.querySelector("b") || n).textContent + " " + (n.querySelector("span") ? n.querySelector("span").textContent : "")); });
+    var leiste = document.createElement("div");
+    leiste.className = "such-leiste";
+    leiste.innerHTML = '<label class="such-feld"><span class="sr-only">Fahrzeugtyp suchen</span>' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>' +
+      '<input type="search" placeholder="Fahrzeugtyp suchen, etwa HLF oder Drehleiter" autocomplete="off" spellcheck="false"></label><p class="such-zahl" role="status"></p>';
+    var feld = leiste.querySelector("input"), zahl = leiste.querySelector(".such-zahl");
+    var leer = document.createElement("p");
+    leer.className = "such-leer";
+    leer.hidden = true;
+    leer.innerHTML = '<span>Kein Fahrzeugtyp passt dazu.</span><button type="button">Alle Fahrzeugtypen zeigen</button>';
+    var vonSelbstOffen = [];
+    function filtern() {
+      var wort = schlicht(feld.value), treffer = 0;
+      karten.forEach(function (li, i) { var passt = !wort || texte[i].indexOf(wort) >= 0; li.hidden = !passt; if (passt) treffer++; });
+      vonSelbstOffen.forEach(function (g) { g.open = false; });
+      vonSelbstOffen = [];
+      gruppen.forEach(function (g) {
+        var hat = [].some.call(g.querySelectorAll(".fz"), function (li) { return !li.hidden; });
+        g.hidden = !hat;
+        if (wort && hat && !g.open) { g.open = true; vonSelbstOffen.push(g); }
+      });
+      zahl.textContent = treffer === karten.length ? karten.length + " Fahrzeugtypen" : treffer + " von " + karten.length + " Fahrzeugtypen";
+      leer.hidden = treffer > 0;
+    }
+    feld.addEventListener("input", filtern);
+    leer.querySelector("button").addEventListener("click", function () { feld.value = ""; filtern(); feld.focus(); });
+    kat.insertBefore(leiste, kat.firstChild);
+    kat.appendChild(leer);
+    filtern();
+  });
+
+  /* ---- Funktionen: Themen der Seite. Markiert das Thema, das gerade oben im Fenster steht; die Leiste am Rand (ab 1100 px, CSS)
+     ist nur zu sehen, solange die Themen im Fenster sind. ---- */
+  document.querySelectorAll("[data-themen]").forEach(function (nav) {
+    var links = [].slice.call(nav.querySelectorAll("a")), dran = false;
+    var ziele = links.map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); });
+    var bereich = nav.parentNode.querySelector(".features") || nav.parentNode;
+    if (ziele.indexOf(null) >= 0) return;
+    function stand() {
+      dran = false;
+      var grenze = window.innerHeight * 0.35, aktuell = -1, oben = null;
+      ziele.forEach(function (z, i) {
+        var t = z.getBoundingClientRect().top;
+        if (t <= grenze && (aktuell < 0 || t > oben + 1)) { aktuell = i; oben = t; }   // zwei Themen nebeneinander: das linke gilt
+      });
+      links.forEach(function (a, i) { if (i === aktuell) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); });
+      var r = bereich.getBoundingClientRect();
+      nav.classList.toggle("sichtbar", r.top < window.innerHeight * 0.6 && r.bottom > window.innerHeight * 0.4);
+    }
+    function bald() { if (!dran) { dran = true; requestAnimationFrame(stand); } }
+    window.addEventListener("scroll", bald, { passive: true });
+    window.addEventListener("resize", bald);
+    stand();
+  });
+
+  /* ---- Taktische Zeichen: ein Zeichen zum Ausprobieren. Die vier Erklärungen stehen im HTML; hier werden sie zu einer Auswahl,
+     und am Zeichen sitzen vier Punkte zum Antippen. ---- */
+  document.querySelectorAll("[data-zeichenprobe]").forEach(function (probe) {
+    var rahmen = probe.querySelector(".tzp-rahmen"), svg = rahmen && rahmen.querySelector("svg"), teile = [].slice.call(probe.querySelectorAll(".tzp-teile > div"));
+    if (!svg || teile.length !== 4) return;
+    // Teile des Zeichens: Grundform (Fläche und Räder), Schrift, Statuspunkt mit Ziffer
+    var kinder = [].slice.call(svg.children), nachStatus = false;
+    kinder.forEach(function (e) {
+      var istStatus = e.tagName === "circle" && parseFloat(e.getAttribute("r")) > 6;
+      if (istStatus) nachStatus = true;
+      e.setAttribute("data-t", nachStatus ? "status" : (e.tagName === "text" ? "kuerzel" : "form"));
+    });
+    // Die Bühne ist 420 × 320 Einheiten groß, das Zeichen (64 × 56) steht darin bei 15 % von links und 30 Einheiten von oben in 70 % Breite. Je Teil: wo der
+    // Punkt neben dem Zeichen sitzt und wohin seine Linie zeigt (in Einheiten des Zeichens: Rad, Ende der Schrift, Fläche, Statuspunkt)
+    var B = 420, H = 320, X0 = 0.15 * B, Y0 = 30, M = 0.7 * B / 64;
+    var ORTE = { form: { punkt: [32, 284], ziel: [14, 48] }, kuerzel: { punkt: [388, 178], ziel: [45, 27] }, farbe: { punkt: [32, 150], ziel: [11, 33] }, status: { punkt: [388, 40], ziel: [61.5, 6] } };
+    var NS = "http://www.w3.org/2000/svg", linien = document.createElementNS(NS, "svg");
+    linien.setAttribute("class", "tzp-linien");
+    linien.setAttribute("viewBox", "0 0 " + B + " " + H);
+    linien.setAttribute("aria-hidden", "true");
+    rahmen.appendChild(linien);
+    var knoepfe = [], punkte = [];
+    var hinweis = document.createElement("p");
+    hinweis.className = "tzp-hinweis";
+    hinweis.textContent = "Tippe auf einen Teil des Zeichens.";
+    probe.insertBefore(hinweis, probe.querySelector(".tzp-flaeche"));
+    function zeige(i) {
+      rahmen.setAttribute("data-zeigt", teile[i].getAttribute("data-teil"));
+      teile.forEach(function (t, k) {
+        t.querySelector("dd").hidden = k !== i;
+        knoepfe[k].setAttribute("aria-expanded", k === i ? "true" : "false");
+        punkte[k].setAttribute("aria-pressed", k === i ? "true" : "false");
+        linien.children[k].setAttribute("class", k === i ? "gewaehlt" : "");
+      });
+    }
+    teile.forEach(function (t, i) {
+      var dt = t.querySelector("dt"), dd = t.querySelector("dd"), name = dt.textContent, knopf = document.createElement("button"), nr = document.createElement("span");
+      dd.id = dd.id || "tzp-teil-" + (i + 1);
+      knopf.type = "button";
+      knopf.setAttribute("aria-controls", dd.id);
+      nr.className = "tzp-nr";
+      nr.setAttribute("aria-hidden", "true");
+      nr.textContent = i + 1;
+      knopf.appendChild(nr);
+      knopf.appendChild(document.createTextNode(name));
+      dt.textContent = "";
+      dt.appendChild(knopf);
+      knopf.addEventListener("click", function () { zeige(i); });
+      knoepfe.push(knopf);
+      var punkt = document.createElement("button"), ort = ORTE[t.getAttribute("data-teil")];
+      var zx = X0 + ort.ziel[0] * M, zy = Y0 + ort.ziel[1] * M, weg = Math.hypot(zx - ort.punkt[0], zy - ort.punkt[1]);
+      var gruppe = document.createElementNS(NS, "g"), linie = document.createElementNS(NS, "line"), ende = document.createElementNS(NS, "circle");
+      // die Linie beginnt am Rand des Punkts (Halbmesser 15 Einheiten) und endet mit einem kleinen Kreis am Teil des Zeichens
+      linie.setAttribute("x1", ort.punkt[0] + (zx - ort.punkt[0]) * 15 / weg);
+      linie.setAttribute("y1", ort.punkt[1] + (zy - ort.punkt[1]) * 15 / weg);
+      linie.setAttribute("x2", zx);
+      linie.setAttribute("y2", zy);
+      ende.setAttribute("cx", zx);
+      ende.setAttribute("cy", zy);
+      ende.setAttribute("r", "3.2");
+      gruppe.appendChild(linie);
+      gruppe.appendChild(ende);
+      linien.appendChild(gruppe);
+      punkt.type = "button";
+      punkt.className = "tzp-punkt";
+      punkt.setAttribute("aria-label", name);
+      punkt.textContent = i + 1;
+      punkt.style.left = (ort.punkt[0] / B * 100) + "%";
+      punkt.style.top = (ort.punkt[1] / H * 100) + "%";
+      punkt.addEventListener("click", function () { zeige(i); });
+      rahmen.appendChild(punkt);
+      punkte.push(punkt);
+    });
+    probe.classList.add("tzp-an");
+    zeige(0);
+  });
+
   if (ruhig || !("IntersectionObserver" in window)) return;
 
   /* ---- Entwicklung: Die Linie der Zeitleiste füllt sich beim Scrollen bis zur Fenstermitte; erreichte Einträge leuchten auf ---- */
@@ -336,7 +561,7 @@
      (nicht über IntersectionObserver), damit auch nach einem Sprung – Ende-Taste, Sprungmarke – nichts unsichtbar bleibt.
      Die Fahrzeugreihe fährt von links ein (.einfahren), die Karten am Seitenende kommen nacheinander (--i). ---- */
   var offen = [];
-  document.querySelectorAll(".section-head, .kachel, .kacheln + .weiter-link, .band > .wrap, .ablauf, .phase, .area, .lineup-scroll, .fleet-note, .cta-text, .weiter h2, .feature, .weiter-karte, .designs, .vergleich, .karte-gebiet, .area-grid, .fz-gruppe, .table-scroll, .two > *, .schluss, .eintrag, .tz-beispiele, .tz-status, .fragen-leiste, .frage, .stand-leiste, .plan-kacheln li, .sys-note, .zeitleiste > li").forEach(function (z) {
+  document.querySelectorAll(".section-head, .kachel, .kacheln + .weiter-link, .band > .wrap, .ablauf, .phase, .area, .lineup-scroll, .fleet-note, .cta-text, .weiter h2, .feature, .weiter-karte, .designs, .vergleich, .karte-gebiet, .area-grid, .fz-gruppe, .table-scroll, .two > *, .schluss, .eintrag, .tz-beispiele, .tz-status, .such-leiste, .frage, .stand-leiste, .plan-kacheln li, .sys-note, .zeitleiste > li").forEach(function (z) {
     // Scroll-Geschichte: als Ganzes; ohne sie jeder Schritt für sich
     if (z.classList.contains("phase") ? !!z.closest(".ablauf.an") : (z.classList.contains("ablauf") && !z.classList.contains("an"))) return;
     if (z.classList.contains("eintrag") && z.closest(".zeitleiste")) return;   // Zeitleiste: der ganze Listenpunkt blendet ein (mit Datum und Punkt)

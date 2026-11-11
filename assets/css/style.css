@@ -988,20 +988,20 @@ table.data tr:last-child td { border-bottom: 0; }
 
 /* ---------- Häufige Fragen: aufklappbare Karten; Suche und Themen baut seite.js (ohne Skript klappen die Fragen trotzdem auf) ---- */
 .fragen { display: grid; gap: 14px; }
-.fragen-leiste { display: grid; gap: 12px; padding: 14px; border: 1px solid var(--kante); border-radius: var(--radius); background: linear-gradient(180deg, rgba(42, 45, 50, 0.7), rgba(26, 28, 31, 0.8)); box-shadow: 0 18px 40px -28px rgba(var(--tief), 1), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
-.fragen-suche { position: relative; display: block; }
-.fragen-suche svg { position: absolute; left: 14px; top: 50%; width: 18px; height: 18px; translate: 0 -50%; color: var(--ink-soft); pointer-events: none; }
-.fragen-suche input { width: 100%; min-height: 48px; padding: 10px 14px 10px 42px; font: 400 1rem/1.3 var(--font-body); color: var(--ink-strong); background: rgba(12, 14, 16, 0.6); border: 1px solid var(--line-strong); border-radius: 12px; }
-.fragen-suche input::placeholder { color: var(--ink-soft); opacity: 1; }
-.fragen-suche input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-color: var(--blue); }
+.such-leiste { display: grid; gap: 12px; padding: 14px; border: 1px solid var(--kante); border-radius: var(--radius); background: linear-gradient(180deg, rgba(42, 45, 50, 0.7), rgba(26, 28, 31, 0.8)); box-shadow: 0 18px 40px -28px rgba(var(--tief), 1), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+.such-feld { position: relative; display: block; }
+.such-feld svg { position: absolute; left: 14px; top: 50%; width: 18px; height: 18px; translate: 0 -50%; color: var(--ink-soft); pointer-events: none; }
+.such-feld input { width: 100%; min-height: 48px; padding: 10px 14px 10px 42px; font: 400 1rem/1.3 var(--font-body); color: var(--ink-strong); background: rgba(12, 14, 16, 0.6); border: 1px solid var(--line-strong); border-radius: 12px; }
+.such-feld input::placeholder { color: var(--ink-soft); opacity: 1; }
+.such-feld input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-color: var(--blue); }
 .fragen-themen { display: flex; flex-wrap: wrap; gap: 8px; }
 .fragen-themen button { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line-strong); background: none; color: var(--ink); font: 600 0.9375rem/1 var(--font-body); cursor: pointer; }
 .fragen-themen button:hover { border-color: var(--blue); color: var(--ink-strong); }
 .fragen-themen button[aria-pressed="true"] { border-color: var(--blue); background: rgba(143, 182, 218, 0.16); color: var(--ink-strong); box-shadow: 0 0 26px -10px rgba(var(--licht-rgb), 0.8); }
-.fragen-zahl, .fragen-leer { font: 500 0.75rem/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
-.fragen-leer { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 18px 20px; border: 1px dashed var(--line-strong); border-radius: var(--radius); }
-.fragen-leer[hidden] { display: none; }
-.fragen-leer button { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--blue); background: none; color: var(--ink-strong); font: 600 0.9375rem/1 var(--font-body); text-transform: none; letter-spacing: 0; cursor: pointer; }
+.such-zahl, .such-leer { font: 500 0.75rem/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.such-leer { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 18px 20px; border: 1px dashed var(--line-strong); border-radius: var(--radius); }
+.such-leer[hidden] { display: none; }
+.such-leer button { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--blue); background: none; color: var(--ink-strong); font: 600 0.9375rem/1 var(--font-body); text-transform: none; letter-spacing: 0; cursor: pointer; }
 .fragen-liste { display: grid; gap: 10px; counter-reset: frage; }
 .frage { counter-increment: frage; border: 1px solid var(--kante); border-radius: var(--radius); background: linear-gradient(180deg, rgba(42, 45, 50, 0.7), rgba(33, 35, 39, 0.7)); box-shadow: 0 18px 40px -28px rgba(var(--tief), 1), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
 .frage[hidden] { display: none; }
@@ -1092,6 +1092,103 @@ table.data tr:last-child td { border-bottom: 0; }
 .plan-kacheln { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
 .plan-kacheln li { position: relative; padding: 38px 18px 18px; border: 1px solid var(--kante); border-radius: 12px; background: linear-gradient(180deg, rgba(42, 45, 50, 0.7), rgba(33, 35, 39, 0.7)); box-shadow: 0 18px 40px -28px rgba(var(--tief), 1), inset 0 1px 0 rgba(255, 255, 255, 0.1); color: var(--ink); max-width: none; }
 .plan-kacheln li::before { content: ""; position: absolute; left: 18px; top: 20px; width: 22px; height: 2px; background: var(--blue); box-shadow: 0 0 12px rgba(var(--licht-rgb), 0.9); }
+
+/* ---------- Gebiet und Wachen: Karte zum Anfassen (seite.js). Ein Tipp nahe einem Punkt zeigt die Wache; die Legende wird zum
+   Filter. Ohne Skript bleibt die Karte ein Bild mit Legende. ---- */
+.karte-an svg { cursor: pointer; touch-action: manipulation; }
+.karte-an svg circle[data-wache] { transition: opacity .15s ease; }
+.karte-an .ohne-fw circle[data-art="fw"], .karte-an .ohne-rd circle[data-art="rd"], .karte-an .ohne-bw circle[data-art="bw"], .karte-an .ohne-thw circle[data-art="thw"] { display: none; }
+.wache-ring { fill: none; stroke: #fff; stroke-width: 2.6; filter: drop-shadow(0 0 5px rgba(var(--licht-rgb), 1)); pointer-events: none; }
+.wache-feld { display: grid; gap: 10px; margin-top: 14px; }
+.wache-info { display: grid; gap: 2px; align-content: center; min-height: 64px; padding: 10px 14px; border: 1px solid var(--kante); border-radius: 12px; background: linear-gradient(180deg, rgba(42, 45, 50, 0.7), rgba(26, 28, 31, 0.8)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08); }
+.wache-info b { font: 700 1.125rem/1.25 var(--font-display); color: var(--ink-strong); }
+.wache-info span { font: 500 0.75rem/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.wache-info span i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 8px; }
+.wache-wahl select { width: 100%; min-height: 48px; padding: 10px 12px; font: 400 1rem/1.3 var(--font-body); color: var(--ink-strong); background: rgba(12, 14, 16, 0.6); border: 1px solid var(--line-strong); border-radius: 12px; }
+.wache-wahl select:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.legend button { display: flex; align-items: center; gap: inherit; width: 100%; min-height: 36px; padding: 0; border: 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.legend button[aria-pressed="false"] { opacity: 0.45; }
+.legend button[aria-pressed="false"] span { text-decoration: line-through; }
+.legend button:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; border-radius: 4px; }
+@media (prefers-reduced-motion: reduce) { .karte-an svg circle[data-wache] { transition: none; } }
+/* Suchfeld über dem Fahrzeugkatalog */
+.fz-katalog .such-leiste { margin-bottom: 4px; }
+.fz[hidden], .fz-gruppe[hidden] { display: none; }
+
+/* ---------- Funktionen: Themen der Seite. Ohne Skript und bis 1099 px eine Reihe von Sprungmarken über den Themen (auf dem Handy
+   eine schmale Leiste zum Wischen); ab 1100 px mit Skript eine kleine Leiste am linken Rand, die zeigt, wo man gerade ist, und sich
+   beim Überfahren oder mit der Tastatur zu den Namen öffnet. Die Fotos der Seite behalten so ihre Breite. ---- */
+.themen { display: grid; gap: 10px; margin-bottom: var(--block); }
+.themen-titel { font: 500 0.75rem/1.4 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.themen ol { display: flex; flex-wrap: wrap; gap: 8px; counter-reset: thema; }
+.themen li { counter-increment: thema; }
+.themen a { display: inline-flex; align-items: center; gap: 10px; min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--ink); text-decoration: none; font: 600 0.9375rem/1 var(--font-body); white-space: nowrap; }
+.themen a::before { content: counter(thema, decimal-leading-zero); content: counter(thema, decimal-leading-zero) / ""; font: 500 0.6875rem/1 var(--font-mono); letter-spacing: 0.06em; color: var(--blue); }
+.themen a:hover { border-color: var(--blue); color: var(--ink-strong); }
+.themen a:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+@media (max-width: 760px) {
+  .themen ol { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(-1 * var(--gutter)); padding: 2px var(--gutter) 6px; scrollbar-width: none; }
+  .themen ol::-webkit-scrollbar { display: none; }
+}
+@media (min-width: 1100px) {
+  .js .themen { position: fixed; left: max(6px, calc((5.5vw - 46px) / 2)); top: 50%; translate: 0 -50%; z-index: 40; margin: 0; display: block; opacity: 0; visibility: hidden; }
+  .js .themen.sichtbar { opacity: 1; visibility: visible; }
+  .js .themen-titel { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .js .themen ol { display: grid; gap: 2px; max-width: 46px; padding: 6px; overflow: hidden; border: 1px solid transparent; border-radius: 16px; }
+  .js .themen a { display: flex; gap: 12px; min-height: 30px; padding: 0 9px 0 7px; border: 0; border-radius: 9px; font-size: 0.875rem; color: var(--ink-soft); }
+  .js .themen a::before { flex: none; width: 20px; padding-left: 4px; border-left: 2px solid transparent; color: var(--muted); }
+  .js .themen a[aria-current]::before { color: var(--ink-strong); border-left-color: var(--blau-hell); }
+  .js .themen a[aria-current] { color: var(--ink-strong); }
+  .js .themen:hover ol, .js .themen:focus-within ol { max-width: 340px; background: rgba(20, 22, 24, 0.94); border-color: var(--kante); box-shadow: 0 24px 50px -20px rgba(var(--tief), 1), 0 0 50px -24px rgba(var(--licht-rgb), 0.8); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+  .js .themen:hover a:hover, .js .themen a:focus-visible { background: rgba(255, 255, 255, 0.08); color: var(--ink-strong); }
+}
+@media (min-width: 1100px) and (prefers-reduced-motion: no-preference) {
+  .js .themen { transition: opacity .25s ease, visibility .25s; }
+  .js .themen ol { transition: max-width .22s ease, background-color .2s ease; }
+}
+
+/* ---------- Taktische Zeichen: ein Zeichen zum Ausprobieren. Ohne Skript stehen die vier Erklärungen neben dem Zeichen; mit Skript
+   wählt man einen Teil (Punkt am Zeichen oder Knopf), das Zeichen hebt ihn hervor und nur seine Erklärung steht da. ---- */
+.tz-probe { display: grid; gap: 14px; padding: clamp(18px, 2.2vw, 26px); border: 1px solid var(--kante); border-radius: var(--radius); background: radial-gradient(60% 90% at 14% 0%, rgba(var(--licht-rgb), 0.14), transparent 70%), linear-gradient(180deg, rgba(42, 45, 50, 0.7), rgba(33, 35, 39, 0.7)); box-shadow: 0 18px 40px -28px rgba(var(--tief), 1), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+.page .tz-probe h2 { margin: 0; }
+.tzp-flaeche { display: grid; gap: 18px; justify-items: center; }
+.tzp-teile { justify-self: stretch; }
+.tzp-buehne { margin: 0; display: grid; gap: 8px; justify-items: center; align-content: start; width: min(100%, 480px); }
+/* Bühne im Verhältnis 21:16: das Zeichen groß in der Mitte (70 % der Breite), am Rand die vier Punkte (seite.js) mit feinen Linien zu ihrem Teil */
+.tzp-rahmen { position: relative; display: block; width: min(100%, 480px); aspect-ratio: 420 / 320; border-radius: 14px; background: #3a3e44; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12); }
+.tzp-rahmen .tz-zeichen { position: absolute; left: 15%; top: 9.375%; width: 70%; display: block; }
+.tzp-rahmen .tz-svg { display: block; width: 100%; height: auto; }
+.tzp-linien { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.tzp-linien line { stroke: var(--blau-hell); stroke-width: 1.3; opacity: 0.75; }
+.tzp-linien circle { fill: var(--blau-hell); opacity: 0.9; }
+.tzp-linien .gewaehlt line { stroke: #fff; stroke-width: 1.8; opacity: 1; }
+.tzp-linien .gewaehlt circle { fill: #fff; opacity: 1; }
+.tzp-buehne figcaption { font: 500 0.75rem/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.tzp-teile { margin: 0; display: grid; gap: 10px; align-content: start; }
+.tzp-teile > div { display: grid; gap: 4px; }
+.tzp-teile dt { font: 700 1.2rem/1.2 var(--font-display); color: var(--ink-strong); }
+.tzp-teile dd { margin: 0; color: var(--ink); max-width: 60ch; }
+.tzp-teile dd b { color: var(--ink-strong); }
+@media (min-width: 900px) { .page .wrap > .tz-probe { max-width: 1040px; } .tzp-flaeche { grid-template-columns: 480px minmax(0, 1fr); gap: clamp(20px, 3vw, 36px); align-items: start; } }
+/* mit Skript */
+.tzp-an .tzp-teile { gap: 6px; }
+.tzp-an .tzp-teile dt button { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 44px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 12px; background: rgba(12, 14, 16, 0.4); color: var(--ink); font: inherit; text-align: left; cursor: pointer; }
+.tzp-an .tzp-teile dt button:hover { border-color: var(--blue); color: var(--ink-strong); }
+.tzp-an .tzp-teile dt button[aria-expanded="true"] { border-color: var(--blue); background: rgba(143, 182, 218, 0.16); color: var(--ink-strong); box-shadow: 0 0 26px -10px rgba(var(--licht-rgb), 0.8); }
+.tzp-an .tzp-teile dt button:focus-visible, .tzp-punkt:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.tzp-nr { flex: none; display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; font: 600 0.75rem/1 var(--font-mono); color: var(--ink-strong); background: rgba(12, 14, 16, 0.7); box-shadow: 0 0 0 1.5px var(--blau-hell); }
+.tzp-an .tzp-teile dd { padding: 6px 12px 10px 48px; }
+.tzp-an .tzp-teile dd[hidden] { display: none; }
+.tzp-punkt { position: absolute; z-index: 1; width: 28px; height: 28px; margin: -14px 0 0 -14px; padding: 0; border: 0; border-radius: 50%; font: 600 0.8125rem/1 var(--font-mono); color: #fff; background: rgba(12, 14, 16, 0.82); box-shadow: 0 0 0 2px var(--blau-hell), 0 0 14px rgba(var(--licht-rgb), 0.9); cursor: pointer; }
+.tzp-punkt::after { content: ""; position: absolute; inset: -8px; }   /* größere Fläche zum Tippen */
+.tzp-punkt[aria-pressed="true"] { background: var(--knopf-a); box-shadow: 0 0 0 2px #fff, 0 0 18px rgba(var(--licht-rgb), 1); }
+.tzp-hinweis { font: 500 0.75rem/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+/* Hervorheben: der gewählte Teil bleibt, der Rest tritt zurück */
+[data-zeigt="form"] [data-t="form"] { fill-opacity: 0.1; stroke: var(--blau-hell); }
+[data-zeigt="form"] [data-t="kuerzel"], [data-zeigt="form"] [data-t="status"], [data-zeigt="farbe"] [data-t="kuerzel"], [data-zeigt="farbe"] [data-t="status"], [data-zeigt="status"] [data-t="kuerzel"], [data-zeigt="kuerzel"] [data-t="status"] { opacity: 0.14; }
+[data-zeigt="kuerzel"] [data-t="form"], [data-zeigt="status"] [data-t="form"] { fill-opacity: 0.22; stroke-opacity: 0.3; }
+[data-zeigt="farbe"] [data-t="form"] { stroke-opacity: 0.2; }
+@media (prefers-reduced-motion: no-preference) { .tzp-an .tz-svg * { transition: opacity .2s ease, fill-opacity .2s ease, stroke-opacity .2s ease, stroke .2s ease; } }
 
 /* PIXELGENAU-ANFANG */
 /* ---------- Pixelgenaue Bildschirmfotos (erzeugt von bauen.py, nicht von Hand ändern) ------------------- */
