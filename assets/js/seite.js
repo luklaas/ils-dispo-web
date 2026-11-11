@@ -248,7 +248,80 @@
     modus();
   });
 
+  /* ---- Häufige Fragen: Suchfeld und Themen über den aufklappbaren Fragen. Beides entsteht erst hier – ohne Skript stehen nur die Fragen da. ---- */
+  document.querySelectorAll("[data-fragen]").forEach(function (f) {
+    var fragen = [].slice.call(f.querySelectorAll(".frage"));
+    if (!fragen.length) return;
+    var themen = [];
+    fragen.forEach(function (d) { var t = d.getAttribute("data-thema"); if (t && themen.indexOf(t) < 0) themen.push(t); });
+    var leiste = document.createElement("div");
+    leiste.className = "fragen-leiste";
+    leiste.innerHTML = '<label class="fragen-suche"><span class="sr-only">Fragen durchsuchen</span>' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>' +
+      '<input type="search" placeholder="Fragen durchsuchen" autocomplete="off" spellcheck="false"></label>' +
+      '<div class="fragen-themen" role="group" aria-label="Thema"></div><p class="fragen-zahl" role="status"></p>';
+    var feld = leiste.querySelector("input"), gruppe = leiste.querySelector(".fragen-themen"), zahl = leiste.querySelector(".fragen-zahl");
+    var leer = document.createElement("p");
+    leer.className = "fragen-leer";
+    leer.hidden = true;
+    leer.innerHTML = '<span>Keine Frage passt dazu.</span><button type="button">Alle Fragen zeigen</button>';
+    var thema = "", vonSelbstOffen = [];
+    function knopf(name, wert) {
+      var k = document.createElement("button");
+      k.type = "button";
+      k.textContent = name;
+      k.setAttribute("aria-pressed", wert === thema ? "true" : "false");
+      k.addEventListener("click", function () {
+        thema = wert;
+        [].forEach.call(gruppe.children, function (b) { b.setAttribute("aria-pressed", b === k ? "true" : "false"); });
+        filtern();
+      });
+      gruppe.appendChild(k);
+    }
+    knopf("Alle", "");
+    themen.forEach(function (t) { knopf(t, t); });
+    function schlicht(s) { return s.toLowerCase().replace(/\s+/g, " ").trim(); }
+    function filtern() {
+      var wort = schlicht(feld.value), treffer = [];
+      fragen.forEach(function (d) {
+        var passt = (!thema || d.getAttribute("data-thema") === thema) && (!wort || schlicht(d.textContent).indexOf(wort) >= 0);
+        d.hidden = !passt;
+        if (passt) treffer.push(d);
+      });
+      // Bei wenigen Treffern einer Suche klappen die Antworten auf (das Wort steht oft erst dort); ohne Suche klappen sie wieder zu
+      vonSelbstOffen.forEach(function (d) { d.open = false; });
+      vonSelbstOffen = [];
+      if (wort && treffer.length <= 3) treffer.forEach(function (d) { if (!d.open) { d.open = true; vonSelbstOffen.push(d); } });
+      zahl.textContent = treffer.length === fragen.length ? fragen.length + " Fragen" : treffer.length + " von " + fragen.length + " Fragen";
+      leer.hidden = treffer.length > 0;
+    }
+    feld.addEventListener("input", filtern);
+    leer.querySelector("button").addEventListener("click", function () { feld.value = ""; gruppe.firstChild.click(); feld.focus(); });
+    f.insertBefore(leiste, f.firstChild);
+    f.appendChild(leer);
+    filtern();
+  });
+
   if (ruhig || !("IntersectionObserver" in window)) return;
+
+  /* ---- Entwicklung: Die Linie der Zeitleiste füllt sich beim Scrollen bis zur Fenstermitte; erreichte Einträge leuchten auf ---- */
+  document.querySelectorAll("[data-zeitleiste]").forEach(function (z) {
+    var punkte = [].slice.call(z.children), dran = false;
+    z.classList.add("an");
+    function fuellen() {
+      dran = false;
+      var r = z.getBoundingClientRect(), stand = Math.max(0, Math.min(r.height - 20, window.innerHeight * 0.6 - r.top - 10));
+      // am Seitenende ist die Linie voll, auch wenn die Liste kürzer ist als das Fenster
+      if (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 4) stand = r.height - 20;
+      z.style.setProperty("--fuell", stand + "px");
+      punkte.forEach(function (li) { li.classList.toggle("erreicht", li.getBoundingClientRect().top - r.top + 21 <= stand + 10); });
+    }
+    function bald() { if (!dran) { dran = true; requestAnimationFrame(fuellen); } }
+    window.addEventListener("scroll", bald, { passive: true });
+    window.addEventListener("resize", bald);
+    fuellen();
+  });
+
 
   /* ---- Lichtkegel auf den Karten: folgt dem Zeiger (--mx, --my; gezeichnet wird er im CSS) ---- */
   document.querySelectorAll(".weiter-karte, .kachel").forEach(function (k) {
@@ -263,9 +336,10 @@
      (nicht über IntersectionObserver), damit auch nach einem Sprung – Ende-Taste, Sprungmarke – nichts unsichtbar bleibt.
      Die Fahrzeugreihe fährt von links ein (.einfahren), die Karten am Seitenende kommen nacheinander (--i). ---- */
   var offen = [];
-  document.querySelectorAll(".section-head, .kachel, .kacheln + .weiter-link, .band > .wrap, .ablauf, .phase, .area, .lineup-scroll, .fleet-note, .cta-text, .weiter h2, .feature, .weiter-karte, .designs, .vergleich, .karte-gebiet, .area-grid, .fz-gruppe, .table-scroll, .two > *, .schluss, .eintrag, .tz-beispiele, .tz-status").forEach(function (z) {
+  document.querySelectorAll(".section-head, .kachel, .kacheln + .weiter-link, .band > .wrap, .ablauf, .phase, .area, .lineup-scroll, .fleet-note, .cta-text, .weiter h2, .feature, .weiter-karte, .designs, .vergleich, .karte-gebiet, .area-grid, .fz-gruppe, .table-scroll, .two > *, .schluss, .eintrag, .tz-beispiele, .tz-status, .fragen-leiste, .frage, .stand-leiste, .plan-kacheln li, .sys-note, .zeitleiste > li").forEach(function (z) {
     // Scroll-Geschichte: als Ganzes; ohne sie jeder Schritt für sich
     if (z.classList.contains("phase") ? !!z.closest(".ablauf.an") : (z.classList.contains("ablauf") && !z.classList.contains("an"))) return;
+    if (z.classList.contains("eintrag") && z.closest(".zeitleiste")) return;   // Zeitleiste: der ganze Listenpunkt blendet ein (mit Datum und Punkt)
     if (z.getBoundingClientRect().top < window.innerHeight) return;
     if (z.classList.contains("lineup-scroll")) {
       [].forEach.call(z.querySelectorAll("figure"), function (f, i) { f.style.setProperty("--i", i); });
@@ -274,6 +348,7 @@
       // Karten und Kacheln einer Reihe kommen nacheinander: Verzögerung nach der Spalte, in der sie beginnen
       if (z.classList.contains("weiter-karte")) z.style.setProperty("--i", [].indexOf.call(z.parentNode.children, z));
       if (z.classList.contains("kachel")) z.style.setProperty("--i", Math.round((z.offsetLeft / z.parentNode.clientWidth) * 3));
+      if (z.classList.contains("frage") || z.parentNode.classList.contains("plan-kacheln")) z.style.setProperty("--i", [].indexOf.call(z.parentNode.children, z) % 6);
       z.classList.add("einblenden");
     }
     offen.push(z);

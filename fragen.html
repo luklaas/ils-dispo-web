@@ -22,7 +22,113 @@
 <link rel="preload" href="assets/fonts/barlow-semi-condensed-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/barlow-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <script>document.documentElement.classList.add("js")</script>
-<link rel="stylesheet" href="assets/css/style.css?v=f4492e2c">
+<link rel="stylesheet" href="assets/css/style.css?v=b4c6bebc">
+<!-- FRAGEN-DATEN-ANFANG (erzeugt von werkzeuge/fragen_daten.py) -->
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "Was ist ILS Dispo?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Ein Leitstellensimulator für Windows. Du arbeitest als Disponent: Du nimmst Notrufe von KI-Anrufern an, fragst ab, legst den Einsatz an und alarmierst Feuerwehr und Rettungsdienst. Abgebildet ist das Gebiet der Integrierten Leitstelle Freiburg/Breisgau-Hochschwarzwald. ILS Dispo ist ein privates Hobbyprojekt. Was der Leitstellensimulator kann →"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Ist ILS Dispo ein professioneller oder offizieller Simulator?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Nein. ILS Dispo ist ein privates Übungsprogramm und kein offizielles Produkt; es steht in keiner Verbindung zur Integrierten Leitstelle Freiburg. Viele Angaben sind vereinfacht oder Annahmen, für echte Einsätze ist das Programm nicht gedacht. Ziel ist trotzdem eine möglichst realistische Simulation – mit den Grenzen eines Hobbyprojekts."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Simuliert ILS Dispo eine Rettungsleitstelle?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Eine Integrierte Leitstelle: Sie führt Feuerwehr und Rettungsdienst gemeinsam. Die Polizei ist bewusst nicht dabei."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Wie bekomme ich ILS Dispo?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Zurzeit nur auf Einladung, eine öffentliche Version gibt es noch nicht. Wenn du es ausprobieren möchtest, schreib mir eine kurze Mail über „Interesse melden“. Ich melde mich per Mail, sobald eine Testversion bereitsteht."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Kostet ILS Dispo etwas?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Zurzeit kostenlos. Ob und was eine spätere Version kostet, ist noch offen."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Was braucht mein Rechner?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Getestet ist ILS Dispo bisher auf einem Rechner: Windows 11, AMD Radeon RX 7900 GRE mit 16 GB Grafikspeicher, 32 GB Arbeitsspeicher. Für Anrufe mit Sprache braucht es eine Grafikkarte mit 16 GB Grafikspeicher; NVIDIA ist vorgesehen, aber noch nicht getestet. Mit 16 GB Arbeitsspeicher lief es in einer Messung gleich schnell, braucht dann aber eine große Auslagerungsdatei. Zum Telefonieren brauchst du ein Headset mit Kopfhörern. Andere Ausstattung ist noch nicht erprobt. Systemanforderungen im Einzelnen →"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Geht es auch ohne starke Grafikkarte oder ohne Headset?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Dafür ist der Textbetrieb vorgesehen: Anrufe und Funk laufen dann als Text, der Anrufer tippt im Gespräch, ein Headset brauchst du nicht. Das Gesprächsmodell rechnet dann auf dem Prozessor und antwortet deutlich langsamer; gemessen ist das bisher auf einem Rechner."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Gibt es ILS Dispo für Mac oder Linux?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Zurzeit gibt es ILS Dispo für Windows 11. Eine Fassung für macOS ist geplant, Linux derzeit nicht."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Brauche ich eine Internetverbindung, und wo laufen die KI-Anrufer?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Anrufer, Stimmen und Simulation laufen auf deinem eigenen Rechner, ohne Cloud; Gespräche und Protokolle bleiben bei dir. Internet braucht es nur zum Herunterladen und für das zuschaltbare Luftbild."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Welches Gebiet ist abgebildet – kommen weitere Regionen?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Das ganze Gebiet der Integrierten Leitstelle Freiburg/Breisgau-Hochschwarzwald: der Stadtkreis Freiburg und der Landkreis Breisgau-Hochschwarzwald, vom Rhein und Kaiserstuhl bis auf den Feldberg, mit 192 Standorten und 478 Fahrzeugen. Weitere Regionen sind geplant. Gebiet und Wachen →"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Woher stammen die Angaben zu Wachen und Fahrzeugen?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Aus öffentlich zugänglichen Quellen: OpenStreetMap, den Seiten der Organisationen, dem Bereichsplan Rettungsdienst und veröffentlichten Einsatzberichten. Funkrufnamen, Fahrzeugtypen und -zahlen stammen teils aus Fan-Datenbanken. Was nicht belegt ist, ist als Annahme hinterlegt; vieles ist vereinfacht."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Wie viele Szenarien gibt es?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "83 Szenarien aus Rettungsdienst, Brand und Technischer Hilfe; Ziel sind über 100. Was du noch nicht gespielt hast, bleibt unbekannt. Am Ende zeigt eine Auflösung, was wirklich los war und worauf es ankam. Was zuletzt neu dazukam →"
+   }
+  }
+ ]
+}
+</script>
+<!-- FRAGEN-DATEN-ENDE -->
 </head>
 <body>
 <a class="skip" href="#inhalt">Zum Inhalt</a>
@@ -49,34 +155,32 @@
   </div>
 </header>
 
-<main class="page" id="inhalt">
+<main class="page fragen-seite" id="inhalt">
   <div class="wrap">
     <h1>Häufige <em>Fragen</em></h1>
     <p>Was Interessierte zu ILS Dispo wissen wollen, kurz beantwortet.</p>
-    <h2>Was ist ILS Dispo?</h2>
-    <p>Ein Leitstellensimulator für Windows. Du arbeitest als Disponent: Du nimmst Notrufe von KI-Anrufern an, fragst ab, legst den Einsatz an und alarmierst Feuerwehr und Rettungsdienst. Abgebildet ist das Gebiet der Integrierten Leitstelle Freiburg/Breisgau-Hochschwarzwald. ILS Dispo ist ein privates Hobbyprojekt. <a href="funktionen.html">Was der Leitstellensimulator kann →</a></p>
-    <h2>Ist ILS Dispo ein professioneller oder offizieller Simulator?</h2>
-    <p>Nein. ILS Dispo ist ein privates Übungsprogramm und kein offizielles Produkt; es steht in keiner Verbindung zur Integrierten Leitstelle Freiburg. Viele Angaben sind vereinfacht oder Annahmen, für echte Einsätze ist das Programm nicht gedacht. Ziel ist trotzdem eine möglichst realistische Simulation – mit den Grenzen eines Hobbyprojekts.</p>
-    <h2>Simuliert ILS Dispo eine Rettungsleitstelle?</h2>
-    <p>Eine Integrierte Leitstelle: Sie führt Feuerwehr und Rettungsdienst gemeinsam. Die Polizei ist bewusst nicht dabei.</p>
-    <h2>Wie bekomme ich ILS Dispo?</h2>
-    <p>Zurzeit nur auf Einladung, eine öffentliche Version gibt es noch nicht. Wenn du es ausprobieren möchtest, schreib mir eine kurze Mail über <a href="./#interesse">„Interesse melden“</a>. Ich melde mich per Mail, sobald eine Testversion bereitsteht.</p>
-    <h2>Kostet ILS Dispo etwas?</h2>
-    <p>Zurzeit kostenlos. Ob und was eine spätere Version kostet, ist noch offen.</p>
-    <h2>Was braucht mein Rechner?</h2>
-    <p>Getestet ist ILS Dispo bisher auf einem Rechner: Windows 11, AMD Radeon RX 7900 GRE mit 16 GB Grafikspeicher, 32 GB Arbeitsspeicher. Für Anrufe mit Sprache braucht es eine Grafikkarte mit 16 GB Grafikspeicher; NVIDIA ist vorgesehen, aber noch nicht getestet. Mit 16 GB Arbeitsspeicher lief es in einer Messung gleich schnell, braucht dann aber eine große Auslagerungsdatei. Zum Telefonieren brauchst du ein Headset mit Kopfhörern. Andere Ausstattung ist noch nicht erprobt. <a href="system.html">Systemanforderungen im Einzelnen →</a></p>
-    <h2>Geht es auch ohne starke Grafikkarte oder ohne Headset?</h2>
-    <p>Dafür ist der Textbetrieb vorgesehen: Anrufe und Funk laufen dann als Text, der Anrufer tippt im Gespräch, ein Headset brauchst du nicht. Wie gut das Gesprächsmodell ohne starke Grafikkarte auf dem Prozessor läuft, wird noch gemessen.</p>
-    <h2>Gibt es ILS Dispo für Mac oder Linux?</h2>
-    <p>Zurzeit gibt es ILS Dispo für Windows 11. Eine Fassung für macOS ist geplant, Linux derzeit nicht.</p>
-    <h2>Brauche ich eine Internetverbindung, und wo laufen die KI-Anrufer?</h2>
-    <p>Anrufer, Stimmen und Simulation laufen auf deinem eigenen Rechner, ohne Cloud; Gespräche und Protokolle bleiben bei dir. Internet braucht es nur zum Herunterladen und für das zuschaltbare Luftbild.</p>
-    <h2>Welches Gebiet ist abgebildet – kommen weitere Regionen?</h2>
-    <p>Das ganze Gebiet der Integrierten Leitstelle Freiburg/Breisgau-Hochschwarzwald: der Stadtkreis Freiburg und der Landkreis Breisgau-Hochschwarzwald, vom Rhein und Kaiserstuhl bis auf den Feldberg, mit 192 Standorten und 478 Fahrzeugen. Weitere Regionen sind geplant. <a href="gebiet.html">Gebiet und Wachen →</a></p>
-    <h2>Woher stammen die Angaben zu Wachen und Fahrzeugen?</h2>
-    <p>Aus öffentlich zugänglichen Quellen: OpenStreetMap, den Seiten der Organisationen, dem Bereichsplan Rettungsdienst und veröffentlichten Einsatzberichten. Funkrufnamen, Fahrzeugtypen und -zahlen stammen teils aus Fan-Datenbanken. Was nicht belegt ist, ist als Annahme hinterlegt; vieles ist vereinfacht.</p>
-    <h2>Wie viele Szenarien gibt es?</h2>
-    <p>50 Szenarien aus Rettungsdienst, Brand und Technischer Hilfe; Ziel sind über 100. Was du noch nicht gespielt hast, bleibt unbekannt. Am Ende zeigt eine Auflösung, was wirklich los war und worauf es ankam. <a href="entwicklung.html">Was zuletzt neu dazukam →</a></p>
+    <div class="fragen" data-fragen>
+      <div class="fragen-liste">
+        <details class="frage" data-thema="Projekt"><summary><h2>Was ist ILS Dispo?</h2><span class="frage-thema" aria-hidden="true">Projekt</span></summary><div class="antwort"><p>Ein Leitstellensimulator für Windows. Du arbeitest als Disponent: Du nimmst Notrufe von KI-Anrufern an, fragst ab, legst den Einsatz an und alarmierst Feuerwehr und Rettungsdienst. Abgebildet ist das Gebiet der Integrierten Leitstelle Freiburg/Breisgau-Hochschwarzwald. ILS Dispo ist ein privates Hobbyprojekt. <a href="funktionen.html">Was der Leitstellensimulator kann →</a></p></div></details>
+        <details class="frage" data-thema="Projekt"><summary><h2>Ist ILS Dispo ein professioneller oder offizieller Simulator?</h2><span class="frage-thema" aria-hidden="true">Projekt</span></summary><div class="antwort"><p>Nein. ILS Dispo ist ein privates Übungsprogramm und kein offizielles Produkt; es steht in keiner Verbindung zur Integrierten Leitstelle Freiburg. Viele Angaben sind vereinfacht oder Annahmen, für echte Einsätze ist das Programm nicht gedacht. Ziel ist trotzdem eine möglichst realistische Simulation – mit den Grenzen eines Hobbyprojekts.</p></div></details>
+        <details class="frage" data-thema="Projekt"><summary><h2>Simuliert ILS Dispo eine Rettungsleitstelle?</h2><span class="frage-thema" aria-hidden="true">Projekt</span></summary><div class="antwort"><p>Eine Integrierte Leitstelle: Sie führt Feuerwehr und Rettungsdienst gemeinsam. Die Polizei ist bewusst nicht dabei.</p></div></details>
+        <details class="frage" data-thema="Verfügbarkeit"><summary><h2>Wie bekomme ich ILS Dispo?</h2><span class="frage-thema" aria-hidden="true">Verfügbarkeit</span></summary><div class="antwort"><p>Zurzeit nur auf Einladung, eine öffentliche Version gibt es noch nicht. Wenn du es ausprobieren möchtest, schreib mir eine kurze Mail über <a href="./#interesse">„Interesse melden“</a>. Ich melde mich per Mail, sobald eine Testversion bereitsteht.</p></div></details>
+        <details class="frage" data-thema="Verfügbarkeit"><summary><h2>Kostet ILS Dispo etwas?</h2><span class="frage-thema" aria-hidden="true">Verfügbarkeit</span></summary><div class="antwort"><p>Zurzeit kostenlos. Ob und was eine spätere Version kostet, ist noch offen.</p></div></details>
+        <details class="frage" data-thema="Rechner"><summary><h2>Was braucht mein Rechner?</h2><span class="frage-thema" aria-hidden="true">Rechner</span></summary><div class="antwort"><p>Getestet ist ILS Dispo bisher auf einem Rechner: Windows 11, AMD Radeon RX 7900 GRE mit 16 GB Grafikspeicher, 32 GB Arbeitsspeicher. Für Anrufe mit Sprache braucht es eine Grafikkarte mit 16 GB Grafikspeicher; NVIDIA ist vorgesehen, aber noch nicht getestet. Mit 16 GB Arbeitsspeicher lief es in einer Messung gleich schnell, braucht dann aber eine große Auslagerungsdatei. Zum Telefonieren brauchst du ein Headset mit Kopfhörern. Andere Ausstattung ist noch nicht erprobt. <a href="system.html">Systemanforderungen im Einzelnen →</a></p></div></details>
+        <details class="frage" data-thema="Rechner"><summary><h2>Geht es auch ohne starke Grafikkarte oder ohne Headset?</h2><span class="frage-thema" aria-hidden="true">Rechner</span></summary><div class="antwort"><p>Dafür ist der Textbetrieb vorgesehen: Anrufe und Funk laufen dann als Text, der Anrufer tippt im Gespräch, ein Headset brauchst du nicht. Das Gesprächsmodell rechnet dann auf dem Prozessor und antwortet deutlich langsamer; gemessen ist das bisher auf einem Rechner.</p></div></details>
+        <details class="frage" data-thema="Verfügbarkeit"><summary><h2>Gibt es ILS Dispo für Mac oder Linux?</h2><span class="frage-thema" aria-hidden="true">Verfügbarkeit</span></summary><div class="antwort"><p>Zurzeit gibt es ILS Dispo für Windows 11. Eine Fassung für macOS ist geplant, Linux derzeit nicht.</p></div></details>
+        <details class="frage" data-thema="Rechner"><summary><h2>Brauche ich eine Internetverbindung, und wo laufen die KI-Anrufer?</h2><span class="frage-thema" aria-hidden="true">Rechner</span></summary><div class="antwort"><p>Anrufer, Stimmen und Simulation laufen auf deinem eigenen Rechner, ohne Cloud; Gespräche und Protokolle bleiben bei dir. Internet braucht es nur zum Herunterladen und für das zuschaltbare Luftbild.</p></div></details>
+        <details class="frage" data-thema="Gebiet und Szenarien"><summary><h2>Welches Gebiet ist abgebildet – kommen weitere Regionen?</h2><span class="frage-thema" aria-hidden="true">Gebiet und Szenarien</span></summary><div class="antwort"><p>Das ganze Gebiet der Integrierten Leitstelle Freiburg/Breisgau-Hochschwarzwald: der Stadtkreis Freiburg und der Landkreis Breisgau-Hochschwarzwald, vom Rhein und Kaiserstuhl bis auf den Feldberg, mit 192 Standorten und 478 Fahrzeugen. Weitere Regionen sind geplant. <a href="gebiet.html">Gebiet und Wachen →</a></p></div></details>
+        <details class="frage" data-thema="Gebiet und Szenarien"><summary><h2>Woher stammen die Angaben zu Wachen und Fahrzeugen?</h2><span class="frage-thema" aria-hidden="true">Gebiet und Szenarien</span></summary><div class="antwort"><p>Aus öffentlich zugänglichen Quellen: OpenStreetMap, den Seiten der Organisationen, dem Bereichsplan Rettungsdienst und veröffentlichten Einsatzberichten. Funkrufnamen, Fahrzeugtypen und -zahlen stammen teils aus Fan-Datenbanken. Was nicht belegt ist, ist als Annahme hinterlegt; vieles ist vereinfacht.</p></div></details>
+        <details class="frage" data-thema="Gebiet und Szenarien"><summary><h2>Wie viele Szenarien gibt es?</h2><span class="frage-thema" aria-hidden="true">Gebiet und Szenarien</span></summary><div class="antwort"><p>83 Szenarien aus Rettungsdienst, Brand und Technischer Hilfe; Ziel sind über 100. Was du noch nicht gespielt hast, bleibt unbekannt. Am Ende zeigt eine Auflösung, was wirklich los war und worauf es ankam. <a href="entwicklung.html">Was zuletzt neu dazukam →</a></p></div></details>
+      </div>
+    </div>
+    <aside class="kachel frage-kontakt" aria-labelledby="fk-titel">
+      <h2 id="fk-titel">Deine Frage ist nicht dabei?</h2>
+      <p>Schreib mir eine kurze Mail.</p>
+      <a class="btn btn-primary" href="mailto:kontakt@regionary-studio.de?subject=Frage%20zu%20ILS%20Dispo">Frage per Mail stellen</a>
+      <p class="addr">kontakt@regionary-studio.de</p>
+    </aside>
   </div>
 </main>
 
@@ -100,6 +204,6 @@
     <div class="foot-links"><a href="funktionen.html">Funktionen</a><a href="gebiet.html">Gebiet und Wachen</a><a href="system.html">System</a><a href="fragen.html">Häufige Fragen</a><a href="taktische-zeichen.html">Taktische Zeichen</a><a href="entwicklung.html">Entwicklung</a><a href="https://www.paypal.com/donate/?hosted_button_id=VRBLR9CZUWMWN" target="_blank" rel="noopener noreferrer">Projekt unterstützen<span class="sr-only"> (öffnet in neuem Tab)</span></a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></div>
   </div>
 </footer>
-<script src="assets/js/seite.js?v=6dfe2447" defer></script>
+<script src="assets/js/seite.js?v=cd176540" defer></script>
 </body>
 </html>

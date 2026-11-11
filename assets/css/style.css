@@ -545,7 +545,7 @@ kbd { font: 600 0.8125rem/1 var(--font-mono); color: var(--ink-strong); padding:
 }
 @media (min-width: 1041px) {
   .kacheln { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  .kachel { grid-column: span 2; }
+  .kacheln > :where(.kachel) { grid-column: span 2; }   /* nur im Raster der Startseite; Kacheln gibt es auch auf anderen Seiten */
   .k-notruf, .k-schirme { grid-column: span 4; grid-row: span 2; }
   .k-platz, .k-tasten { grid-column: span 3; }
   .k-tasten .tasten { display: grid; gap: 10px; }   /* die vier Tasten untereinander: so ist die Kachel so hoch wie „Dein Arbeitsplatz“ daneben */
@@ -832,6 +832,7 @@ kbd { font: 600 0.8125rem/1 var(--font-mono); color: var(--ink-strong); padding:
   .einblenden { opacity: 0; transform: translateY(26px); transition: opacity .8s ease, transform .8s cubic-bezier(.2, .7, .2, 1); }
   .einblenden.ist-da { opacity: 1; transform: none; }
   .weiter-karte.einblenden, .kachel.einblenden { transition-delay: calc(var(--i, 0) * 80ms); }
+  .frage.einblenden, .plan-kacheln li.einblenden { transition-delay: calc(var(--i, 0) * 45ms); }
   /* Fahrzeugreihe: die Fahrzeuge fahren nacheinander von links ein (140 px: ein Vielfaches von 4, die Bilder bleiben auf dem Bildschirmraster) */
   .einfahren figure { opacity: 0; transform: translateX(-140px); transition: opacity .6s ease, transform 1s cubic-bezier(.16, .8, .2, 1); transition-delay: calc(var(--i, 0) * 90ms); }
   .einfahren.ist-da figure { opacity: 1; transform: none; }
@@ -852,8 +853,8 @@ kbd { font: 600 0.8125rem/1 var(--font-mono); color: var(--ink-strong); padding:
 .page-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background:
   radial-gradient(48% 120% at 14% 78%, rgba(var(--licht-rgb), 0.17), transparent 70%),
   linear-gradient(90deg, var(--bg) 0%, rgba(var(--shade), 0.6) 60%, rgba(var(--shade), 0.2) 100%); }
-.page-hero .wrap { padding-block: var(--abschnitt) var(--kopf); display: grid; gap: var(--a-3); }
-.page-hero h1 { font-size: clamp(2.6rem, 6vw, 4.2rem); letter-spacing: -0.01em; }
+.page-hero .wrap { padding-block: var(--abschnitt) var(--kopf); display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--a-3); }   /* minmax(0, …): ein langes Wort (Systemanforderungen) wird getrennt statt rechts abgeschnitten */
+.page-hero h1 { font-size: clamp(min(2.6rem, 10vw), 6vw, 4.2rem); letter-spacing: -0.01em; }   /* unter 416 px etwas kleiner: „Systemanforderungen“ passt in eine Zeile */
 .page-hero p { color: var(--ink-soft); font-size: 1.125rem; }
 
 /* Funktionen: je Bereich eine Zeile, Bildschirmfoto daneben oder darunter */
@@ -984,6 +985,113 @@ table.data tr:last-child td { border-bottom: 0; }
   p, .page .wrap > p, .feature li, .plan li, .page .wrap li, .site-foot blockquote { max-width: 56ch; }
   .car-text { max-width: none; }
 }
+
+/* ---------- Häufige Fragen: aufklappbare Karten; Suche und Themen baut seite.js (ohne Skript klappen die Fragen trotzdem auf) ---- */
+.fragen { display: grid; gap: 14px; }
+.fragen-leiste { display: grid; gap: 12px; padding: 14px; border: 1px solid var(--kante); border-radius: var(--radius); background: linear-gradient(180deg, rgba(42, 45, 50, 0.7), rgba(26, 28, 31, 0.8)); box-shadow: 0 18px 40px -28px rgba(var(--tief), 1), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+.fragen-suche { position: relative; display: block; }
+.fragen-suche svg { position: absolute; left: 14px; top: 50%; width: 18px; height: 18px; translate: 0 -50%; color: var(--ink-soft); pointer-events: none; }
+.fragen-suche input { width: 100%; min-height: 48px; padding: 10px 14px 10px 42px; font: 400 1rem/1.3 var(--font-body); color: var(--ink-strong); background: rgba(12, 14, 16, 0.6); border: 1px solid var(--line-strong); border-radius: 12px; }
+.fragen-suche input::placeholder { color: var(--ink-soft); opacity: 1; }
+.fragen-suche input:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; border-color: var(--blue); }
+.fragen-themen { display: flex; flex-wrap: wrap; gap: 8px; }
+.fragen-themen button { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line-strong); background: none; color: var(--ink); font: 600 0.9375rem/1 var(--font-body); cursor: pointer; }
+.fragen-themen button:hover { border-color: var(--blue); color: var(--ink-strong); }
+.fragen-themen button[aria-pressed="true"] { border-color: var(--blue); background: rgba(143, 182, 218, 0.16); color: var(--ink-strong); box-shadow: 0 0 26px -10px rgba(var(--licht-rgb), 0.8); }
+.fragen-zahl, .fragen-leer { font: 500 0.75rem/1.4 var(--font-mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
+.fragen-leer { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 18px 20px; border: 1px dashed var(--line-strong); border-radius: var(--radius); }
+.fragen-leer[hidden] { display: none; }
+.fragen-leer button { min-height: 40px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--blue); background: none; color: var(--ink-strong); font: 600 0.9375rem/1 var(--font-body); text-transform: none; letter-spacing: 0; cursor: pointer; }
+.fragen-liste { display: grid; gap: 10px; counter-reset: frage; }
+.frage { counter-increment: frage; border: 1px solid var(--kante); border-radius: var(--radius); background: linear-gradient(180deg, rgba(42, 45, 50, 0.7), rgba(33, 35, 39, 0.7)); box-shadow: 0 18px 40px -28px rgba(var(--tief), 1), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+.frage[hidden] { display: none; }
+.frage > summary { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; min-height: 64px; padding: 14px 20px; cursor: pointer; list-style: none; border-radius: var(--radius); }
+.frage > summary::-webkit-details-marker { display: none; }
+.frage > summary::before { content: counter(frage, decimal-leading-zero); content: counter(frage, decimal-leading-zero) / ""; font: 500 0.75rem/1 var(--font-mono); letter-spacing: 0.06em; color: var(--blue); }
+.frage > summary::after { content: ""; width: 11px; height: 11px; margin-inline: 4px 6px; border-right: 2px solid var(--blue); border-bottom: 2px solid var(--blue); rotate: 45deg; translate: 0 -3px; }
+.frage[open] > summary::after { rotate: 225deg; translate: 0 3px; }
+.frage > summary:focus-visible { outline: 2px solid var(--blue); outline-offset: -3px; }
+.frage > summary:hover h2 { color: var(--blau-hell); }
+.page .frage h2 { font-size: 1.3rem; line-height: 1.2; margin: 0; }
+.frage-thema { display: none; font: 500 0.6875rem/1 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px; white-space: nowrap; }
+.frage[open] { border-color: rgba(var(--licht-rgb), 0.45); box-shadow: 0 18px 40px -28px rgba(var(--tief), 1), 0 0 50px -26px rgba(var(--licht-rgb), 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.12); }
+.antwort { padding: 0 20px 20px; }
+.antwort p { color: var(--ink-strong); max-width: 64ch; }   /* auf der helleren Karte so kontrastreich wie möglich (13,9 : 1; bisher auf dem Seitengrund 14,7 : 1) */
+@media (min-width: 621px) {
+  .frage > summary { grid-template-columns: auto minmax(0, 1fr) auto auto; }
+  .frage-thema { display: block; }
+  .antwort { padding-left: calc(20px + 1.5rem + 14px); }   /* bündig mit der Frage, rechts neben der Nummer */
+}
+@media (prefers-reduced-motion: no-preference) {
+  .frage > summary::after { transition: rotate .2s ease, translate .2s ease; }
+  .frage[open] .antwort { animation: frage-auf .28s ease; }
+  @keyframes frage-auf { from { opacity: 0; translate: 0 -6px; } }
+}
+/* Kachel am Ende: Kontakt für alle, deren Frage fehlt. Ab 1200 px steht sie in einer rechten Spalte neben den Fragen und läuft
+   beim Scrollen mit (Nutzerwunsch 11.11.2026); darunter bleibt sie am Ende */
+@media (min-width: 1200px) {
+  .fragen-seite .wrap { grid-template-columns: minmax(0, 860px) minmax(280px, 340px); column-gap: clamp(32px, 4vw, 56px); }
+  .fragen-seite .wrap > * { grid-column: 1; }
+  .fragen-seite .wrap > .frage-kontakt { grid-column: 2; grid-row: 3; align-self: start; position: sticky; top: 92px; margin-top: 0; }
+}
+.frage-kontakt { margin-top: 12px; gap: 12px; background: radial-gradient(60% 120% at 12% 0%, rgba(var(--licht-rgb), 0.16), transparent 70%), linear-gradient(180deg, var(--surface-2), var(--surface)); }
+.page .frage-kontakt h2 { font-size: clamp(1.5rem, 2.2vw, 1.9rem); margin: 0; }
+
+/* ---------- Entwicklung: Zeitleiste. Die Linie füllt sich beim Scrollen (seite.js setzt --fuell und .erreicht); ohne Skript
+   und bei „Bewegung reduzieren“ ist sie ganz gefüllt ---- */
+.zeitleiste { position: relative; display: grid; gap: 16px; padding-left: 34px; }
+.zeitleiste::before, .zeitleiste::after { content: ""; position: absolute; left: 6px; top: 10px; width: 2px; border-radius: 2px; }
+.zeitleiste::before { bottom: 10px; background: var(--line-strong); }
+.zeitleiste::after { height: calc(100% - 20px); background: linear-gradient(180deg, var(--blau-hell), var(--licht)); box-shadow: 0 0 14px rgba(var(--licht-rgb), 0.8); }
+.zeitleiste.an::after { height: var(--fuell, 0px); max-height: calc(100% - 20px); }
+.page .wrap .zeitleiste > li { position: relative; max-width: none; }
+.zeitleiste > li::before { content: ""; position: absolute; left: -34px; top: 24px; width: 14px; height: 14px; border-radius: 50%; background: var(--blau-hell); box-shadow: 0 0 0 4px rgba(var(--licht-rgb), 0.22), 0 0 18px rgba(var(--licht-rgb), 0.9); z-index: 1; }
+.zeitleiste.an > li:not(.erreicht)::before { background: var(--bg); box-shadow: inset 0 0 0 2px var(--line-strong); }
+.zeitleiste .eintrag { margin-top: 0; }
+@media (prefers-reduced-motion: no-preference) { .zeitleiste.an > li::before { transition: background-color .3s ease, box-shadow .3s ease; } }
+@media (min-width: 900px) {
+  .page .wrap > .zeitleiste { max-width: 1040px; }
+  .zeitleiste { padding-left: 0; }
+  .zeitleiste::before, .zeitleiste::after { left: 176px; }
+  .zeitleiste > li { padding-left: 210px; }
+  .zeitleiste > li::before { left: 170px; }
+  /* das Datum steht links neben der Linie */
+  .zeitleiste .eintrag { position: static; }
+  .zeitleiste .eyebrow { position: absolute; left: 0; top: 23px; width: 150px; text-align: right; }
+  .zeitleiste .eyebrow::before { content: none; }
+}
+
+/* ---------- System: Anforderungen als Kacheln (zwei Betriebsarten und der Testrechner), Stand-Leiste, Pläne als Kacheln ---- */
+.anforderungen { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr); margin-bottom: var(--block); }
+@media (min-width: 761px) { .anforderungen { grid-template-columns: repeat(2, minmax(0, 1fr)); } .anforderungen .anf-test { grid-column: 1 / -1; } }
+@media (min-width: 1100px) { .anforderungen { grid-template-columns: repeat(3, minmax(0, 1fr)); } .anforderungen .anf-test { grid-column: auto; } }
+.anf { gap: 12px; }
+.anf h2 { font-size: clamp(1.6rem, 2.4vw, 2rem); }
+.anf-sprache { border-color: rgba(var(--licht-rgb), 0.4); background: radial-gradient(70% 60% at 20% 0%, rgba(var(--licht-rgb), 0.14), transparent 70%), linear-gradient(180deg, var(--surface-2), var(--surface)); }
+.anf dl { margin: 0; align-self: stretch; }
+.anf dl > div { display: grid; gap: 4px; padding: 12px 0; border-top: 1px solid var(--line); }
+.anf dt { font: 500 0.6875rem/1.3 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); }
+.anf dd { margin: 0; position: relative; padding-left: 20px; color: var(--ink); }
+.anf dd::before { content: ""; position: absolute; left: 2px; top: 0.62em; width: 8px; height: 8px; border-radius: 50%; background: var(--line-strong); }
+.anf dd.ok::before { background: var(--fms-1); box-shadow: 0 0 0 4px rgba(67, 160, 71, 0.18); }
+.anf dd.offen::before { background: var(--fms-3); box-shadow: 0 0 0 4px rgba(249, 168, 37, 0.16); }
+.anf .anf-fuss { margin-top: auto; padding-top: 4px; font-size: 0.9375rem; color: var(--ink-soft); }
+.sys-note { display: grid; gap: 12px; }
+.stand { display: grid; gap: var(--block); }
+.stand h2 { font-size: clamp(1.8rem, 3.4vw, 2.4rem); }
+.stand h3 { font-size: 1.5rem; }
+.stand-leiste { display: grid; gap: 10px; }
+@media (min-width: 761px) { .stand-leiste { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.stand-leiste li { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 12px 16px; border: 1px solid var(--kante); border-radius: 12px; background: linear-gradient(180deg, rgba(42, 45, 50, 0.7), rgba(26, 28, 31, 0.8)); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08); font: 600 1.0625rem/1.25 var(--font-body); color: var(--ink-strong); }
+.stand-leiste i { flex: none; width: 10px; height: 10px; border-radius: 50%; }
+.stand-leiste .ist-da i { background: var(--fms-1); box-shadow: 0 0 0 5px rgba(67, 160, 71, 0.18); }
+.stand-leiste .ist-jetzt i { background: var(--blau-hell); box-shadow: 0 0 0 5px rgba(var(--licht-rgb), 0.25), 0 0 16px rgba(var(--licht-rgb), 0.9); }
+.stand-leiste .ist-offen i { background: none; box-shadow: inset 0 0 0 2px var(--muted); }
+.stand-leiste .ist-jetzt { border-color: rgba(var(--licht-rgb), 0.45); }
+.geplant { display: grid; gap: 14px; }
+.plan-kacheln { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
+.plan-kacheln li { position: relative; padding: 38px 18px 18px; border: 1px solid var(--kante); border-radius: 12px; background: linear-gradient(180deg, rgba(42, 45, 50, 0.7), rgba(33, 35, 39, 0.7)); box-shadow: 0 18px 40px -28px rgba(var(--tief), 1), inset 0 1px 0 rgba(255, 255, 255, 0.1); color: var(--ink); max-width: none; }
+.plan-kacheln li::before { content: ""; position: absolute; left: 18px; top: 20px; width: 22px; height: 2px; background: var(--blue); box-shadow: 0 0 12px rgba(var(--licht-rgb), 0.9); }
 
 /* PIXELGENAU-ANFANG */
 /* ---------- Pixelgenaue Bildschirmfotos (erzeugt von bauen.py, nicht von Hand ändern) ------------------- */
