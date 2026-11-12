@@ -743,9 +743,14 @@ kbd { font: 600 0.8125rem/1 var(--font-mono); color: var(--ink-strong); padding:
 .fz-gruppe[open] > summary { border-bottom: 1px solid var(--line); }
 .fz-titel { font: 700 1.4rem/1.1 var(--font-display); color: var(--ink-strong); }
 .fz-zahl { font: 600 .8125rem/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
-.fz-liste { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); margin-bottom: -1px; }   /* Trennlinien an den Karten: leere Felder bleiben leer */
+.fz-liste { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); margin-bottom: -1px; container-type: inline-size; }
+/* Sehr breite Bilder (fz-breit, katalog.py): Karte über zwei Spalten, sobald die Liste zwei Spalten hat (ab 600 px Breite) */
+@container (min-width: 600px) { .fz-breit { grid-column: span 2; } }   /* Trennlinien an den Karten: leere Felder bleiben leer */
 .fz { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: var(--a-3) var(--a-4); align-items: center; align-content: start; padding: var(--a-5); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.fz-bild { grid-column: 1 / -1; display: flex; justify-content: center; align-items: flex-end; height: 104px; border-bottom: 3px solid var(--surface-2); }
+.fz-bild { grid-column: 1 / -1; display: flex; justify-content: center; align-items: flex-end; height: 104px; padding-bottom: 3px;
+  margin-inline: calc(-1 * var(--a-5)); background: linear-gradient(var(--surface-2), var(--surface-2)) center bottom / calc(100% - 2 * var(--a-5)) 3px no-repeat; }
+/* Die Bildfläche reicht bis an den Kartenrand (die Linie darunter bleibt eingerückt wie bisher): So passen auch breite Bilder
+   wie Feuerwehrkran und Hubschrauber in ihrer Größe hinein und bleiben 1:1 scharf, statt verkleinert zu werden. */
 .fz-bild img { height: 96px; width: auto; max-width: 100%; }
 .fz-zeichen { width: 64px; height: 56px; }
 .fz-gespann { grid-template-columns: 128px minmax(0, 1fr); }   /* Gespann (Zugfahrzeug mit Anhänger): zwei Zeichen nebeneinander, je so groß wie sonst eines */
