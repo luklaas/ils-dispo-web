@@ -828,7 +828,9 @@ kbd { font: 600 0.8125rem/1 var(--font-mono); color: var(--ink-strong); padding:
 @media (prefers-reduced-motion: reduce) { .designs-bilder img { transition: none; } }
 @supports selector(:has(*)) {
   .designs-bilder img { opacity: 0; }
-  .designs:has(#d-dunkel:checked) .b-dunkel, .designs:has(#d-hell:checked) .b-hell, .designs:has(#d-blau:checked) .b-blau { opacity: 1; }
+  .designs:has(#d-leitstand-dunkel:checked) .b-leitstand-dunkel, .designs:has(#d-leitstand-hell:checked) .b-leitstand-hell,
+  .designs:has(#d-anthrazit-dunkel:checked) .b-anthrazit-dunkel, .designs:has(#d-anthrazit-hell:checked) .b-anthrazit-hell,
+  .designs:has(#d-blau:checked) .b-blau { opacity: 1; }
 }
 .designs > figcaption { font: 500 .8125rem/1.4 var(--font-mono); color: var(--muted); text-align: center; }
 
