@@ -1,55 +1,70 @@
 WEBVTT
 
-00:00:07.726 --> 00:00:11.996 line:-2
+00:00:06.306 --> 00:00:10.177 line:-2
 <v Leitstelle><b>Leitstelle:</b> Notruf Feuerwehr und Rettungsdienst. Wo genau ist der Notfall?
 
-00:00:12.096 --> 00:00:14.722 line:-2
-<v Anruferin><b>Anruferin:</b> Madisonallee! Hier ist ein Unfall!
+00:00:10.242 --> 00:00:13.734 line:-2
+<v Anruferin><b>Anruferin:</b> Eugen-Martin-Straße! Ich stehe hier vor einer Baustelle!
 
-00:00:14.780 --> 00:00:16.697 line:-2
-<v Leitstelle><b>Leitstelle:</b> Wo genau auf der Madisonallee?
+00:00:13.795 --> 00:00:16.155 line:-2
+<v Leitstelle><b>Leitstelle:</b> Wo genau an der Eugen-Martin-Straße?
 
-00:00:16.754 --> 00:00:19.559 line:-2
-<v Anruferin><b>Anruferin:</b> An der Messe, auf Höhe vom Neuen Messplatz.
+00:00:16.205 --> 00:00:19.867 line:-2
+<v Anruferin><b>Anruferin:</b> Am westlichen Ende der Straße, da ist eine große Baustelle!
 
-00:00:19.913 --> 00:00:21.035 line:-2
+00:00:19.930 --> 00:00:21.077 line:-2
 <v Leitstelle><b>Leitstelle:</b> Was ist passiert?
 
-00:00:21.093 --> 00:00:29.565 line:-2
-<v Anruferin><b>Anruferin:</b> Zwei Autos sind zusammengestoßen! Ein Mann sitzt im silbernen Kombi und er... sein Bein steckt unter dem Armaturenbrett fest. Er kommt nicht raus!
+00:00:21.153 --> 00:00:26.168 line:-2
+<v Anruferin><b>Anruferin:</b> Da oben im Dachgeschoss brennt es! Es kommt so viel dunkler Rauch über die Straße!
 
-00:00:33.453 --> 00:00:35.052 line:-2
-<v Leitstelle><b>Leitstelle:</b> Mit wem spreche ich bitte?
+00:00:26.239 --> 00:00:28.012 line:-2
+<v Leitstelle><b>Leitstelle:</b> Sind noch Menschen im Gebäude?
 
-00:00:35.054 --> 00:00:36.278 line:-2
-<v Anruferin><b>Anruferin:</b> Julia Hartmann.
+00:00:28.062 --> 00:00:31.836 line:-2
+<v Anruferin><b>Anruferin:</b> Die Bauarbeiter sagen, alle sind schon draußen und niemand ist verletzt.
 
-00:00:38.680 --> 00:00:40.632 line:-2
-<v Leitstelle><b>Leitstelle:</b> Wie viele Personen sind verletzt?
+00:00:31.910 --> 00:00:35.053 line:-2
+<v Leitstelle><b>Leitstelle:</b> Gibt es dort Gasflaschen oder andere gefährliche Stoffe?
 
-00:00:40.638 --> 00:00:47.841 line:-2
-<v Anruferin><b>Anruferin:</b> Der Fahrer im Kombi, der hat sein Bein eingeklemmt. Die Frau vom anderen Auto ist ausgestiegen, die sagt, ihr geht es gut.
+00:00:35.125 --> 00:00:38.948 line:-2
+<v Anruferin><b>Anruferin:</b> Ja, da oben auf dem Dach stehen noch Gasflaschen von den Arbeiten.
 
-00:00:50.997 --> 00:00:53.063 line:-2
-<v Leitstelle><b>Leitstelle:</b> Ist der eingeklemmte Mann ansprechbar?
+00:00:39.933 --> 00:00:46.766 line:-2
+<v Leitstelle><b>Leitstelle:</b> Die Feuerwehr ist alarmiert und gleich bei Ihnen. Gehen Sie bitte auf Abstand und halten Sie auch andere vom Gebäude fern.
 
-00:00:53.063 --> 00:00:56.537 line:-2
-<v Anruferin><b>Anruferin:</b> Ja, er redet mit mir. Er sagt, sein Bein tut sehr weh.
+00:00:46.818 --> 00:00:49.594 line:-2
+<v Anruferin><b>Anruferin:</b> Ja, ich mache das. Ich gehe ein Stück weg.
 
-00:00:56.596 --> 00:00:59.839 line:-2
-<v Leitstelle><b>Leitstelle:</b> Läuft etwas aus, oder raucht es irgendwo?
+00:00:49.667 --> 00:00:54.723 line:-2
+<v Leitstelle><b>Leitstelle:</b> Bleiben Sie in sicherer Entfernung an der Straße und weisen Sie die Feuerwehr ein, wenn sie eintrifft.
 
-00:00:59.839 --> 00:01:02.764 line:-2
-<v Anruferin><b>Anruferin:</b> Nein, da läuft nichts aus und es raucht auch nicht.
+00:00:54.790 --> 00:00:57.649 line:-2
+<v Anruferin><b>Anruferin:</b> Ja, ich bleibe hier und zeige ihnen den Weg.
 
-00:01:13.632 --> 00:01:20.783 line:-2
-<v Leitstelle><b>Leitstelle:</b> Feuerwehr und Rettungsdienst sind unterwegs. Bleiben Sie bitte bei dem Mann, bewegen Sie ihn nicht und achten Sie auf den Verkehr.
+00:00:57.719 --> 00:01:01.974 line:-2
+<v Leitstelle><b>Leitstelle:</b> Danke für Ihren Anruf. Sie können jetzt auflegen. Auf Wiederhören.
 
-00:01:20.893 --> 00:01:23.783 line:-2
-<v Anruferin><b>Anruferin:</b> Okay, ich bleibe hier. Ich beweg ihn nicht.
+00:01:02.024 --> 00:01:04.571 line:-2
+<v Anruferin><b>Anruferin:</b> Alles klar, danke. Auf Wiederhören.
 
-00:02:00.159 --> 00:02:10.822 line:16%
-<v Funk><b>Funk:</b> Leitstelle Freiburg von Florian Freiburg 1/11-1 – Erstmeldung: Verkehrsunfall mit zwei Pkw, eine Person eingeklemmt. Erkundung läuft. – kommen.
+00:01:35.674 --> 00:01:39.132 line:16%
+<v Leitstelle><b>Leitstelle:</b> Florian Freiburg 1/11-1 von Leitstelle, kommen.
 
-00:02:20.565 --> 00:02:37.419 line:16%
-<v Funk><b>Funk:</b> Leitstelle Freiburg von Florian Freiburg 1/11-1 – Erste Lagemeldung: Zwei Pkw zusammengestoßen, eine Person im Fußraum eingeklemmt. Keine auslaufenden Betriebsstoffe. Keine Nachforderung. Technische Rettung läuft, Dauer etwa 9 Minuten. – kommen.
+00:01:40.539 --> 00:01:50.523 line:16%
+<v Funk><b>Funk:</b> Leitstelle Freiburg von Florian Freiburg 1/11-1 – Erstmeldung: Dachgeschoss eines Rohbaus in Brand, starke Rauchentwicklung. Erkundung läuft. – kommen.
+
+00:01:52.709 --> 00:01:54.849 line:16%
+<v Leitstelle><b>Leitstelle:</b> Hier Leitstelle, verstanden. Ende.
+
+00:02:06.331 --> 00:02:23.550 line:16%
+<v Funk><b>Funk:</b> Leitstelle Freiburg von Florian Freiburg 1/11-1 – Erste Lagemeldung: Dachgeschoss eines unbewohnten Rohbaus in Brand. Zwei Rohre im Innenangriff, ein Rohr über die Drehleiter. Gasflaschen auf dem Dach werden gekühlt. Keine Personen im Gebäude. Keine Nachforderung. – kommen.
+
+00:02:28.716 --> 00:02:34.342 line:16%
+<v Leitstelle><b>Leitstelle:</b> Florian Freiburg 1/11-1 von Leitstelle, Frage: Besteht Gefahr für die Nachbargebäude? Kommen.
+
+00:02:35.811 --> 00:02:42.396 line:16%
+<v Funk><b>Funk:</b> Leitstelle Freiburg von Florian Freiburg 1/11-1 – Keine Gefahr für die Nachbargebäude bekannt. – kommen.
+
+00:02:44.766 --> 00:02:46.378 line:16%
+<v Leitstelle><b>Leitstelle:</b> Verstanden. Ende.
