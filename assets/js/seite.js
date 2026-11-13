@@ -172,8 +172,15 @@
     knopf.addEventListener("click", function () { var los = film.play(); if (los) los.catch(function () {}); film.focus({ preventScroll: true }); });
     film.addEventListener("play", function () { knopf.hidden = true; });
     ut.hidden = false;
-    ut.addEventListener("click", function () { spur.mode = spur.mode === "hidden" || spur.mode === "disabled" ? "showing" : "hidden"; });
-    film.textTracks.addEventListener("change", function () { ut.textContent = spur.mode === "showing" ? "Untertitel an" : "Untertitel aus"; });
+    // Untertitel sind beim Start in jedem Browser an: WebKit lässt die Spur trotz „default“ aus, deshalb schaltet das Skript sie ein –
+    // und noch einmal, wenn das Video lädt, solange niemand selbst umgeschaltet hat. Der Knopf zeigt immer den tatsächlichen Zustand.
+    var gewaehlt = false;
+    function stand() { ut.textContent = spur.mode === "showing" ? "Untertitel an" : "Untertitel aus"; }
+    function an() { if (!gewaehlt && spur.mode !== "showing") spur.mode = "showing"; stand(); }
+    an();
+    film.addEventListener("loadedmetadata", an);
+    ut.addEventListener("click", function () { gewaehlt = true; spur.mode = spur.mode === "showing" ? "hidden" : "showing"; stand(); });
+    film.textTracks.addEventListener("change", stand);
   });
 
   /* ---- „So läuft ein Einsatz“ als Scroll-Geschichte (ab 1100 px): links bleibt ein Fenster stehen, sein Bild wechselt mit dem Schritt
